@@ -1,0 +1,12 @@
+{
+    "/js/core/libs.min.js": "/js/core/libs.min.js",
+    "/js/core/external.min.js": "/js/core/external.min.js",
+    "/js/iqonic-script/setting.min.js": "/js/iqonic-script/setting.min.js",
+    "/js/iqonic-script/utility.min.js": "/js/iqonic-script/utility.min.js",
+    "/css/libs.min.css": "/css/libs.min.css",
+    "/css/rtl.css": "/css/rtl.css",
+    "/css/dark.css": "/css/dark.css",
+    "/css/custom.css": "/css/custom.css",
+    "/css/qompac-ui.css": "/css/qompac-ui.css",
+    "/css/customizer.css": "/css/customizer.css"
+}

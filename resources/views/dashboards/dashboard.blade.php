@@ -3,53 +3,53 @@
 
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-5 gap-3">
         <div class="d-flex flex-column">
-            <h3>Quick Insights</h3>
-            <p class="mb-0">Financial Dashboard</p>
+            <h3>رؤى سريعة</h3>
         </div>
         <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
             <div class="form-group mb-0">
                 <select class="select2-basic-single js-states form-control" name="state" style="width: 100%;">
-                    <option>Past 30 Days</option>
-                    <option>Past 60 Days</option>
-                    <option>Past 90 Days</option>
-                    <option>Past 1 year</option>
-                    <option>Past 2 year</option>
+                    <option>آخر 7 ايام</option>
+                    <option>آخر 30 يومًا</option>
+                    <option>آخر 60 يومًا</option>
+                    <option>آخر 90 يومًا</option>
+                    <option>آخر سنة</option>
                 </select>
             </div>
             <div class="form-group mb-0">
                 <input type="text" name="start" class="form-control range_flatpicker flatpickr-input active"
                     placeholder="24 Jan 2022 to 23 Feb 2022" readonly="readonly">
             </div>
-            <button type="button" class="btn btn-primary">Analytics</button>
+            <button type="button" class="btn btn-primary">تحليل</button>
         </div>
     </div>
     <div class="row">
+
         <div class="col-lg-8 col-xl-8">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card card-block card-stretch card-height">
                         <div class="flex-wrap card-header d-flex justify-content-between align-items-center">
                             <div class="header-title">
-                                <h4>Sales Stastics</h4>
+                                <h4>تحليلات عقاراتي</h4>
                             </div>
                             <div class="d-flex">
                                 <div class="me-3">
                                     <p class="mb-0"><svg class="text-primary" width="10" height="10"
                                             viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="5" cy="5" r="5" fill="currentColor" />
-                                        </svg> Total Sales </p>
+                                        </svg> عدد العقارات </p>
                                 </div>
                                 <div class="me-3">
                                     <p class="mb-0"><svg class="text-secondary" width="10" height="10"
                                             viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="5" cy="5" r="5" fill="currentColor" />
-                                        </svg> Total Expense</p>
+                                        </svg> عدد المشاهدات</p>
                                 </div>
                                 <div class="">
                                     <p class="mb-0"><svg class="text-tertiray" width="10" height="10"
                                             viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="5" cy="5" r="5" fill="currentColor" />
-                                        </svg> Total Profit</p>
+                                        </svg> عدد التعليقات</p>
                                 </div>
                             </div>
                         </div>
@@ -61,34 +61,8 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="header-title">
-                        <h4 class=" card-title">Date</h4>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="course-picker">
-                        <input type="hidden" name="inline" class="d-none inline_flatpickr">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
             <div class="card card-block card-stretch card-height">
                 <div class="card-body">
-                    <div class="mb-5">
-                        <div class="mb-2 d-flex justify-content-between align-items-center">
-                            <span class="text-dark">Last Transaction</span>
-                            <a class="badge rounded-pill bg-soft-primary" href="javascript:void(0);">
-                                View Report
-                            </a>
-                        </div>
-                        <div class="">
-                            <h2 class="counter mb-2" style="visibility: visible;">$46,996</h2>
-                            <p>This Month</p>
-                        </div>
-                    </div>
                     <div>
                         <div class="d-flex gap flex-column">
                             <div class="d-flex align-items-center gap-3">
@@ -107,8 +81,8 @@
                                 </div>
                                 <div style="width: 100%;">
                                     <div class="d-flex justify-content-between  ">
-                                        <h6 class="mb-2">Balance</h6>
-                                        <h6 class="text-body">$2,386</h6>
+                                        <h6 class="mb-2">عقارات</h6>
+                                        <h6 class="text-body">386</h6>
                                     </div>
                                     <div class="progress bg-soft-primary shadow-none w-100" style="height: 6px">
                                         <div class="progress-bar bg-primary" data-toggle="progress-bar"
@@ -132,8 +106,8 @@
                                 </div>
                                 <div style="width: 100%;">
                                     <div class="d-flex justify-content-between  ">
-                                        <h6 class="mb-2">Transfer</h6>
-                                        <h6 class="text-body">$4,765</h6>
+                                        <h6 class="mb-2">اراضي</h6>
+                                        <h6 class="text-body">65</h6>
                                     </div>
                                     <div class="progress bg-soft-info shadow-none w-100" style="height: 6px">
                                         <div class="progress-bar bg-info" data-toggle="progress-bar"
@@ -157,8 +131,8 @@
                                 </div>
                                 <div style="width: 100%;">
                                     <div class="d-flex justify-content-between  ">
-                                        <h6 class="mb-2">Recived</h6>
-                                        <h6 class="text-body">$8,224</h6>
+                                        <h6 class="mb-2">صناعية</h6>
+                                        <h6 class="text-body">224</h6>
                                     </div>
                                     <div class="progress bg-soft-success shadow-none w-100" style="height: 6px">
                                         <div class="progress-bar bg-success" data-toggle="progress-bar"
@@ -184,8 +158,8 @@
                                 </div>
                                 <div style="width: 100%;">
                                     <div class="d-flex justify-content-between  ">
-                                        <h6 class="mb-2">Outstanding</h6>
-                                        <h6 class="text-body">$1,224</h6>
+                                        <h6 class="mb-2">الموظفين</h6>
+                                        <h6 class="text-body">24</h6>
                                     </div>
                                     <div class="progress bg-soft-danger shadow-none w-100" style="height: 6px">
                                         <div class="progress-bar bg-danger" data-toggle="progress-bar"
@@ -201,32 +175,24 @@
 
             </div>
         </div>
+        
         <div class="col-lg-8">
             <div class="card card-block card-stretch card-height">
                 <div class="flex-wrap card-header d-flex justify-content-between border-0">
                     <div class="header-title">
-                        <h4 class=" card-title">Sales Order</h4>
+                        <h4 class=" card-title">العقارات</h4>
                     </div>
-                    <div class="dropdown">
-                        <span class="dropdown-toggle" id="dropdownMenuButton7" data-bs-toggle="dropdown"
-                            aria-expanded="false" role="button"> Monthly
-                        </span>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton7">
-                            <a class="dropdown-item " href="javascript:void(0);">This Week</a>
-                            <a class="dropdown-item " href="javascript:void(0);">This Month</a>
-                            <a class="dropdown-item " href="javascript:void(0);">This Year</a>
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-primary">جميع العقارات</button>
                 </div>
                 <div class="card-body pt-0">
                     <div class=" table-responsive border rounded">
                         <table id="basic-table" class="table mb-0 table-striped" role="grid">
                             <thead>
                                 <tr>
-                                    <th>COMPANIES</th>
-                                    <th>CONTACTS</th>
-                                    <th>ORDER</th>
-                                    <th>COMPLETION</th>
+                                    <th>العقار</th>
+                                    <th>الموظف</th>
+                                    <th>نوع العقار</th>
+                                    <th>المشاهدات</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -235,23 +201,21 @@
                                         <div class="d-flex align-items-center">
                                             <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
                                                 src="{{ asset('images/shapes/01.png') }}" alt="profile">
-                                            <h6>Addidis Sportwear</h6>
+                                            <h6>شقة سكنية النجمة</h6>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="iq-media-group iq-media-group-1">
                                             <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">SP</div>
+                                                <div class="icon iq-icon-box-3 rounded-pill">خالد</div>
                                             </a>
                                             <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">PP</div>
+                                                <div class="icon iq-icon-box-3 rounded-pill">محمد</div>
                                             </a>
-                                            <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">MM</div>
-                                            </a>
+                                    
                                         </div>
                                     </td>
-                                    <td>$14,000</td>
+                                    <td>شقة سكنية</td>
                                     <td>
                                         <div class="mb-2 d-flex align-items-center">
                                             <h6>60%</h6>
@@ -267,28 +231,29 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                src="{{ asset('images/shapes/05.png') }}" alt="profile">
-                                            <h6>Netflixer Platforms</h6>
+                                                src="{{ asset('images/shapes/01.png') }}" alt="profile">
+                                            <h6>شقة سكنية النجمة</h6>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="iq-media-group iq-media-group-1">
                                             <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">SP</div>
+                                                <div class="icon iq-icon-box-3 rounded-pill">خالد</div>
                                             </a>
                                             <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">PP</div>
+                                                <div class="icon iq-icon-box-3 rounded-pill">محمد</div>
                                             </a>
+                                    
                                         </div>
                                     </td>
-                                    <td>$30,000</td>
+                                    <td>شقة سكنية</td>
                                     <td>
                                         <div class="mb-2 d-flex align-items-center">
-                                            <h6>25%</h6>
+                                            <h6>60%</h6>
                                         </div>
                                         <div class="shadow-none progress bg-soft-primary w-100" style="height: 4px">
                                             <div class="progress-bar bg-primary" data-toggle="progress-bar"
-                                                role="progressbar" aria-valuenow="25" aria-valuemin="0"
+                                                role="progressbar" aria-valuenow="60" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
                                     </td>
@@ -297,290 +262,67 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                src="{{ asset('images/shapes/02.png') }}" alt="profile">
-                                            <h6>Shopifi Stores</h6>
+                                                src="{{ asset('images/shapes/01.png') }}" alt="profile">
+                                            <h6>شقة سكنية النجمة</h6>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="iq-media-group iq-media-group-1">
                                             <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">PP</div>
+                                                <div class="icon iq-icon-box-3 rounded-pill">خالد</div>
                                             </a>
                                             <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">TP</div>
+                                                <div class="icon iq-icon-box-3 rounded-pill">محمد</div>
                                             </a>
+                                    
                                         </div>
                                     </td>
-                                    <td>$8,500</td>
+                                    <td>شقة سكنية</td>
                                     <td>
                                         <div class="mb-2 d-flex align-items-center">
-                                            <h6>100%</h6>
-                                        </div>
-                                        <div class="shadow-none progress bg-soft-success w-100" style="height: 4px">
-                                            <div class="progress-bar bg-success" data-toggle="progress-bar"
-                                                role="progressbar" aria-valuenow="100" aria-valuemin="0"
-                                                aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                src="{{ asset('images/shapes/03.png') }}" alt="profile">
-                                            <h6>Bootstrap Technologies</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="iq-media-group iq-media-group-1">
-                                            <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">SP</div>
-                                            </a>
-                                            <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">PP</div>
-                                            </a>
-                                            <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">MM</div>
-                                            </a>
-                                            <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">TP</div>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>$20,500</td>
-                                    <td>
-                                        <div class="mb-2 d-flex align-items-center">
-                                            <h6>100%</h6>
-                                        </div>
-                                        <div class="shadow-none progress bg-soft-success w-100" style="height: 4px">
-                                            <div class="progress-bar bg-success" data-toggle="progress-bar"
-                                                role="progressbar" aria-valuenow="100" aria-valuemin="0"
-                                                aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                src="{{ asset('images/shapes/04.png') }}" alt="profile">
-                                            <h6>Community First</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="iq-media-group iq-media-group-1">
-                                            <a href="#" class="iq-media-1">
-                                                <div class="icon iq-icon-box-3 rounded-pill">MM</div>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>$9,800</td>
-                                    <td>
-                                        <div class="mb-2 d-flex align-items-center">
-                                            <h6>75%</h6>
+                                            <h6>60%</h6>
                                         </div>
                                         <div class="shadow-none progress bg-soft-primary w-100" style="height: 4px">
                                             <div class="progress-bar bg-primary" data-toggle="progress-bar"
-                                                role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                                                role="progressbar" aria-valuenow="60" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
+                                                src="{{ asset('images/shapes/01.png') }}" alt="profile">
+                                            <h6>شقة سكنية النجمة</h6>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="iq-media-group iq-media-group-1">
+                                            <a href="#" class="iq-media-1">
+                                                <div class="icon iq-icon-box-3 rounded-pill">خالد</div>
+                                            </a>
+                                            <a href="#" class="iq-media-1">
+                                                <div class="icon iq-icon-box-3 rounded-pill">محمد</div>
+                                            </a>
+                                    
+                                        </div>
+                                    </td>
+                                    <td>شقة سكنية</td>
+                                    <td>
+                                        <div class="mb-2 d-flex align-items-center">
+                                            <h6>60%</h6>
+                                        </div>
+                                        <div class="shadow-none progress bg-soft-primary w-100" style="height: 4px">
+                                            <div class="progress-bar bg-primary" data-toggle="progress-bar"
+                                                role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card card-block card-stretch card-height">
-                <div class="flex-wrap card-header d-flex justify-content-between align-items-center">
-                    <div class="header-title">
-                        <h4>Sales Anylsis</h4>
-                    </div>
-                    <div class="dropdown">
-                        <a href="#" class="text-gray dropdown-toggle" id="dropdownMenuButton29"
-                            data-bs-toggle="dropdown" aria-expanded="false">All Tasks</a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton29"
-                            style="">
-                            <li><a class="dropdown-item" href="#">This Week</a></li>
-                            <li><a class="dropdown-item" href="#">This Month</a></li>
-                            <li><a class="dropdown-item" href="#">This Year</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div id="sales-chart-04" class="sales-chart-04"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card card-block card-stretch card-height">
-                <div class="flex-wrap card-header d-flex justify-content-between align-items-center">
-                    <div class="header-title">
-                        <h4>To-Do List</h4>
-                    </div>
-                    <div class="dropdown">
-                        <a href="#" class="text-gray dropdown-toggle" id="dropdownMenuButton24"
-                            data-bs-toggle="dropdown" aria-expanded="false">All Tasks</a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton24"
-                            style="">
-                            <li><a class="dropdown-item" href="#">This Week</a></li>
-                            <li><a class="dropdown-item" href="#">This Month</a></li>
-                            <li><a class="dropdown-item" href="#">This Year</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between  mb-3">
-                        <div class="w-100">
-                            <h6>School Dashboard</h6>
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-soft-success shadow-none w-50" style="height: 6px">
-                                    <div class="progress-bar bg-success" data-toggle="progress-bar"
-                                        role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <small class="ms-2">80% completed</small>
-                            </div>
-                            <small>Due in 3 Days</small>
-                        </div>
-                        <div class="dropdown">
-                            <a href="#" class="text-gray" id="dropdownMenuButton25" data-bs-toggle="dropdown"
-                                aria-expanded="false"><svg width="22" height="5" viewBox="0 0 22 5"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M19.6788 5C20.9595 5 22 3.96222 22 2.68866C22 1.41318 20.9595 0.373465 19.6788 0.373465C18.3981 0.373465 17.3576 1.41318 17.3576 2.68866C17.3576 3.96222 18.3981 5 19.6788 5ZM11.0005 5C12.2812 5 13.3217 3.96222 13.3217 2.68866C13.3217 1.41318 12.2812 0.373465 11.0005 0.373465C9.71976 0.373465 8.67929 1.41318 8.67929 2.68866C8.67929 3.96222 9.71976 5 11.0005 5ZM4.64239 2.68866C4.64239 3.96222 3.60192 5 2.3212 5C1.04047 5 0 3.96222 0 2.68866C0 1.41318 1.04047 0.373465 2.3212 0.373465C3.60192 0.373465 4.64239 1.41318 4.64239 2.68866Z"
-                                        fill="currentColor" />
-                                </svg>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton25"
-                                style="">
-                                <li><a class="dropdown-item" href="#">This Week</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between  mb-3">
-                        <div class="w-100">
-                            <h6>Fashion Theme</h6>
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-soft-danger shadow-none w-50" style="height: 6px">
-                                    <div class="progress-bar bg-danger" data-toggle="progress-bar" role="progressbar"
-                                        aria-valuenow="18" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small class="ms-2">15% completed</small>
-                            </div>
-                            <small>Due in 4 Days</small>
-                        </div>
-                        <div class="dropdown">
-                            <a href="#" class="text-gray" id="dropdownMenuButton61" data-bs-toggle="dropdown"
-                                aria-expanded="false"><svg width="22" height="5" viewBox="0 0 22 5"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M19.6788 5C20.9595 5 22 3.96222 22 2.68866C22 1.41318 20.9595 0.373465 19.6788 0.373465C18.3981 0.373465 17.3576 1.41318 17.3576 2.68866C17.3576 3.96222 18.3981 5 19.6788 5ZM11.0005 5C12.2812 5 13.3217 3.96222 13.3217 2.68866C13.3217 1.41318 12.2812 0.373465 11.0005 0.373465C9.71976 0.373465 8.67929 1.41318 8.67929 2.68866C8.67929 3.96222 9.71976 5 11.0005 5ZM4.64239 2.68866C4.64239 3.96222 3.60192 5 2.3212 5C1.04047 5 0 3.96222 0 2.68866C0 1.41318 1.04047 0.373465 2.3212 0.373465C3.60192 0.373465 4.64239 1.41318 4.64239 2.68866Z"
-                                        fill="currentColor" />
-                                </svg>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton61"
-                                style="">
-                                <li><a class="dropdown-item" href="#">This Week</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between  mb-3">
-                        <div class="w-100">
-                            <h6>Sidebar Patterns</h6>
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-soft-primary shadow-none w-50" style="height: 6px">
-                                    <div class="progress-bar bg-primary" data-toggle="progress-bar"
-                                        role="progressbar" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <small class="ms-2">50% completed</small>
-                            </div>
-                            <small>Due in 2 Days</small>
-                        </div>
-                        <div class="dropdown">
-                            <a href="#" class="text-gray" id="dropdownMenuButton62" data-bs-toggle="dropdown"
-                                aria-expanded="false"><svg width="22" height="5" viewBox="0 0 22 5"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M19.6788 5C20.9595 5 22 3.96222 22 2.68866C22 1.41318 20.9595 0.373465 19.6788 0.373465C18.3981 0.373465 17.3576 1.41318 17.3576 2.68866C17.3576 3.96222 18.3981 5 19.6788 5ZM11.0005 5C12.2812 5 13.3217 3.96222 13.3217 2.68866C13.3217 1.41318 12.2812 0.373465 11.0005 0.373465C9.71976 0.373465 8.67929 1.41318 8.67929 2.68866C8.67929 3.96222 9.71976 5 11.0005 5ZM4.64239 2.68866C4.64239 3.96222 3.60192 5 2.3212 5C1.04047 5 0 3.96222 0 2.68866C0 1.41318 1.04047 0.373465 2.3212 0.373465C3.60192 0.373465 4.64239 1.41318 4.64239 2.68866Z"
-                                        fill="currentColor" />
-                                </svg>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton62"
-                                style="">
-                                <li><a class="dropdown-item" href="#">This Week</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between  mb-3">
-                        <div class="w-100">
-                            <h6>Menu Bar Update</h6>
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-soft-gray shadow-none w-50" style="height: 6px">
-                                    <div class="progress-bar bg-secondary" data-toggle="progress-bar"
-                                        role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <small class="ms-2">35% completed</small>
-                            </div>
-                            <small>Due in 5 Days</small>
-                        </div>
-                        <div class="dropdown">
-                            <a href="#" class="text-gray" id="dropdownMenuButton63" data-bs-toggle="dropdown"
-                                aria-expanded="false"><svg width="22" height="5" viewBox="0 0 22 5"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M19.6788 5C20.9595 5 22 3.96222 22 2.68866C22 1.41318 20.9595 0.373465 19.6788 0.373465C18.3981 0.373465 17.3576 1.41318 17.3576 2.68866C17.3576 3.96222 18.3981 5 19.6788 5ZM11.0005 5C12.2812 5 13.3217 3.96222 13.3217 2.68866C13.3217 1.41318 12.2812 0.373465 11.0005 0.373465C9.71976 0.373465 8.67929 1.41318 8.67929 2.68866C8.67929 3.96222 9.71976 5 11.0005 5ZM4.64239 2.68866C4.64239 3.96222 3.60192 5 2.3212 5C1.04047 5 0 3.96222 0 2.68866C0 1.41318 1.04047 0.373465 2.3212 0.373465C3.60192 0.373465 4.64239 1.41318 4.64239 2.68866Z"
-                                        fill="currentColor" />
-                                </svg>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton63"
-                                style="">
-                                <li><a class="dropdown-item" href="#">This Week</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="w-100">
-                            <h6>Blog Theme</h6>
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-soft-success shadow-none w-50" style="height: 6px">
-                                    <div class="progress-bar bg-success" data-toggle="progress-bar"
-                                        role="progressbar" aria-valuenow="100" aria-valuemin="0"
-                                        aria-valuemax="100"></div>
-                                </div>
-                                <small class="ms-2">100% completed</small>
-                            </div>
-                            <small>Due in 1 Days</small>
-                        </div>
-                        <div class="dropdown">
-                            <a href="#" class="text-gray" id="dropdownMenuButton64" data-bs-toggle="dropdown"
-                                aria-expanded="false"><svg width="22" height="5" viewBox="0 0 22 5"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M19.6788 5C20.9595 5 22 3.96222 22 2.68866C22 1.41318 20.9595 0.373465 19.6788 0.373465C18.3981 0.373465 17.3576 1.41318 17.3576 2.68866C17.3576 3.96222 18.3981 5 19.6788 5ZM11.0005 5C12.2812 5 13.3217 3.96222 13.3217 2.68866C13.3217 1.41318 12.2812 0.373465 11.0005 0.373465C9.71976 0.373465 8.67929 1.41318 8.67929 2.68866C8.67929 3.96222 9.71976 5 11.0005 5ZM4.64239 2.68866C4.64239 3.96222 3.60192 5 2.3212 5C1.04047 5 0 3.96222 0 2.68866C0 1.41318 1.04047 0.373465 2.3212 0.373465C3.60192 0.373465 4.64239 1.41318 4.64239 2.68866Z"
-                                        fill="currentColor" />
-                                </svg>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton64"
-                                style="">
-                                <li><a class="dropdown-item" href="#">This Week</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -589,7 +331,7 @@
             <div class="card">
                 <div class="flex-wrap card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4>Actvity Overview</h4>
+                        <h4>نظرة عامة على النشاط</h4>
 
                     </div>
                 </div>
@@ -658,6 +400,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+       
+
     </div>
 </x-app-layout>

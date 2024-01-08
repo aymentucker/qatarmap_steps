@@ -32,45 +32,8 @@
                                         d="M9.14373 20.7821V17.7152C9.14372 16.9381 9.77567 16.3067 10.5584 16.3018H13.4326C14.2189 16.3018 14.8563 16.9346 14.8563 17.7152V20.7732C14.8562 21.4473 15.404 21.9951 16.0829 22H18.0438C18.9596 22.0023 19.8388 21.6428 20.4872 21.0007C21.1356 20.3586 21.5 19.4868 21.5 18.5775V9.86585C21.5 9.13139 21.1721 8.43471 20.6046 7.9635L13.943 2.67427C12.7785 1.74912 11.1154 1.77901 9.98539 2.74538L3.46701 7.9635C2.87274 8.42082 2.51755 9.11956 2.5 9.86585V18.5686C2.5 20.4637 4.04738 22 5.95617 22H7.87229C8.19917 22.0023 8.51349 21.8751 8.74547 21.6464C8.97746 21.4178 9.10793 21.1067 9.10792 20.7821H9.14373Z"
                                         fill="currentColor" />
                                 </svg>
-                                <span class="nav-text ms-2">Home</span>
+                                <span class="nav-text ms-2">الرئيسية</span>
                             </a>
-                            <ul class="iq-header-sub-menu list-unstyled collapse" id="homeData">
-                                <li class="nav-item"><a class="nav-link {{ activeRoute(route('dashboards')) }}"
-                                        href="{{ route('dashboards') }}">Dashboard</a>
-                                </li>
-                                <li class="nav-item"><a class="nav-link"
-                                        href="{{ route('analytics-dashboard') }}">Analytics Dashboard</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{{ route('crypto-dashboard') }}">Crypto
-                                        Dashboard</a></li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#freeDashboard"
-                                        role="button" aria-expanded="false" aria-controls="freeDashboard">
-                                        Menu style
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="freeDashboard">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('menu-style.horizontal') }}">Horizontal Dashboard</a>
-                                        </li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('menu-style.dual-horizontal') }}">Dual Horizontal
-                                                Dashboard</a></li>
-
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('menu-style.boxed') }}">Boxed Horizontal</a></li>
-
-                                    </ul>
-                                </li>
-
-
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
@@ -84,200 +47,8 @@
                                         d="M8.07999 6.64999V6.65999C7.64899 6.65999 7.29999 7.00999 7.29999 7.43999C7.29999 7.86999 7.64899 8.21999 8.07999 8.21999H11.069C11.5 8.21999 11.85 7.86999 11.85 7.42899C11.85 6.99999 11.5 6.64999 11.069 6.64999H8.07999ZM15.92 12.74H8.07999C7.64899 12.74 7.29999 12.39 7.29999 11.96C7.29999 11.53 7.64899 11.179 8.07999 11.179H15.92C16.35 11.179 16.7 11.53 16.7 11.96C16.7 12.39 16.35 12.74 15.92 12.74ZM15.92 17.31H8.07999C7.77999 17.35 7.48999 17.2 7.32999 16.95C7.16999 16.69 7.16999 16.36 7.32999 16.11C7.48999 15.85 7.77999 15.71 8.07999 15.74H15.92C16.319 15.78 16.62 16.12 16.62 16.53C16.62 16.929 16.319 17.27 15.92 17.31Z"
                                         fill="currentColor" />
                                 </svg>
-                                <span class="nav-text ms-2">Pages</span>
+                                <span class="nav-text ms-2">اضافة عقار</span>
                             </a>
-                            <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow " data-bs-toggle="collapse" href="#specialPages"
-                                        role="button" aria-expanded="false" aria-controls="specialPages">
-                                        Special Pages
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="specialPages">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('special-pages.billing') }}">Billing</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('special-pages.calender') }}">Calender</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('special-pages.kanban') }}">Kanban</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('special-pages.pricing') }}">Pricing</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('special-pages.timeline') }}">Timeline</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#authSkins"
-                                        role="button" aria-expanded="false" aria-controls="authSkins">
-                                        Auth skins
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="authSkins">
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                href="#defaultAuth" role="button" aria-expanded="false"
-                                                aria-controls="defaultAuth">
-                                                Defalut
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                            stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="defaultAuth">
-                                                <li class="nav-item"><a class="nav-link"
-                                                        href="{{ route('auth.confirm-login') }}">Sign In</a></li>
-                                                <li class="nav-item"><a class="nav-link"
-                                                        href="{{ route('auth.confirm-register') }}">Register</a></li>
-                                                <li class="nav-item"><a class="nav-link"
-                                                        href="{{ route('auth.confirm-mail') }}">Email Verified</a>
-                                                </li>
-                                                <li class="nav-item"><a class="nav-link"
-                                                        href="{{ route('password.request') }}">Reset Password</a></li>
-                                                <li class="nav-item"><a class="nav-link"
-                                                        href="{{ route('auth.lock-screen') }}">Lock Screen</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                href="#popupAuth" role="button" aria-expanded="false"
-                                                aria-controls="popupAuth">
-                                                popup
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                            stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse" id="popupAuth">
-                                                <li class="nav-item"><a class="nav-link" href="#"
-                                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">Sign
-                                                        In</a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#"
-                                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop1">Sign
-                                                        Up</a></li>
-                                            </ul>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#userApps"
-                                        role="button" aria-expanded="false" aria-controls="userApps">
-                                        User
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="userApps">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('users.show', 1) }}">User Profile</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('users.create') }}">User Add</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('users.index') }}">User List</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#utilities"
-                                        role="button" aria-expanded="false" aria-controls="utilities">
-                                        Utilities
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="utilities">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('errors.maintenance') }}">Maintenance</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('errors.error404') }}">404</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('errors.error500') }}">500</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#extraPlugins"
-                                        role="button" aria-expanded="false" aria-controls="extraPlugins">
-                                        Plugins
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="extraPlugins">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.button-hover') }}">Button Hover</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.choise-js') }}">Choise JS</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.fslightbox') }}">FSlightbox</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.select2') }}">Select2</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.sweet-alert') }}">Sweetalert</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.flatpickr') }}">flatpickr</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.apexcharts') }}">Apexcharts</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.gallery-hover') }}">Gallery Hover</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.image-croper') }}">Image Croper</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.loader') }}">Loader</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.rating') }}">Rating</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.quill-editor') }}">Quill</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('plugins.uppy') }}">Uppy</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
@@ -292,188 +63,8 @@
                                         d="M8.89526 2H15.0695C17.7773 2 19.9735 3.06605 20 5.79337V20.9668C19.9989 21.1374 19.9565 21.3051 19.8765 21.4554C19.7479 21.7007 19.5259 21.8827 19.2615 21.9598C18.997 22.0368 18.7128 22.0023 18.4741 21.8641L11.9912 18.6215L5.47299 15.3701C4.40573 14.8726 4 14.4284 4 13.7088V5.79337C4 3.06605 6.19625 2 8.89526 2ZM8.22492 9.62227H15.7486C16.1822 9.62227 16.5336 9.26828 16.5336 8.83162C16.5336 8.39495 16.1822 8.04096 15.7486 8.04096H8.22492C7.79137 8.04096 7.43991 8.39495 7.43991 8.83162C7.43991 9.26828 7.79137 9.62227 8.22492 9.62227Z"
                                         fill="currentColor" />
                                 </svg>
-                                <span class="nav-text ms-2">Elements </span>
+                                <span class="nav-text ms-2">اضافة عميل جديد </span>
                             </a>
-
-                            <ul class="iq-header-sub-menu list-unstyled collapse" id="elementsData">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('dashboards') }}">Components</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#widgetsPage"
-                                        role="button" aria-expanded="false" aria-controls="widgetsPage">
-                                        UI Elements
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="widgetsPage">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-avatars') }}">Avatars</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-alerts') }}">Alerts</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-breadcrumb') }}">Breadcrumb</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-buttons') }}">Buttons</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-offcanvas') }}">Offcanvas</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-color') }}">Colors</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-cards') }}">Cards</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-grid') }}">Grid</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-images') }}">Images</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-list-group') }}">Group List</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-notifications') }}">Notification</a>
-                                        </li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-pagination') }}">Pagination</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-popovers') }}">Popover</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-typography') }}">Typography</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-tabs') }}">Tab</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-tooltips') }}">Tooltips</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('ui-elements.ui-embed-video') }}">Video</a></li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('plugins.ui-color') }}">UI Color</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#widgetsPage"
-                                        role="button" aria-expanded="false" aria-controls="widgetsPage">
-                                        Widgets
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="widgetsPage">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('widget.widget-basic') }}">Widget Basic</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('widget.widget-chart') }}">Widget Chart</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('widget.widget-card') }}">Widget Card</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#mapPages"
-                                        role="button" aria-expanded="false" aria-controls="mapPages">
-                                        Map
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="mapPages">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('maps.google') }}">Google</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('maps.vector') }}">Vector</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#formsPages"
-                                        role="button" aria-expanded="false" aria-controls="formsPages">
-                                        Form
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="formsPages">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('forms.element') }}">Element</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('forms.wizard') }}">Wizard</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('forms.validation') }}">Validation</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#tablesPages"
-                                        role="button" aria-expanded="false" aria-controls="tablesPages">
-                                        Table
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="tablesPages">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('table.bootstrap-table') }}">Bootstrap Table</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('table.data-table') }}">Data Tables</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('table.fixed-table') }}">Bordered Tables</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('table.fancy-table') }}">Fancy Tables</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('table.fixed-table') }}">Fixed Tables</a></li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#iconsPages"
-                                        role="button" aria-expanded="false" aria-controls="iconsPages">
-                                        Icons
-                                        <i class="right-icon">
-                                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </a>
-                                    <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                        id="iconsPages">
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('icons.solid') }}">Solid</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('icons.outline') }}">Outlined</a></li>
-                                        <li class="nav-item"><a class="nav-link"
-                                                href="{{ route('icons.dualtone') }}">Dual Tone</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -505,57 +96,7 @@
                                 fill="currentColor"></path>
                         </svg>
                     </a>
-                    <ul class="p-0 sub-drop dropdown-menu dropdown-menu-end" aria-labelledby="search-drop">
-                        <li class="p-3 card-header d-flex justify-content-between bg-primary rounded-top">
-                            <div class="header-title">
-                                <h5 class="mb-0 text-white">Recent</h5>
-                            </div>
-                        </li>
-                        <div class="p-0 card-body all-notification">
-                            <div class="d-flex align-items-center border-bottom search-hover py-2 px-3">
-                                <div class="flex-shrink-0">
-                                    <img src="{{ asset('images/page-img/19.jpg') }}"
-                                        class="align-self-center img-fluid avatar-50 rounded-pill" alt="#">
-                                </div>
-                                <div class="d-flex flex-column ms-3 w-100">
-                                    <a href="javascript:void(0);" class="h5">Paige Turner</a>
-                                    <span>Paige001</span>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom search-hover py-2 px-3">
-                                <div class="flex-shrink-0">
-                                    <img src="{{ asset('images/page-img/18.jpg') }}"
-                                        class="align-self-center img-fluid avatar-50 rounded-pill" alt="#">
-                                </div>
-                                <div class="d-flex flex-column ms-3 w-100">
-                                    <a href="javascript:void(0);" class="h5">Monty Carlo</a>
-                                    <span>Carlo.m</span>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center search-hover py-2 px-3 border-bottom">
-                                <div class="flex-shrink-0">
-                                    <img src="{{ asset('images/page-img/20.jpg') }}"
-                                        class="align-self-center img-fluid avatar-50 rounded-pill" alt="#">
-                                </div>
-                                <div class="d-flex flex-column ms-3 w-100">
-                                    <a href="javascript:void(0);" class="h5">Paul Molive</a>
-                                    <span>Paul.45</span>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom search-hover py-2 px-3">
-                                <div class="flex-shrink-0">
-                                    <img src="{{ asset('images/page-img/21.jpg') }}"
-                                        class="align-self-center img-fluid avatar-50 rounded-pill" alt="#">
-                                </div>
-                                <div class="d-flex flex-column ms-3 w-100">
-                                    <a href="javascript:void(0);" class="h5">Monty Carlo</a>
-                                    <span>Carlo.m</span>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </ul>
+        
                 </li>
 
                 <li class="nav-item dropdown">
@@ -570,11 +111,11 @@
                         <li><a class="dropdown-item" href="#"><img
                                     src="{{ asset('images/Flag/flag-03.png') }}" alt="img-flaf"
                                     class="img-fluid me-2" style="width: 15px;height: 15px;min-width: 15px;"
-                                    loading="lazy" />Spanish</a></li>
+                                    loading="lazy" />العربية</a></li>
                         <li><a class="dropdown-item" href="#"><img
                                     src="{{ asset('images/Flag/flag-04.png') }}" alt="img-flaf"
                                     class="img-fluid me-2" style="width: 15px;height: 15px;min-width: 15px;"
-                                    loading="lazy" />Italian</a></li>
+                                    loading="lazy" />الانجليزية</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -594,7 +135,7 @@
 
                         <li class="p-3 card-header d-flex justify-content-between bg-primary rounded-top">
                             <div class="header-title">
-                                <h5 class="mb-0 text-white">All Notifications</h5>
+                                <h5 class="mb-0 text-white"> الاشعارات والتنبيهات</h5>
                             </div>
                         </li>
                         <div class="p-0 card-body all-notification">
@@ -603,25 +144,10 @@
                                     <img class="p-1 avatar-40 rounded-pill bg-soft-primary"
                                         src="{{ asset('images/shapes/01.png') }}" alt="" loading="lazy">
                                     <div class="ms-3 w-100">
-                                        <h6 class="mb-0 ">Emma Watson Bni</h6>
+                                        <h6 class="mb-0 ">محمود كمال</h6>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <p class="mb-0">95 MB</p>
-                                            <small class="float-end font-size-12">Just Now</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="iq-sub-card">
-                                <div class="d-flex align-items-center">
-                                    <div>
-                                        <img class="p-1 avatar-40 rounded-pill bg-soft-primary"
-                                            src="{{ asset('images/shapes/02.png') }}" alt="" loading="lazy">
-                                    </div>
-                                    <div class="ms-3 w-100">
-                                        <h6 class="mb-0 ">New customer is join</h6>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <p class="mb-0">Cyst Bni</p>
-                                            <small class="float-end font-size-12">5 days ago</small>
+                                            <p class="mb-0">تعليق جديد</p>
+                                            <small class="float-end font-size-12">قبل 3 دقائق</small>
                                         </div>
                                     </div>
                                 </div>
@@ -629,12 +155,12 @@
                             <a href="#" class="iq-sub-card">
                                 <div class="d-flex align-items-center">
                                     <img class="p-1 avatar-40 rounded-pill bg-soft-primary"
-                                        src="{{ asset('images/shapes/03.png') }}" alt="" loading="lazy">
+                                        src="{{ asset('images/shapes/01.png') }}" alt="" loading="lazy">
                                     <div class="ms-3 w-100">
-                                        <h6 class="mb-0 ">Two customer is left</h6>
+                                        <h6 class="mb-0 ">محمود كمال</h6>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <p class="mb-0">Cyst Bni</p>
-                                            <small class="float-end font-size-12">2 days ago</small>
+                                            <p class="mb-0">تعليق جديد</p>
+                                            <small class="float-end font-size-12">قبل 3 دقائق</small>
                                         </div>
                                     </div>
                                 </div>
@@ -642,16 +168,17 @@
                             <a href="#" class="iq-sub-card">
                                 <div class="d-flex align-items-center">
                                     <img class="p-1 avatar-40 rounded-pill bg-soft-primary"
-                                        src="{{ asset('images/shapes/04.png') }}" alt="" loading="lazy">
-                                    <div class="w-100 ms-3">
-                                        <h6 class="mb-0 ">New Mail from Fenny</h6>
+                                        src="{{ asset('images/shapes/01.png') }}" alt="" loading="lazy">
+                                    <div class="ms-3 w-100">
+                                        <h6 class="mb-0 ">محمود كمال</h6>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <p class="mb-0">Cyst Bni</p>
-                                            <small class="float-end font-size-12">3 days ago</small>
+                                            <p class="mb-0">تعليق جديد</p>
+                                            <small class="float-end font-size-12">قبل 3 دقائق</small>
                                         </div>
                                     </div>
                                 </div>
                             </a>
+              
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -703,7 +230,7 @@
                                     <path d="M5.09528 17.3072L4.0345 18.368C3.92972 18.4723 3.84655 18.5963 3.78974 18.7328C3.73294 18.8693 3.70362 19.0156 3.70346 19.1635C3.7033 19.3114 3.7323 19.4578 3.78881 19.5944C3.84532 19.7311 3.92822 19.8552 4.03277 19.9598C4.13732 20.0643 4.26147 20.1472 4.3981 20.2037C4.53473 20.2602 4.68117 20.2892 4.82902 20.2891C4.97688 20.2889 5.12325 20.2596 5.25976 20.2028C5.39627 20.146 5.52024 20.0628 5.62456 19.958L6.68536 18.8973C6.79007 18.7929 6.87318 18.6689 6.92993 18.5325C6.98667 18.396 7.01595 18.2496 7.01608 18.1018C7.01621 17.954 6.98719 17.8076 6.93068 17.671C6.87417 17.5344 6.79129 17.4103 6.68676 17.3058C6.58224 17.2012 6.45813 17.1183 6.32153 17.0618C6.18494 17.0053 6.03855 16.9763 5.89073 16.9764C5.74291 16.9766 5.59657 17.0058 5.46007 17.0626C5.32358 17.1193 5.19962 17.2024 5.09528 17.3072Z" fill="currentColor"></path>
                                     <path d="M5.09541 6.69715C5.19979 6.8017 5.32374 6.88466 5.4602 6.94128C5.59665 6.9979 5.74292 7.02708 5.89065 7.02714C6.03839 7.0272 6.18469 6.99815 6.32119 6.94164C6.45769 6.88514 6.58171 6.80228 6.68618 6.69782C6.79064 6.59336 6.87349 6.46933 6.93 6.33283C6.9865 6.19633 7.01556 6.05003 7.01549 5.9023C7.01543 5.75457 6.98625 5.60829 6.92963 5.47184C6.87301 5.33539 6.79005 5.21143 6.6855 5.10706L5.6247 4.04626C5.5204 3.94137 5.39643 3.8581 5.25989 3.80121C5.12335 3.74432 4.97692 3.71493 4.82901 3.71472C4.68109 3.71452 4.53458 3.7435 4.39789 3.80001C4.26119 3.85652 4.13699 3.93945 4.03239 4.04404C3.9278 4.14864 3.84487 4.27284 3.78836 4.40954C3.73185 4.54624 3.70287 4.69274 3.70308 4.84066C3.70329 4.98858 3.73268 5.135 3.78957 5.27154C3.84646 5.40808 3.92974 5.53205 4.03462 5.63635L5.09541 6.69715Z" fill="currentColor"></path>
                                 </svg>
-                            <span class="ms-3 mb-0">Light</span>
+                            <span class="ms-3 mb-0">فاتح</span>
                             </label>
                         </div>
                     </li>
@@ -717,7 +244,7 @@
                                 <path d="M12.0335 20.5714C15.6943 20.5714 18.9426 18.2053 20.1168 14.7338C20.1884 14.5225 20.1114 14.289 19.9284 14.161C19.746 14.034 19.5003 14.0418 19.3257 14.1821C18.2432 15.0546 16.9371 15.5156 15.5491 15.5156C12.2257 15.5156 9.48884 12.8122 9.48884 9.48886C9.48884 7.41079 10.5773 5.47137 12.3449 4.35752C12.5342 4.23832 12.6 4.00733 12.5377 3.79251C12.4759 3.57768 12.2571 3.42859 12.0335 3.42859C7.32556 3.42859 3.42857 7.29209 3.42857 12C3.42857 16.7079 7.32556 20.5714 12.0335 20.5714Z" fill="currentColor"></path>
                                 <path d="M13.0379 7.47998C13.8688 7.47998 14.5446 8.15585 14.5446 8.98668C14.5446 9.26428 14.7693 9.48891 15.0469 9.48891C15.3245 9.48891 15.5491 9.26428 15.5491 8.98668C15.5491 8.15585 16.225 7.47998 17.0558 7.47998C17.3334 7.47998 17.558 7.25535 17.558 6.97775C17.558 6.70015 17.3334 6.47552 17.0558 6.47552C16.225 6.47552 15.5491 5.76616 15.5491 4.93534C15.5491 4.65774 15.3245 4.43311 15.0469 4.43311C14.7693 4.43311 14.5446 4.65774 14.5446 4.93534C14.5446 5.76616 13.8688 6.47552 13.0379 6.47552C12.7603 6.47552 12.5357 6.70015 12.5357 6.97775C12.5357 7.25535 12.7603 7.47998 13.0379 7.47998Z" fill="currentColor"></path>
                             </svg>
-                            <span class="ms-3 mb-0">Dark</span>
+                            <span class="ms-3 mb-0">مظلم</span>
                             </label>
                         </div>
                     </li>
@@ -728,7 +255,7 @@
                                 <svg class="icon-24" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M1.34375 3.9463V15.2178C1.34375 16.119 2.08105 16.8563 2.98219 16.8563H8.65093V19.4594H6.15702C5.38853 19.4594 4.75981 19.9617 4.75981 20.5757V21.6921H19.2403V20.5757C19.2403 19.9617 18.6116 19.4594 17.8431 19.4594H15.3492V16.8563H21.0179C21.919 16.8563 22.6562 16.119 22.6562 15.2178V3.9463C22.6562 3.04516 21.9189 2.30786 21.0179 2.30786H2.98219C2.08105 2.30786 1.34375 3.04516 1.34375 3.9463ZM12.9034 9.9016C13.241 9.98792 13.5597 10.1216 13.852 10.2949L15.0393 9.4353L15.9893 10.3853L15.1297 11.5727C15.303 11.865 15.4366 12.1837 15.523 12.5212L16.97 12.7528V13.4089H13.9851C13.9766 12.3198 13.0912 11.4394 12 11.4394C10.9089 11.4394 10.0235 12.3198 10.015 13.4089H7.03006V12.7528L8.47712 12.5211C8.56345 12.1836 8.69703 11.8649 8.87037 11.5727L8.0107 10.3853L8.96078 9.4353L10.148 10.2949C10.4404 10.1215 10.759 9.98788 11.0966 9.9016L11.3282 8.45467H12.6718L12.9034 9.9016ZM16.1353 7.93758C15.6779 7.93758 15.3071 7.56681 15.3071 7.1094C15.3071 6.652 15.6779 6.28122 16.1353 6.28122C16.5926 6.28122 16.9634 6.652 16.9634 7.1094C16.9634 7.56681 16.5926 7.93758 16.1353 7.93758ZM2.71385 14.0964V3.90518C2.71385 3.78023 2.81612 3.67796 2.94107 3.67796H21.0589C21.1839 3.67796 21.2861 3.78023 21.2861 3.90518V14.0964C15.0954 14.0964 8.90462 14.0964 2.71385 14.0964Z" fill="currentColor"></path>
                                 </svg>
-                            <span class="ms-3 mb-0">Auto</span>
+                            <span class="ms-3 mb-0">تلقائي</span>
                             </label>
                         </div>
                     </li>
@@ -778,18 +305,17 @@
                         <img src="{{ asset('images/avatars/avtar_3.png') }}" alt="User-Profile"
                             class="theme-color-pink-img img-fluid avatar avatar-50 avatar-rounded" loading="lazy">
                         <div class="caption ms-3 d-none d-md-block ">
-                            <h6 class="mb-0 caption-title">Austin Robertson</h6>
-                            <p class="mb-0 caption-sub-title">Marketing Administrator</p>
+                            <h6 class="mb-0 caption-title">احمد علي</h6>
+                            <p class="mb-0 caption-sub-title">مدير عام</p>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('users.show', auth()->id() || 1) }}">Profile</a>
+                                href="{{ route('users.show', auth()->id() || 1) }}">الملف الشخصي</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{{ route('auth.user-privacy-setting') }}">Privacy
-                                Setting</a>
+                            <a class="dropdown-item" href="{{ route('auth.user-privacy-setting') }}">اعدادات السياسة</a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">

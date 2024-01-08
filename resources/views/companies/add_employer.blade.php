@@ -70,18 +70,6 @@
                         <label class="form-label">صلاحية المستخدم : <span class="text-danger">*</span></label>
                         {{Form::select('user_role', $roles , old('user_role') ? old('user_role') : $data->user_type ?? 'user', ['class' => 'form-control', 'placeholder' => 'Select User Role'])}}
                      </div>
-                     <div class="form-group">
-                        <label class="form-label" for="furl">رابط الفيسبوك :</label>
-                        {{ Form::text('userProfile[facebook_url]', old('userProfile[facebook_url]'), ['class' => 'form-control', 'id' => 'furl', 'placeholder' => 'Facebook Url']) }}
-                     </div>
-                     <div class="form-group">
-                        <label class="form-label" for="turl">رابط تويتر :</label>
-                        {{ Form::text('userProfile[twitter_url]', old('userProfile[twitter_url]'), ['class' => 'form-control', 'id' => 'turl', 'placeholder' => 'Twitter Url']) }}
-                     </div>
-                     <div class="form-group">
-                        <label class="form-label" for="instaurl">رابط انستغرام :</label>
-                        {{ Form::text('userProfile[instagram_url]', old('userProfile[instagram_url]'), ['class' => 'form-control', 'id' => 'instaurl', 'placeholder' => 'Instagram Url']) }}
-                     </div>
                </div>
             </div>
          </div>
@@ -111,19 +99,6 @@
                               {{ Form::text('userProfile[street_addr_1]', old('userProfile[street_addr_1]'), ['class' => 'form-control', 'id' => 'add1', 'placeholder' => 'Enter Street Address 1']) }}
                            </div>
                            <div class="form-group col-md-6">
-                              <label class="form-label" for="add2">العنوان الثاني :</label>
-                              {{ Form::text('userProfile[street_addr_2]', old('userProfile[street_addr_2]'), ['class' => 'form-control', 'id' => 'add2', 'placeholder' => 'Enter Street Address 2']) }}
-                           </div>
-                           <div class="form-group col-md-12">
-                              <label class="form-label" for="cname">اسم الشركة :<span class="text-danger">*</span></label>
-                              {{ Form::text('userProfile[company_name]', old('userProfile[company_name]'), ['class' => 'form-control', 'required', 'placeholder' => 'Company Name']) }}
-                           </div>
-                           <div class="form-group col-sm-12">
-                              <label class="form-label" id="country">الدولة : </label>
-                              {{ Form::text('userProfile[country]', old('userProfile[country]'), ['class' => 'form-control', 'id' => 'country']) }}
-
-                           </div>
-                           <div class="form-group col-md-6">
                               <label class="form-label" for="mobno">رقم الهاتف :</label>
                               {{ Form::text('userProfile[phone_number]', old('userProfile[phone_number]'), ['class' => 'form-control', 'id' => 'mobno', 'placeholder' => 'Mobile Number']) }}
                            </div>
@@ -135,27 +110,19 @@
                               <label class="form-label" for="email">البريد الالكتروني : <span class="text-danger">*</span></label>
                               {{ Form::email('email', old('email'), ['class' => 'form-control', 'placeholder' => 'Enter e-mail', 'required']) }}
                            </div>
-                           <div class="form-group col-md-6">
-                              <label class="form-label" for="pno">Pin Code:</label>
-                              {{ Form::number('userProfile[pin_code]', old('userProfile[pin_code]'), ['class' => 'form-control', 'id' => 'pin_code','step' => 'any']) }}
-                           </div>
-                           <div class="form-group col-md-12">
-                              <label class="form-label" for="city">المدينة / المنطقة :</label>
-                              {{ Form::text('userProfile[city]', old('city'), ['class' => 'form-control', 'id' => 'city', 'placeholder' => 'Enter City Name' ]) }}
-                           </div>
                         </div>
                         <hr>
-                        <h5 class="mb-3">الحماية</h5>
+                        <h5 class="mb-3">يبانات الدخول الي لوحة التحكم </h5>
                         <div class="row">
-                           <div class="form-group col-md-12">
+                           <div class="form-group col-md-3">
                               <label class="form-label" for="uname">اسم المستخدم : <span class="text-danger">*</span></label>
                               {{ Form::text('username', old('username'), ['class' => 'form-control', 'required', 'placeholder' => 'Enter Username']) }}
                            </div>
-                           <div class="form-group col-md-6">
+                           <div class="form-group col-md-5">
                               <label class="form-label" for="pass">كلمة المرور :</label>
                               {{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Password']) }}
                            </div>
-                           <div class="form-group col-md-6">
+                           <div class="form-group col-md-4">
                               <label class="form-label" for="rpass">اعادة كتابة كلمة المرور :</label>
                               {{ Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Repeat Password']) }}
                            </div>

@@ -72,7 +72,7 @@
         </a>
         <ul class="sub-nav collapse" id="sidebar-maps" data-bs-parent="#sidebar">
             <li class="nav-item">
-                <a class="nav-link {{ activeRoute(route('maps.google')) }}" href="{{ route('maps.google') }}">
+                <a class="nav-link {{ activeRoute(route('maps.google')) }}" href="{{ route('properties.create') }}">
                     <i class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
                             fill="currentColor">
@@ -83,11 +83,11 @@
                         </svg>
                     </i>
                     <i class="sidenav-mini-icon"> G </i>
-                    <span class="item-name">Google</span>
+                    <span class="item-name">اضافة عقار جديد</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ activeRoute(route('maps.vector')) }}" href="{{ route('maps.vector') }}">
+                <a class="nav-link {{ activeRoute(route('maps.vector')) }}" href="{{ route('properties.index') }}">
                     <i class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
                             fill="currentColor">
@@ -98,7 +98,7 @@
                         </svg>
                     </i>
                     <i class="sidenav-mini-icon"> V </i>
-                    <span class="item-name">Vector</span>
+                    <span class="item-name">قائمة العقارات</span>
                 </a>
             </li>
         </ul>
@@ -203,7 +203,7 @@
         <ul class="sub-nav collapse" id="sidebar-form" data-bs-parent="#sidebar">
             <li class="nav-item">
                 <a class="nav-link {{ activeRoute(route('forms.element')) }}"
-                    href="{{ route('forms.element') }}">
+                    href="{{ route('employees.create') }}">
                     <i class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
                             fill="currentColor">
@@ -218,7 +218,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ activeRoute(route('forms.wizard')) }}" href="{{ route('forms.wizard') }}">
+                <a class="nav-link {{ activeRoute(route('forms.wizard')) }}" href="{{ route('employees.index') }}">
                     <i class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
                             fill="currentColor">

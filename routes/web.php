@@ -7,7 +7,10 @@ use App\Http\Controllers\Security\RolePermission;
 use App\Http\Controllers\Security\RoleController;
 use App\Http\Controllers\Security\PermissionController;
 use App\Http\Controllers\UserController;
-
+////////////////////
+use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\PropertiesController;
+use App\Http\Controllers\EmployeesController;
 // Packages
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +31,14 @@ require __DIR__.'/auth.php';
 Route::get('/storage', function () {
     Artisan::call('storage:link');
 });
+
+Route::resource('companies' , CompaniesController::class);
+
+Route::resource('properties' , PropertiesController::class);
+
+Route::resource('employees' , EmployeesController::class);
+
+
 
 
 Route::group(['middleware' => 'auth'], function () {

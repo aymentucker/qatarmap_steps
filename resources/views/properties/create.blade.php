@@ -9,7 +9,7 @@
              <div class="card">
                 <div class="card-header d-flex justify-content-between">
                    <div class="header-title">
-                      <h4 class="card-title">{{$id !== null ? 'Update' : 'Add' }} User</h4>
+                      <h4 class="card-title">{{$id !== null ? 'تعديل' : 'اضافة' }} صور العقار</h4>
                    </div>
                 </div>
                 <div class="card-body">
@@ -70,11 +70,9 @@
              <div class="card">
                 <div class="card-header d-flex justify-content-between">
                    <div class="header-title">
-                      <h4 class="card-title">{{$id !== null ? 'Update' : 'New' }} بيانات المستخدم</h4>
+                      <h4 class="card-title">{{$id !== null ? 'تعديل' : 'اضافة' }} بيانات العقار</h4>
                    </div>
-                   <div class="card-action">
-                         <a href="{{route('users.index')}}" class="btn btn-sm btn-primary" role="button">رجوع</a>
-                   </div>
+                
                 </div>
                 <div class="card-body">
                    <div class="new-user-info">

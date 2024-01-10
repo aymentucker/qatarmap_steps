@@ -7,9 +7,11 @@
                         <table class="table table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">اسم الموظف </th>
+                                    <th scope="col">اسم العميل </th>
                                     <th scope="col">رقم هاتف </th>
-                                    <th scope="col">البري الالكترني </th>
+                                    <th scope="col">العنوان </th>
+                                    <th scope="col">الملاحظات  </th>
+                                    <th scope="col">الحالة</th>
                                     <th scope="col">اجراءات</th>
                                 </tr>
                             </thead>
@@ -17,7 +19,9 @@
                                 <tr>
                                     <td class="text-dark">احمد كمال</td>
                                     <td class="text-dark">9544666</td>
-                                    <td class="text-dark">x@x.com </td>
+                                    <td class="text-dark">الدوحة النجمة</td>
+                                    <td class="text-dark">ااشاسااشسااس</td>
+                                    <td> <span class="badge bg-soft-primary p-2 text-primary">مستاجر</span></td>
                                     <td>
                                         <div class="d-flex justify-content-evenly">
                                             <a class="btn btn-primary btn-icon btn-sm rounded-pill ms-2"

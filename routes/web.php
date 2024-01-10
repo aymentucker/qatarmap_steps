@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\PropertiesController;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\ClientsController;
 // Packages
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,8 @@ Route::resource('companies' , CompaniesController::class);
 Route::resource('properties' , PropertiesController::class);
 
 Route::resource('employees' , EmployeesController::class);
+
+Route::resource('clients' , ClientsController::class);
 
 
 

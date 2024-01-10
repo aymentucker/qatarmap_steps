@@ -1,4 +1,4 @@
-<x-app-layout :assets="$assets ?? []" title="Home" isSelect2="true" isTour="true" isFlatpickr="true" isSwiperSlider="true"
+<x-app-layout :assets="$assets ?? []" title="الرئيسية" isSelect2="true" isTour="true" isFlatpickr="true" isSwiperSlider="true"
     :isSidebar="true" :isBanner="false">
 
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-5 gap-3">

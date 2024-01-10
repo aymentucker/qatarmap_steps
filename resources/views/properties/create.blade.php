@@ -1,4 +1,4 @@
-<x-app-layout :assets="$assets ?? []" title='property Add' isBanner="true">
+<x-app-layout :assets="$assets ?? []" title='اضافة عقار ' isBanner="true">
     <div>
        <?php
           $id = $id ?? null;

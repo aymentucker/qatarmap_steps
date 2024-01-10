@@ -36,8 +36,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                href="#allPagesData" role="button" aria-expanded="false" aria-controls="allPagesData">
+                            <a class="nav-link menu-arrow justify-content-start"
+                            href="{{ route('properties.create') }}" role="button" aria-expanded="false" aria-controls="allPagesData">
                                 <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="currentColor"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path opacity="0.4"
@@ -51,8 +51,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                href="#elementsData" role="button" aria-expanded="false"
+                            <a class="nav-link menu-arrow justify-content-start" 
+                                href="{{ route('clients.create') }}" role="button" aria-expanded="false"
                                 aria-controls="elementsData">
                                 <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="currentColor"
                                     xmlns="http://www.w3.org/2000/svg">

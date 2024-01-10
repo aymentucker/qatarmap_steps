@@ -3,7 +3,7 @@
     data-bs-scroll="true" aria-labelledby="live-customizer-label" aria-modal="true" role="dialog">
     <div class="offcanvas-header pb-0">
         <div class="d-flex align-items-center">
-            <h4 class="offcanvas-title" id="live-customizer-label">Setting Pannel</h4>
+            <h4 class="offcanvas-title" id="live-customizer-label">لوحة الإعداد</h4>
         </div>
         <div class="close-icon" data-bs-dismiss="offcanvas">
             <svg xmlns="http://www.w3.org/2000/svg" width="24px" class="h-5 w-5" viewBox="0 0 20 20"
@@ -19,19 +19,19 @@
             <div class="col-lg-12">
                 <div>
                     <div class="text-center mb-4">
-                        <h5 class="d-inline-block">Style Setting</h5>
+                        <h5 class="d-inline-block">إعداد النمط</h5>
                     </div>
                     <div>
                         <!-- Theme start here -->
                         <div class="mb-4">
-                            <h5 class="mb-3">Theme</h5>
+                            <h5 class="mb-3">سمة</h5>
                             <div class=" mb-3" data-setting="radio">
                                 <div class="form-check mb-0 w-100">
                                     <input class="form-check-input custom-redio-btn" type="radio" value="light"
                                         name="theme_scheme" id="color-mode-light" checked="">
                                     <label class="form-check-label d-flex align-items-center justify-content-between"
                                         for="color-mode-light">
-                                        <span>Light Theme</span>
+                                        <span>سمة الضوء</span>
                                         <div class="text-primary ">
                                             <svg width="60" height="27" viewBox="0 0 60 27" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +56,7 @@
                                         name="theme_scheme" id="color-mode-dark">
                                     <label class="form-check-label d-flex align-items-center justify-content-between"
                                         for="color-mode-dark">
-                                        <span>Dark Theme</span>
+                                        <span>سمة الظلام</span>
                                         <div class="text-primary ">
                                             <svg width="60" height="27" viewBox="0 0 60 27" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +81,7 @@
                                         name="theme_scheme" id="color-mode-auto">
                                     <label class="form-check-label d-flex align-items-center justify-content-between"
                                         for="color-mode-auto">
-                                        <span>Device Default</span>
+                                        <span>سمةالجهاز الافتراضي</span>
                                         <div class="text-primary ">
                                             <svg class="rounded" width="60" height="27" viewBox="0 0 60 27"
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@
                         <hr class="hr-horizontal">
                         <!-- Menu start here -->
                         <div>
-                            <h6 class="mt-4 mb-3">Menu Color</h6>
+                            <h6 class="mt-4 mb-3">لون القائمة</h6>
                             <div class="d-grid gap-3 grid-cols-3 mb-3">
                                 <div data-setting="radio">
                                     <input type="radio" value="sidebar-white" class="btn-check"
@@ -128,7 +128,7 @@
                                     <label class="btn btn-border d-block" for="sidebar-white"
                                         data-bs-toggle="tooltip" data-bs-placement="top"
                                         data-bs-original-title="White Menu">
-                                        Light
+                                        ابيض
                                     </label>
                                 </div>
                                 <div data-setting="radio">
@@ -136,7 +136,7 @@
                                         name="sidebar_color" id="sidebar-dark">
                                     <label class="btn btn-border d-block" for="sidebar-dark" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-original-title="Dark Menu">
-                                        Dark
+                                        اسود
                                     </label>
                                 </div>
                                 <div data-setting="radio">
@@ -145,22 +145,22 @@
                                     <label class="btn btn-border d-block" for="sidebar-color"
                                         data-bs-toggle="tooltip" data-bs-placement="top"
                                         data-bs-original-title="Colored Menu">
-                                        Color
+                                        ملون
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <hr class="hr-horizontal">
                         <!-- Menu Style start here -->
-                        <div>
-                            <h5 class="mt-4 mb-3">Menu Style</h5>
+                        {{-- <div>
+                            <h5 class="mt-4 mb-3">نمط القائمة</h5>
                             <div class="d-grid gap-3 grid-cols-3 mb-4">
                                 <div data-setting="checkbox" class="text-center">
                                     <input type="checkbox" value="sidebar-mini" class="btn-check"
                                         name="sidebar_type" id="sidebar-mini">
                                     <label class="btn btn-border btn-setting-panel d-block overflow-hidden"
                                         for="sidebar-mini">
-                                        Mini
+                                        ميني
                                     </label>
                                 </div>
                                 <div data-setting="checkbox" class="text-center">
@@ -181,7 +181,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- Menu Style end here -->
 
@@ -189,7 +189,7 @@
 
                         <!-- Active Menu Style start here -->
 
-                        <div class="mb-4">
+                        {{-- <div class="mb-4">
                             <h5 class="mt-4 mb-3">Active Menu Style</h5>
                             <div class="d-grid gap-3 grid-cols-2">
                                 <div data-setting="radio" class="text-center">
@@ -225,12 +225,12 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <hr class="hr-horizontal">
                         <!-- Color customizer start here -->
                         <div>
                             <div class="d-flex align-items-center justify-content-between">
-                                <h6 class="mt-4 mb-3">Color Customizer</h6>
+                                <h6 class="mt-4 mb-3">أداة تخصيص الألوان</h6>
                                 <div class="d-flex align-items-center">
                                     <a href="#custom-color" data-bs-toggle="collapse" role="button"
                                         aria-expanded="false" aria-controls="custom-color">Custom</a>
@@ -345,7 +345,7 @@
                             </div>
                         </div>
                         <!-- Color customizer end here -->
-                        <hr class="hr-horizontal">
+                        {{-- <hr class="hr-horizontal">
                         <div>
                             <h6 class="d-inline-block mb-3 me-2">Page Style </h6>
                             <div class="d-grid gap-3 grid-cols-2 mb-4">
@@ -361,7 +361,7 @@
                                         Width</label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <hr class="hr-horizontal">
                         <!-- Direction customizer start here -->
                         <div>

@@ -185,7 +185,7 @@
 
                         <!-- Menu Style end here -->
 
-                        <hr class="hr-horizontal">
+                        {{-- <hr class="hr-horizontal"> --}}
 
                         <!-- Active Menu Style start here -->
 
@@ -226,8 +226,9 @@
                                 </div>
                             </div>
                         </div> --}}
-                        <hr class="hr-horizontal">
+                        {{-- <hr class="hr-horizontal"> --}}
                         <!-- Color customizer start here -->
+                        
                         <div>
                             <div class="d-flex align-items-center justify-content-between">
                                 <h6 class="mt-4 mb-3">أداة تخصيص الألوان</h6>

@@ -3,17 +3,13 @@
       <?php
          $id = $id ?? null;
       ?>
-      @if(isset($id))
-      {!! Form::model($data, ['route' => ['users.update', $id], 'method' => 'patch' , 'enctype' => 'multipart/form-data']) !!}
-      @else
-      {!! Form::open(['route' => ['users.store'], 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
-      @endif
+     
       <div class="row">
          <div class="col-xl-3 col-lg-4">
             <div class="card">
                <div class="card-header d-flex justify-content-between">
                   <div class="header-title">
-                     <h4 class="card-title">{{$id !== null ? 'Update' : 'Add' }} User</h4>
+                     <h4 class="card-title">{{$id !== null ? 'تعديل' : 'اضافة' }} شعار</h4>
                   </div>
                </div>
                <div class="card-body">
@@ -37,39 +33,6 @@
                            </div>
                         </div>
                      </div>
-                     <div class="form-group">
-                        <label class="form-label">الحالة :</label>
-                        <div class="grid" style="--bs-gap: 1rem">
-                            <div class="form-check g-col-6">
-                                {{ Form::radio('status', 'active',old('status') || true, ['class' => 'form-check-input', 'id' => 'status-active']); }}
-                                <label class="form-check-label" for="status-active">
-                                    مفعل
-                                </label>
-                            </div>
-                            <div class="form-check g-col-6">
-                                {{ Form::radio('status', 'pending',old('status'), ['class' => 'form-check-input', 'id' => 'status-pending']); }}
-                                <label class="form-check-label" for="status-pending">
-                                    بانتظار الموافقة
-                                </label>
-                            </div>
-                            <div class="form-check g-col-6">
-                                {{ Form::radio('status', 'banned',old('status'), ['class' => 'form-check-input', 'id' => 'status-banned']); }}
-                                <label class="form-check-label" for="status-banned">
-                                    معلق
-                                </label>
-                            </div>
-                            <div class="form-check g-col-6">
-                                {{ Form::radio('status', 'inactive',old('status'), ['class' => 'form-check-input', 'id' => 'status-inactive']); }}
-                                <label class="form-check-label" for="status-inactive">
-                                    غير نشط
-                                </label>
-                            </div>
-                        </div>
-                     </div>
-                     <div class="form-group">
-                        <label class="form-label">صلاحية المستخدم : <span class="text-danger">*</span></label>
-                        {{Form::select('user_role', $roles , old('user_role') ? old('user_role') : $data->user_type ?? 'user', ['class' => 'form-control', 'placeholder' => 'Select User Role'])}}
-                     </div>
                </div>
             </div>
          </div>
@@ -77,63 +40,38 @@
             <div class="card">
                <div class="card-header d-flex justify-content-between">
                   <div class="header-title">
-                     <h4 class="card-title">{{$id !== null ? 'Update' : 'New' }} بيانات المستخدم</h4>
-                  </div>
-                  <div class="card-action">
-                        <a href="{{route('users.index')}}" class="btn btn-sm btn-primary" role="button">رجوع</a>
+                     <h4 class="card-title">{{$id !== null ? 'تعديل' : 'اضافة' }} بيانات الشركة</h4>
                   </div>
                </div>
                <div class="card-body">
                   <div class="new-user-info">
                         <div class="row">
                            <div class="form-group col-md-6">
-                              <label class="form-label" for="fname">الاسم الاول : <span class="text-danger">*</span></label>
-                              {{ Form::text('first_name', old('first_name'), ['class' => 'form-control', 'placeholder' => 'First Name', 'required']) }}
+                              <label class="form-label" for="validationDefault01">اسم الشركة :</label>
+                              <input type="text" class="form-control" id="validationDefault01" required>
                            </div>
                            <div class="form-group col-md-6">
-                              <label class="form-label" for="lname">الاسم الاخير :<span class="text-danger">*</span></label>
-                              {{ Form::text('last_name', old('last_name'), ['class' => 'form-control', 'placeholder' => 'Last Name' ,'required']) }}
+                               <label class="form-label" for="validationDefault01"> رقم الهاتف:</label>
+                               <input type="text" class="form-control" id="validationDefault01" required>
+                            </div>
+ 
+                           <div class="form-group col-md-12">
+                              <label class="form-label" for="validationDefault01">العنوان : </label>
+                                    <input type="text" class="form-control" id="validationDefault01" required>
                            </div>
-                           <div class="form-group col-md-6">
-                              <label class="form-label" for="add1">العنوان :</label>
-                              {{ Form::text('userProfile[street_addr_1]', old('userProfile[street_addr_1]'), ['class' => 'form-control', 'id' => 'add1', 'placeholder' => 'Enter Street Address 1']) }}
+                          
+                           <div class="form-group">
+                               <label class="form-label" for="exampleFormControlTextarea1">الملاحظات </label>
+                               <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
                            </div>
-                           <div class="form-group col-md-6">
-                              <label class="form-label" for="mobno">رقم الهاتف :</label>
-                              {{ Form::text('userProfile[phone_number]', old('userProfile[phone_number]'), ['class' => 'form-control', 'id' => 'mobno', 'placeholder' => 'Mobile Number']) }}
-                           </div>
-                           <div class="form-group col-md-6">
-                              <label class="form-label" for="altconno">رقم هاتف اضافي :</label>
-                              {{ Form::text('userProfile[alt_phone_number]', old('userProfile[alt_phone_number]'), ['class' => 'form-control', 'id' => 'altconno', 'placeholder' => 'Alternate Contact']) }}
-                           </div>
-                           <div class="form-group col-md-6">
-                              <label class="form-label" for="email">البريد الالكتروني : <span class="text-danger">*</span></label>
-                              {{ Form::email('email', old('email'), ['class' => 'form-control', 'placeholder' => 'Enter e-mail', 'required']) }}
-                           </div>
+                          
                         </div>
-                        <hr>
-                        <h5 class="mb-3">يبانات الدخول الي لوحة التحكم </h5>
-                        <div class="row">
-                           <div class="form-group col-md-3">
-                              <label class="form-label" for="uname">اسم المستخدم : <span class="text-danger">*</span></label>
-                              {{ Form::text('username', old('username'), ['class' => 'form-control', 'required', 'placeholder' => 'Enter Username']) }}
-                           </div>
-                           <div class="form-group col-md-5">
-                              <label class="form-label" for="pass">كلمة المرور :</label>
-                              {{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Password']) }}
-                           </div>
-                           <div class="form-group col-md-4">
-                              <label class="form-label" for="rpass">اعادة كتابة كلمة المرور :</label>
-                              {{ Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Repeat Password']) }}
-                           </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">{{$id !== null ? 'Update' : 'Add' }} User</button>
-                  </div>
+                        <button type="submit" class="btn btn-primary">اضافة</button>
+                        <button type="submit" class="btn btn-info">الغاء </button>
+                       </div>
                </div>
             </div>
          </div>
         </div>
-        {!! Form::close() !!}
    </div>
 </x-app-layout>
-

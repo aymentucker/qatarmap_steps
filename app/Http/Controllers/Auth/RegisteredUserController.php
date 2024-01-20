@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Company; // Assuming you have a Company model
+
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -38,10 +40,22 @@ class RegisteredUserController extends Controller
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255', // Company name validation
+            'license_number' => 'required|string|max:255', // License number validation
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
             'terms' => 'required',
         ]);
+
+          // Create the company first
+            $company = new Company([
+                'company_name' => $request->company_name,
+                'license_number' => $request->license_number,
+                'status' => 'Pending',
+                // Add other company fields as necessary
+            ]);
+            $company->save();
+
         $id = User::orderBy('id','desc')->first()->id + 1;
         Auth::login($user = User::create([
             'username' => strtolower($request->first_name).strtolower($request->last_name).'_'.$id,
@@ -49,14 +63,17 @@ class RegisteredUserController extends Controller
             'last_name' => $request->last_name,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
+            'company_id' => $company->id, // Use the ID from the company you just created
             'password' => Hash::make($request->password),
             'user_type' => 'user'
         ]));
-
+       
         $user->assignRole('user');
 
-        event(new Registered($user));
+        // event(new Registered($user));
 
         return redirect(RouteServiceProvider::HOME);
     }
+
+  
 }

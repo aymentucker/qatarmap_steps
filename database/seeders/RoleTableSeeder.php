@@ -23,6 +23,12 @@ class RoleTableSeeder extends Seeder
                 'permissions' => ['appointment','blog', 'e-commerce', 'file-manager', 'chat', 'mail','social']
             ],
             [
+                'name' => 'employee',
+                'title' => 'employee',
+                'status' => 1,
+                'permissions' => ['appointment','blog', 'e-commerce', 'file-manager', 'chat', 'mail','social']
+            ],
+            [
                 'name' => 'demo_admin',
                 'title' => 'Demo Admin',
                 'status' => 1,

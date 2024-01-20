@@ -11,29 +11,21 @@ class Property extends Model
 
     // Fillable fields for mass assignment
     protected $fillable = [
-        'employee_id', 
-        'name', 
-        'price', 
-        'city', 
-        'region', 
-        'description', 
-        'num_bathrooms', 
-        'num_rooms', 
-        'type', 
-        'furnishing_status', 
-        'area', 
-        'pictures', // assuming it's stored as a JSON string or single path
-        'address', 
-        'status'
+        'user_id', 'company_id', 'property_name', 'property_type', 'categories',
+        'city', 'region', 'floor', 'rooms', 'bathrooms', 'furnishing', 'ad_type',
+        'property_area', 'price', 'description', 'status'
     ];
 
-    /**
-     * Get the employee that added the property.
-     */
-    public function employee()
+    public function user()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(User::class);
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
 
     // Add other relationships here if needed, like favorited by users, etc.
 }

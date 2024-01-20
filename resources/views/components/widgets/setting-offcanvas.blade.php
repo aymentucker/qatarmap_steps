@@ -365,7 +365,7 @@
                         </div> --}}
                         <hr class="hr-horizontal">
                         <!-- Direction customizer start here -->
-                        <div>
+                        {{-- <div>
                             <h5 class="mb-3 mt-4">Direction</h5>
                             <div class=" mb-3" data-setting="radio">
                                 <div class="form-check mb-0 w-100">
@@ -416,7 +416,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- Direction customizer end here -->
                     </div>
                 </div>

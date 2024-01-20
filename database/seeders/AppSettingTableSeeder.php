@@ -24,10 +24,10 @@ class AppSettingTableSeeder extends Seeder
         "storeKey": "quisetting-laravel",
         "setting": {
             "app_name": {
-                "value": "Qompac UI"
+                "value": "قطر ماب"
             },
             "theme_scheme_direction": {
-                "value": "ltr"
+                "value": "rtl"
             },
             "theme_scheme": {
                 "value": "light"

@@ -33,10 +33,10 @@ class CompaniesController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'license_number' => 'required|unique:companies',
-            'address' => 'required',
-            'description' => 'nullable',
-            'logo' => 'nullable|url',
-            'social_media_links' => 'nullable|json'
+            // 'address' => 'required',
+            // 'description' => 'nullable',
+            // 'logo' => 'nullable|url',
+            // 'social_media_links' => 'nullable|json'
         ]);
 
         Company::create($validatedData);
@@ -72,10 +72,10 @@ class CompaniesController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'license_number' => 'required|unique:companies,license_number,' . $id->id,
-            'address' => 'required',
-            'description' => 'nullable',
-            'logo' => 'nullable|url',
-            'social_media_links' => 'nullable|json'
+            // 'address' => 'required',
+            // 'description' => 'nullable',
+            // 'logo' => 'nullable|url',
+            // 'social_media_links' => 'nullable|json'
         ]);
 
         $id->update($validatedData);

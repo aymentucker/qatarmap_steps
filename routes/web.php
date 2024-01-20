@@ -12,6 +12,7 @@ use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\PropertiesController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\InvoicesController;
 // Packages
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,10 @@ Route::resource('properties' , PropertiesController::class);
 Route::resource('employees' , EmployeesController::class);
 
 Route::resource('clients' , ClientsController::class);
+Route::resource('invoices' ,InvoicesController::class);
+
+Route::get('/regions-for-city/{cityId}', [PropertiesController::class, 'getRegionsForCity']);
+
 
 
 

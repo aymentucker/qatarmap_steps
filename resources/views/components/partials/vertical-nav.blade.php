@@ -168,6 +168,78 @@
             </li>
         </ul>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-plugins" role="button" aria-expanded="false"
+            aria-controls="sidebar-user">
+            <i class="icon">
+                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4"
+                        d="M12.0865 22C11.9627 22 11.8388 21.9716 11.7271 21.9137L8.12599 20.0496C7.10415 19.5201 6.30481 18.9259 5.68063 18.2336C4.31449 16.7195 3.5544 14.776 3.54232 12.7599L3.50004 6.12426C3.495 5.35842 3.98931 4.67103 4.72826 4.41215L11.3405 2.10679C11.7331 1.96656 12.1711 1.9646 12.5707 2.09992L19.2081 4.32684C19.9511 4.57493 20.4535 5.25742 20.4575 6.02228L20.4998 12.6628C20.5129 14.676 19.779 16.6274 18.434 18.1581C17.8168 18.8602 17.0245 19.4632 16.0128 20.0025L12.4439 21.9088C12.3331 21.9686 12.2103 21.999 12.0865 22Z"
+                        fill="currentColor"></path>
+                    <path
+                        d="M11.3194 14.3209C11.1261 14.3219 10.9328 14.2523 10.7838 14.1091L8.86695 12.2656C8.57097 11.9793 8.56795 11.5145 8.86091 11.2262C9.15387 10.9369 9.63207 10.934 9.92906 11.2193L11.3083 12.5451L14.6758 9.22479C14.9698 8.93552 15.448 8.93258 15.744 9.21793C16.041 9.50426 16.044 9.97004 15.751 10.2574L11.8519 14.1022C11.7049 14.2474 11.5127 14.3199 11.3194 14.3209Z"
+                        fill="currentColor"></path>
+                </svg>
+            </i>
+            <span class="item-name">المستخدمين</span>
+            <i class="right-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </i>
+        </a>
+        <ul class="sub-nav collapse" id="sidebar-plugins" data-bs-parent="#sidebar-menu">
+            <li class="nav-item">
+                <a class="nav-link {{ activeRoute(route('plugins.apexcharts')) }}"
+                    href="{{ route('plugins.apexcharts') }}">
+                    <i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon"> A </i>
+                    <span class="item-name">اضافة مستخدم</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ activeRoute(route('plugins.button-hover')) }}"
+                    href="{{ route('plugins.button-hover') }}">
+                    <i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon"> BH </i>
+                    <span class="item-name">جميع المستخدمين </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ activeRoute(route('plugins.choise-js')) }}"
+                    href="{{ route('plugins.choise-js') }}">
+                    <i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon"> C </i>
+                    <span class="item-name"> صلاحيات المستخدمين</span>
+                </a>
+            </li>
+            
+  
+        </ul>
+    </li>
 
     <li>
         <hr class="hr-horizontal">
@@ -177,6 +249,62 @@
             <span class="default-icon">الشركة</span>
             <span class="mini-icon">-</span>
         </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-uiElement" role="button"
+            aria-expanded="false" aria-controls="sidebar-user">
+            <i class="icon">
+                <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4"
+                        d="M13.7505 9.70303V7.68318C13.354 7.68318 13.0251 7.36377 13.0251 6.97859V4.57356C13.0251 4.2532 12.764 4.00049 12.4352 4.00049H5.7911C3.70213 4.00049 2 5.653 2 7.68318V10.1155C2 10.3043 2.07737 10.4828 2.21277 10.6143C2.34816 10.7449 2.53191 10.8201 2.72534 10.8201C3.46035 10.8201 4.02128 11.3274 4.02128 11.9944C4.02128 12.6905 3.45068 13.2448 2.73501 13.2533C2.33849 13.2533 2 13.5257 2 13.9203V16.3262C2 18.3555 3.70213 19.9995 5.78143 19.9995H12.4352C12.764 19.9995 13.0251 19.745 13.0251 19.4265V17.3963C13.0251 17.0027 13.354 16.6917 13.7505 16.6917V14.8701C13.354 14.8701 13.0251 14.5497 13.0251 14.1655V10.4076C13.0251 10.0224 13.354 9.70303 13.7505 9.70303Z"
+                        fill="currentColor"></path>
+                    <path
+                        d="M19.9787 11.9948C19.9787 12.69 20.559 13.2443 21.265 13.2537C21.6615 13.2537 22 13.5262 22 13.9113V16.3258C22 18.3559 20.3075 20 18.2186 20H15.0658C14.7466 20 14.4758 19.7454 14.4758 19.426V17.3967C14.4758 17.0022 14.1567 16.6921 13.7505 16.6921V14.8705C14.1567 14.8705 14.4758 14.5502 14.4758 14.1659V10.4081C14.4758 10.022 14.1567 9.70348 13.7505 9.70348V7.6827C14.1567 7.6827 14.4758 7.36328 14.4758 6.9781V4.57401C14.4758 4.25366 14.7466 4 15.0658 4H18.2186C20.3075 4 22 5.64406 22 7.6733V10.0407C22 10.2286 21.9226 10.4081 21.7872 10.5387C21.6518 10.6702 21.4681 10.7453 21.2747 10.7453C20.559 10.7453 19.9787 11.31 19.9787 11.9948Z"
+                        fill="currentColor"></path>
+                </svg>
+            </i>
+            <span class="item-name">الشركات</span>
+            <i class="right-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </i>
+        </a>
+        <ul class="sub-nav collapse" id="sidebar-uiElement" data-bs-parent="#sidebar-menu">
+            <li class="nav-item">
+                <a class="nav-link {{ activeRoute(route('ui-elements.ui-avatars')) }}"
+                    href="{{ route('companies.create') }}">
+                    <i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon"> A</i>
+                    <span class="item-name">اضافة شركة</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ activeRoute(route('ui-elements.ui-alerts')) }}"
+                    href="{{ route('companies.index') }}">
+                    <i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon"> A</i>
+                    <span class="item-name">جميع الشركات</span>
+                </a>
+            </li>
+            
+        </ul>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-form" role="button"
@@ -283,6 +411,7 @@
         </ul>
     </li>
 
+    
 
 
     <li class="nav-item">
@@ -336,20 +465,63 @@
             </li>
         </ul>
     </li>
+
     <li class="nav-item">
-        <a class="nav-link {{ activeRoute(route('pages.blank-page')) }}" href="#">
-            <i class="icon" data-bs-toggle="tooltip" title="Blank Page" data-bs-placement="right">
-                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4"
-                        d="M16.191 2H7.81C4.77 2 3 3.78 3 6.83V17.16C3 20.26 4.77 22 7.81 22H16.191C19.28 22 21 20.26 21 17.16V6.83C21 3.78 19.28 2 16.191 2"
-                        fill="currentColor" />
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M8.07999 6.64999V6.65999C7.64899 6.65999 7.29999 7.00999 7.29999 7.43999C7.29999 7.86999 7.64899 8.21999 8.07999 8.21999H11.069C11.5 8.21999 11.85 7.86999 11.85 7.42899C11.85 6.99999 11.5 6.64999 11.069 6.64999H8.07999ZM15.92 12.74H8.07999C7.64899 12.74 7.29999 12.39 7.29999 11.96C7.29999 11.53 7.64899 11.179 8.07999 11.179H15.92C16.35 11.179 16.7 11.53 16.7 11.96C16.7 12.39 16.35 12.74 15.92 12.74ZM15.92 17.31H8.07999C7.77999 17.35 7.48999 17.2 7.32999 16.95C7.16999 16.69 7.16999 16.36 7.32999 16.11C7.48999 15.85 7.77999 15.71 8.07999 15.74H15.92C16.319 15.78 16.62 16.12 16.62 16.53C16.62 16.929 16.319 17.27 15.92 17.31Z"
-                        fill="currentColor" />
+        <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-table" role="button"
+            aria-expanded="false" aria-controls="sidebar-table">
+            <i class="icon">
+                <svg class="icon-24" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none">
+                    <path d="M2 5C2 4.44772 2.44772 4 3 4H8.66667H21C21.5523 4 22 4.44772 22 5V8H15.3333H8.66667H2V5Z"
+                        fill="currentColor" stroke="currentColor"></path>
+                    <path
+                        d="M6 8H2V11M6 8V20M6 8H14M6 20H3C2.44772 20 2 19.5523 2 19V11M6 20H14M14 8H22V11M14 8V20M14 20H21C21.5523 20 22 19.5523 22 19V11M2 11H22M2 14H22M2 17H22M10 8V20M18 8V20"
+                        stroke="currentColor"></path>
                 </svg>
             </i>
             <span class="item-name">الفواتير</span>
+            <i class="right-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </i>
         </a>
+        <ul class="sub-nav collapse" id="sidebar-table" data-bs-parent="#sidebar">
+           
+            <li class="nav-item">
+                <a class="nav-link {{ activeRoute(route('table.data-table')) }}"
+                    href="{{ route('invoices.create') }}">
+                    <i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor">
+                                </circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon"> D </i>
+                    <span class="item-name">فاتورة جديد</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ activeRoute(route('table.border-table')) }}"
+                    href="{{ route('invoices.index') }}">
+                    <i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor">
+                                </circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon" data-bs-toggle="tooltip" title="Bordered Table"
+                        data-bs-placement="right"> BT </i>
+                    <span class="item-name">عرض الفواتير </span>
+                </a>
+            </li>
+        </ul>
     </li>
 </ul>

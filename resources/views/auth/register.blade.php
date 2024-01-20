@@ -51,6 +51,21 @@
                                                     required>
                                             </div>
                                         </div>
+                                        <!-- Add Company Name Field -->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="company-name" class="form-label">Company Name <span class="text-danger">*</span></label>
+                                                <input id="company-name" name="company_name" value="assa" class="form-control" type="text" placeholder=" " required>
+                                            </div>
+                                        </div>
+                                        <!-- Add License Number Field -->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="license-number" class="form-label">License Number <span class="text-danger">*</span></label>
+                                                <input id="license-number" name="license_number" value="{{ old('license_number') }}" class="form-control" type="text" placeholder=" " required>
+                                            </div>
+                                        </div>
+
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="email11" class="form-label">Email <span

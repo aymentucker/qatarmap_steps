@@ -12,13 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->bigIncrements('id');
+            $table->string('company_name');
             $table->string('license_number')->unique();
-            $table->text('address');
-            $table->text('description')->nullable();
-            $table->string('logo')->nullable();
-            $table->json('social_media_links')->nullable();
+            $table->string('status')->default('Pending');
+
+            // $table->text('address');
+            // $table->text('description')->nullable();
+            // $table->string('logo')->nullable();
+            // $table->json('social_media_links')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('companies');
+        $table->dropColumn('status');
     }
 };
 

@@ -326,7 +326,7 @@
                                 <a href="javascript:void(0)" class="dropdown-item"
                                     onclick="event.preventDefault();
                             this.closest('form').submit();">
-                                    {{ __('Log out') }}
+                                    {{ __('تسجيل خروج') }}
                                 </a>
                             </form>
                         </li>

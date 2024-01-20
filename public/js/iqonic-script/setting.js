@@ -78,12 +78,12 @@
       app_name: {
         target: '[data-setting="app_name"]',
         type: "text",
-        value: "Qompac Ui",
+        value: "قطر ماب",
       },
       theme_scheme_direction: {
         target: "html",
         choices: ["ltr", "rtl"],
-        value: "ltr",
+        value: "rtl",
       },
       theme_scheme: {
         target: "body",

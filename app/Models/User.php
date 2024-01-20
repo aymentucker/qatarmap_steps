@@ -19,8 +19,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
      * The attributes that are mass assignable.
      *
      * @var array
-     */
+     */  
     protected $fillable = [
+      
         'username',
         'first_name',
         'last_name',
@@ -29,6 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'banned',
         'email',
         'password',
+        'company_id',
+        'personal_photo',
     ];
 
     /**
@@ -60,4 +63,18 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function userProfile() {
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
     }
+
+    
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
+    }
+
+    ////In your User model, define a relationship to Property:
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class, 'employee_id');
+    }
+   
 }

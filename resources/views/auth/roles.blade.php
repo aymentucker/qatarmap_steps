@@ -1,4 +1,4 @@
-<x-app-layout :assets="$assets ?? []" title='عرض الموظفين ' :isBanner="true">
+<x-app-layout :assets="$assets ?? []" title=' عرض الصلاحيات' :isBanner="true">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -7,24 +7,20 @@
                         <table class="table table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">اسم الموظف </th>
-                                    <th scope="col">رقم هاتف </th>
-                                    <th scope="col">البري الالكترني </th>
+                                    <th scope="col">#</th>
+                                    <th scope="col"> اسم الصلاحية </th>
                                     <th scope="col">اجراءات</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($users as $user)
-
                                 <tr>
-                                    <td class="text-dark">{{ $user->first_name }}</td>
-                                    <td class="text-dark">{{ $user->phone_number }}</td>
-                                    <td class="text-dark">{{ $user->email }}</td>
+                                    <td class="text-dark">9544666</td>
+                                    <td class="text-dark">مدير  </td>
                                     <td>
                                         <div class="d-flex justify-content-evenly">
                                             <a class="btn btn-primary btn-icon btn-sm rounded-pill ms-2"
-                                            href="{{ route('employees.edit', $user->id) }}" role="button">
-                                             <span class="btn-inner">
+                                                href="#" role="button">
+                                                <span class="btn-inner">
                                                     <svg class="icon-32" width="32" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path opacity="0.4"
@@ -39,11 +35,9 @@
                                                     </svg>
                                                 </span>
                                             </a>
-                                            <form action="{{ route('employees.destroy', $user->id) }}" method="POST" onsubmit="return confirm('هل انت متاكد من حذف الموظف ؟');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-icon btn-sm rounded-pill ms-2">
-                                                    <span class="btn-inner">
+                                            <a class="btn btn-primary btn-icon btn-sm rounded-pill ms-2"
+                                                href="#" role="button">
+                                                <span class="btn-inner">
                                                     <svg class="icon-32" width="32" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path opacity="0.4"
@@ -54,13 +48,10 @@
                                                             fill="currentColor"></path>
                                                     </svg>
                                                 </span>
-                                            </button>
-                                        </form>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
-                                @endforeach
-
                             </tbody>
                         </table>
                     </div>

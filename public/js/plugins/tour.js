@@ -18,8 +18,8 @@
     tour.addSteps(
         [
       {
-        title : `<h4>Menu</h4>`,
-        text: `<p class="mb-0">Check the content under Menu Style. Click to view all oavailable Menu Style options for you. </p>`,
+        title : `<h4>القائمة</h4>`,
+        text: `<p class="mb-0">تحقق من المحتوى ضمن نمط القائمة. انقر لعرض جميع خيارات نمط القائمة المتاحة لك. </p>`,
           attachTo: {
             element: '#first-tour',
             on: 'right'
@@ -29,14 +29,14 @@
               action() {
                 return this.next();
               },
-              text: 'Next'
+              text: 'التالي'
             },
           ],
           id: 'first-tour'
       },
       {
-        title : `<h4>Profile Setting</h4>`,
-        text: `<p class="mb-0">Configure your Profile using Profile Settings. Edit, save and update your profile from here.</p>`,
+        title : `<h4>لوحة التحكم  </h4>`,
+        text: `<p class="mb-0">قم بالاطلاع علي احصائيات سريعة عن شركتك و العقارات و الموظفين </p>`,
           attachTo: {
             element: '#itemdropdown1',
             on: 'bottom'
@@ -47,20 +47,21 @@
                 return this.back();
               },
               classes: 'shepherd-button-secondary',
-              text: 'Back'
+              text: 'السابق'
             },
             {
               action() {
                 return this.next();
               },
-              text: 'Next'
+              text: 'التالي'
             }
           ],
           id: 'dropdown1'
       },
       {
-        title : `<h4>Live Customizer</h4>`,
-        text: `<p class="mb-0">Transform the entire look, color, style and appearance of using Live Customizer settings. Change and copy the settings from here. </p>`,
+        title : `<h4>أداة التخصيص المباشرة </h4>`,
+        text: `<p class="mb-0">قم بتحويل الشكل واللون والنمط والمظهر بالكامل باستخدام إعدادات أداة التخصيص المباشرة
+        . قم بتغيير ونسخ الإعدادات من هنا </p>`,
           attachTo: {
             element: '#settingbutton',
             on: 'right'
@@ -71,14 +72,14 @@
                 return this.back();
               },
               classes: 'shepherd-button-secondary',
-              text: 'Back'
+              text: 'السابق'
             },
             {
               action() {
                 IQUtils.saveSessionStorage('tour', 'true');
                 return this.next();
               },
-              text: 'Done'
+              text: 'تم'
             }
           ],
           id: 'title'

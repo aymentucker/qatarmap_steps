@@ -31,6 +31,11 @@ class Property extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->whereNull('parent_id');
+    }
+
 
     // Add other relationships here if needed, like favorited by users, etc.
 }

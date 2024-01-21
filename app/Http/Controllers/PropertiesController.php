@@ -67,11 +67,15 @@ class PropertiesController extends Controller
     
         // Save the property
         $property->save();
+
+        if (!Storage::disk('public')->exists('images/properties')) {
+            Storage::disk('public')->makeDirectory('images/properties');
+        }        
     
         // Handle image upload
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $filename = $image->store('images', 'public');
+                $filename = $image->store('images/properties', 'public');
     
                 // Create and save property image
                 $propertyImage = new PropertyImage();

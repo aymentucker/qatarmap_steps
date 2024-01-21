@@ -146,12 +146,12 @@
                             </div>
                         
                             <div class="row">
-                                {{-- Image Upload
+                                {{-- Image Upload --}}
                                 <div class="col-12 mb-3">
                                     <label for="images" class="form-label">صور العقار</label>
                                     <input type="file" class="form-control" id="images" name="images[]" multiple>
                                     <small class="text-muted">يمكنك تحميل صور متعددة</small>
-                                </div> --}}
+                                </div> 
                             </div>
                         
                             {{-- Submit Button --}}

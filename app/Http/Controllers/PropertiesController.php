@@ -91,8 +91,8 @@ class PropertiesController extends Controller
 
     public function edit(Property $property)
     {
-        $employees = Employee::all();
-        return view('properties.edit', compact('property', 'employees'));
+        $employees = user::all();
+        return view('properties.edit', compact('property', 'users'));
     }
 
     public function update(Request $request, Property $property)

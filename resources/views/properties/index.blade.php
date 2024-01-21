@@ -7,12 +7,12 @@
                         <table class="table table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">صورة العقار</th>
                                     <th scope="col">اسم العقار </th>
                                     <th scope="col">نوع العقار</th>
+                                    <th scope="col">فئة العقار  </th>
                                     <th scope="col">منطقة العقار</th>
                                     <th scope="col">سعر العقار </th>
-                                    <th scope="col">الحالة</th>
+                                    <th scope="col">نوع الاعلان</th>
                                     <th scope="col">اجراءات</th>
                                 </tr>
                             </thead>
@@ -20,18 +20,12 @@
                                 @if (count($properties) > 0)
                                 @foreach ($properties as $property)
                                 <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img class="rounded img-fluid avatar-60 me-3"
-                                                src="{{ asset('images/avatars/11.png') }}" alt=""
-                                                loading="lazy">
-                                        </div>
-                                    </td>
-                                    <td class="text-dark">{{$property['name_property']}}</td>
+                                    <td class="text-dark">{{$property['property_name']}}</td>
                                     <td class="text-dark">{{$property['property_type']}}</td>
-                                    <td class="text-dark">{{$property['location']}}</td>
+                                    <td class="text-dark">{{$property['categories']}}</td>
+                                    <td class="text-dark">{{$property['region']}}</td>
                                     <td class="text-dark">{{$property['price']}}</td>
-                                    <td> <span class="badge bg-soft-primary p-2 text-primary">{{$property['status']}}</span></td>
+                                    <td> <span class="badge bg-soft-primary p-2 text-primary">{{$property['ad_type']}}</span></td>
                                     <td>
                                         <div class="d-flex justify-content-evenly">
                                             <a class="btn btn-primary btn-icon btn-sm rounded-pill ms-2"

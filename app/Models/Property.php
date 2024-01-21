@@ -13,8 +13,13 @@ class Property extends Model
     protected $fillable = [
         'user_id', 'company_id', 'property_name', 'property_type', 'categories',
         'city', 'region', 'floor', 'rooms', 'bathrooms', 'furnishing', 'ad_type',
-        'property_area', 'price', 'description', 'status'
+        'property_area', 'price', 'description','status'
     ];
+
+    public function images()
+    {
+        return $this->hasMany(PropertyImage::class);
+    }
 
     public function user()
     {

@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Property;
+use App\Models\PropertyImage;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\City;
@@ -33,10 +35,9 @@ class PropertiesController extends Controller
 
     public function store(Request $request)
     {
-
         // Get the current authenticated user
         $user = auth()->user();
-
+    
         // Validate the request data
         $validatedData = $request->validate([
             'property_name' => 'required|string',
@@ -52,24 +53,37 @@ class PropertiesController extends Controller
             'property_area' => 'required|numeric',
             'price' => 'required|numeric',
             'description' => 'required|string',
-            // Uncomment the line below if you want to handle pictures
-            // 'pictures' => 'nullable|string',
+            'images' => 'required|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2 MB
         ]);
-
-            // Add user_id, company_id, and default status to the validated data
-            $validatedData['user_id'] = $user->id;
-            $validatedData['company_id'] = $user->company->id; // Assuming a user belongs to a company
-            $validatedData['status'] = 'منشور'; // Default status
-
     
-        // Create a new property
-        $property = Property::create($validatedData);
+        // Create a new property instance and fill with validated data
+        $property = new Property($validatedData);
+        
+        // Assign user_id and company_id from the authenticated user
+        $property->user_id = $user->id;
+        $property->company_id = $user->company_id; // Assuming the company_id is directly accessible
+        $property->status = 'منشور'; // Default status
     
-        // Redirect or return a response
-        // Change the redirection as per your application's flow
+        // Save the property
+        $property->save();
+    
+        // Handle image upload
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $filename = $image->store('images', 'public');
+    
+                // Create and save property image
+                $propertyImage = new PropertyImage();
+                $propertyImage->property_image_id = $property->id; // Ensure this is the correct foreign key
+                $propertyImage->url = Storage::url($filename); // Store the URL, not just the filename
+                $propertyImage->save();
+            }
+        }
+    
+        // Redirect with success message
         return redirect()->back()->with('message', 'Property added successfully!');
     }
-
     public function show(Property $property)
     {
         return view('properties.show', compact('property'));

@@ -36,6 +36,8 @@ class Property extends Model
         return $this->hasMany(Comment::class)->whereNull('parent_id');
     }
 
+    
+
 
     // Add other relationships here if needed, like favorited by users, etc.
 }

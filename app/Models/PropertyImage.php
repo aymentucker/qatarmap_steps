@@ -13,6 +13,8 @@ class PropertyImage extends Model
 
     public function property()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Property::class, 'property_id'); // Adjust 'property_id' if your column has a different name
     }
+
 }
+

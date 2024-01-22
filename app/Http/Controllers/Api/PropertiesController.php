@@ -14,15 +14,35 @@ class PropertiesController extends Controller
      */
     public function index()
     {
+        $properties = Property::with(['images', 'user', 'company'])->get();
 
-        $properties = Property::all();
-        return response()->json($properties);
+        $propertiesData = $properties->map(function ($property) {
+            return [
+                'id' => $property->id,
+                'property_name' => $property->property_name,
+                'property_type' => $property->property_type,
+                'categories' => $property->categories,
+                'city' => $property->city,
+                'region' => $property->region,
+                'floor' => $property->floor,
+                'rooms' => $property->rooms,
+                'bathrooms' => $property->bathrooms,
+                'furnishing' => $property->furnishing,
+                'property_area' => $property->property_area,
+                'price' => $property->price,
+                'description' => $property->description,
+                'status' => $property->status,
+                'user_email' => $property->user->email ?? 'Not Available',
+                'phone_number' => $property->user->phone_number ?? 'Not Available',
+                'company_id' => $property->company_id,
+                'company_name' => $property->company->company_name ?? 'Not Available',
+                'images' => $property->images->map(fn($image) => $image->url),
+            ];
+        });
 
-
-        // $properties = Property::with('company', 'user'); // or any other pagination number you prefer
-
-        // return response()->json($properties);
+        return response()->json($propertiesData);
     }
+
 
      /**
      * get Properties By Category
@@ -117,7 +137,7 @@ class PropertiesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
         $property = Property::with(['images', 'user', 'company'])->findOrFail($id);
 
@@ -136,18 +156,13 @@ class PropertiesController extends Controller
             'price' => $property->price,
             'description' => $property->description,
             'status' => $property->status,
-            'images' => $property->images,
 
-            'user_email' => $property->user->email ?? null,
-            'user_phone' => $property->user->phone ?? null,
+            'user_email' => $property->user->email ?? 'Not Available',
+            'phone_number' => $property->user->phone_number ?? 'Not Available',
             'company_id' => $property->company_id,
+            'company_name' => $property->company->company_name ?? 'Not Available',
         
             // 'company_logo' => $property->company->logo_url ?? 'Not Available', // Add this line
-
-            
-            // 'user_email' => $property->user->email ?? 'Not Available',
-            // 'user_phone' => $property->user->phone ?? 'Not Available',
-            // 'company_name' => $property->company->name ?? 'Not Available',
 
             'images' => $property->images->map(function ($image) {
                 return $image->url; // Assuming 'url' is the field for image URL

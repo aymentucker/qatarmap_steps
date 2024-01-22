@@ -76,10 +76,9 @@ class PropertiesController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = $image->store('images/properties', 'public');
-    
                 // Create and save property image
                 $propertyImage = new PropertyImage();
-                $propertyImage->property_image_id = $property->id; // Ensure this is the correct foreign key
+                $propertyImage->property_id = $property->id; // Ensure this is the correct foreign key
                 $propertyImage->url = Storage::url($filename); // Store the URL, not just the filename
                 $propertyImage->save();
             }

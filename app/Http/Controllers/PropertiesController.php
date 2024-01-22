@@ -18,11 +18,17 @@ class PropertiesController extends Controller
         return view('properties.index', compact('properties'));
     }
 
-    public function getRegionsForCity($cityId)
+    public function getRegionsForCity($cityName)
     {
-        $regions = Region::where('city_id', $cityId)->get();
+        $city = City::where('name', $cityName)->first();
+        if (!$city) {
+            return response()->json([], 404);
+        }
+    
+        $regions = Region::where('city_id', $city->id)->get();
         return response()->json($regions);
     }
+    
 
     public function create()
     {

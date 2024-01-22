@@ -75,7 +75,7 @@
                               <select class="form-select" id="city" name="city" onchange="updateRegions()">
                                  <option value="">اختر المدينة</option>
                                  @foreach ($cities as $city)
-                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                 <option value="{{ $city->name }}">{{ $city->name }}</option>
                                  @endforeach
                               </select>
                            </div>
@@ -176,20 +176,21 @@
    {{-- JavaScript to update regions --}}
 <script>
    function updateRegions() {
-       var cityId = document.getElementById('city').value;
-       var regionSelect = document.getElementById('region');
-       regionSelect.innerHTML = '<option value="">تحميل ...</option>';
+    var cityName = document.getElementById('city').value;
+    var regionSelect = document.getElementById('region');
+    regionSelect.innerHTML = '<option value="">تحميل ...</option>';
 
-       // Fetch regions for the selected city
-       fetch(`/regions-for-city/${cityId}`)
-           .then(response => response.json())
-           .then(data => {
-               regionSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-               data.forEach(region => {
-                   regionSelect.innerHTML += `<option value="${region.id}">${region.name}</option>`;
-               });
-           });
-   }
+    // Fetch regions for the selected city
+    fetch(`/regions-for-city/${encodeURIComponent(cityName)}`)
+        .then(response => response.json())
+        .then(data => {
+            regionSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+            data.forEach(region => {
+                regionSelect.innerHTML += `<option value="${region.name}">${region.name}</option>`;
+            });
+        });
+}
+
 </script>
 </x-app-layout>
 

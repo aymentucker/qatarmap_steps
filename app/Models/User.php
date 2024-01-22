@@ -77,4 +77,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $this->hasMany(Property::class, 'employee_id');
     }
    
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
 }

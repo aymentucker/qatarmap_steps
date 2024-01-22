@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\PropertyController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +19,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('properties', PropertiesController::class);
+
+
+Route::get('/properties/filter', [PropertiesController::class, 'filter']);
+
+// Place this in routes/api.php for API routes
+Route::get('/properties/search', [PropertiesController::class, 'search']);
+
+
+Route::get('/properties/category/{category}', 'PropertyController@getPropertiesByCategory');

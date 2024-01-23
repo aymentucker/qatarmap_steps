@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image');
+            $table->string('url_link'); // Added new column for URL link
             $table->enum('subscription_period', ['monthly', 'quarterly', 'semi-annually', 'annually']);
             $table->date('end_date')->nullable();
             $table->timestamps();

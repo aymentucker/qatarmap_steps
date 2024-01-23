@@ -13,7 +13,7 @@ class AdSlider extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'image', 'subscription_period', 'end_date'];
+    protected $fillable = ['name', 'image', 'url_link', 'subscription_period', 'end_date'];
 
     /**
      * The attributes that should be cast.

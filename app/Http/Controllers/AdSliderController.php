@@ -33,6 +33,7 @@ class AdSliderController extends Controller
          $data = $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Adjust validation as necessary
+            'url_link' => 'required|url', // Validation for url_link
             'subscription_period' => 'required|in:monthly,quarterly,semi-annually,annually'
         ]);
 

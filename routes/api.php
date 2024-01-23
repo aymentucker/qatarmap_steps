@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PropertiesController;
+
+use App\Http\Controllers\Api\AdSliderController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,3 +39,6 @@ Route::get('/properties/{property}/comments', [PropertiesController::class, 'com
 
 
 Route::get('/properties/category/{category}', [PropertiesController::class, 'getPropertiesByCategory']);
+
+
+Route::get('/ad-sliders', [AdSliderController::class, 'showSliders']);

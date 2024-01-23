@@ -170,6 +170,29 @@ class PropertiesController extends Controller
         ]);
     }
 
+     /**
+     * comment the specified in property.
+     */
+
+    public function comment($property_id)
+    {
+        $property = Property::with(['comments.user'])->findOrFail($property_id);
+
+        $comments = $property->comments->map(function ($comment) {
+            return [
+                'id' => $comment->id,
+                'body' => $comment->body,
+                'username' => $comment->user->name, // Assuming 'name' is the username field in your User model
+                'created_at' => $comment->created_at,
+                'replies' => $comment->replies // You might want to format this similarly
+            ];
+        });
+
+        return response()->json([
+            'property_id' => $property->id,
+            'comments' => $comments
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.

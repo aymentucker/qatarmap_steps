@@ -36,6 +36,9 @@ Route::get('/properties/search', [PropertiesController::class, 'search']);
 
 Route::get('/properties/{property}/comments', [PropertiesController::class, 'comment']);
 
+Route::get('/properties/{propertyId}/similar', [PropertiesController::class, 'getSimilarProperties']);
+
+
 
 
 Route::get('/properties/category/{category}', [PropertiesController::class, 'getPropertiesByCategory']);

@@ -254,4 +254,22 @@ class PropertiesController extends Controller
 
         return response()->json(['message' => 'Favorite not found'], 404);
     }
+
+     /**
+     * getSimilarProperties .
+     */
+
+    public function getSimilarProperties($propertyId)
+    {
+        $property = Property::findOrFail($propertyId);
+
+        // Assuming 'type' and 'location' are columns in your properties table
+        $similarProperties = Property::where('id', '!=', $propertyId)
+                                    ->where('type', $property->type)
+                                    ->where('location', $property->location)
+                                    ->limit(10) // You can adjust the number of similar properties
+                                    ->get();
+
+        return response()->json($similarProperties);
+    }
 }

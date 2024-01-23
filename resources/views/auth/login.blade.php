@@ -24,8 +24,8 @@
                                     <h2 class="logo-title ms-3 mb-0" data-setting="app_name">
                                         {{ env('APP_NAME') }}</h2>
                                 </a>
-                                <h2 class="mb-2 text-center">Sign In</h2>
-                                <p class="text-center">Login to stay connected.</p>
+                                <h2 class="mb-2 text-center">تسجيل دخول</h2>
+                                <p class="text-center">تسجيل الدخول للبقاء على اتصال.</p>
                                 <x-auth-session-status class="mb-4" :status="session('status')" />
 
                                 <!-- Validation Errors -->
@@ -54,7 +54,7 @@
                                                 </div>
                                             @endif
                                             <div class="form-group">
-                                                <label for="email" class="form-label">Email</label>
+                                                <label for="email" class="form-label">البريد الالكتروني</label>
                                                 <input id="email" type="email" name="email"
                                                     value="{{ env('IS_DEMO') ? 'admin@example.com' : old('email') }}"
                                                     class="form-control" placeholder="admin@example.com" required
@@ -63,7 +63,7 @@
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label for="password" class="form-label">Password</label>
+                                                <label for="password" class="form-label">كلمة المرور</label>
                                                 <input class="form-control" type="password" placeholder="********"
                                                     name="password" value="{{ env('IS_DEMO') ? 'password' : '' }}"
                                                     required autocomplete="current-password">
@@ -73,18 +73,18 @@
                                             <div class="form-check mb-3">
                                                 <input type="checkbox" class="form-check-input" id="customCheck1"
                                                     name="remember">
-                                                <label class="form-check-label" for="customCheck1">Remember Me</label>
+                                                <label class="form-check-label" for="customCheck1">تذكرني</label>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <a href="{{ route('password.request') }}" class="float-end">Forgot
-                                                Password?</a>
+                                            <a href="{{ route('password.request') }}" class="float-end">فقدت كلمة المرور؟</a>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-primary">{{ __('Sign In') }}</button>
+                                        <button type="submit" class="btn btn-primary">{{ __('تسجيل دخول') }}</button>
                                     </div>
-                                    <p class="text-center my-3">or sign in with other accounts?</p>
+                                    {{-- or sign in with other socail media accounts --}}
+                                    {{-- <p class="text-center my-3">or sign in with other accounts?</p>
                                     <div class="d-flex justify-content-center">
                                         <ul class="list-group list-group-horizontal list-group-flush">
                                             <li class="list-group-item border-0 pb-0">
@@ -104,10 +104,10 @@
                                                         alt="li"></a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> --}}
                                     <p class="mt-3 text-center">
-                                        Don’t have an account? <a href="{{ route('register') }}"
-                                            class="text-underline">Click here to sign up.</a>
+                                        ليس لديك حساب؟ <a href="{{ route('register') }}"
+                                            class="text-underline">انقر هنا لتسجيل شركتك.</a>
                                     </p>
                                 </form>
                             </div>

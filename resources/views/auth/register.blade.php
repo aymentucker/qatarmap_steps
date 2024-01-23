@@ -24,8 +24,8 @@
                                     <h2 class="logo-title ms-3 mb-0" data-setting="app_name">
                                         {{ env('APP_NAME') }}</h2>
                                 </a>
-                                <h2 class="mb-2 text-center">Sign Up</h2>
-                                <p class="text-center">Create your {{ env('APP_NAME') }} account.</p>
+                                <h2 class="mb-2 text-center">تسجيل شركتك.</h2>
+                                <p class="text-center">قم بإنشاء وتسجيل شركتك معنا علي {{ env('APP_NAME') }}.</p>
                                 <x-auth-session-status class="mb-4" :status="session('status')" />
 
                                 <!-- Validation Errors -->
@@ -35,7 +35,7 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="full-name" class="form-label">Full Name <span
+                                                <label for="full-name" class="form-label">الاسم الاول <span
                                                         class="text-danger">*</span></label>
                                                 <input id="full-name" name="first_name" value="{{ old('first_name') }}"
                                                     class="form-control" type="text" placeholder=" " required
@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="last-name" class="form-label">Last Name <span
+                                                <label for="last-name" class="form-label">الاسم الاخير <span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control" id="last-name" type="text"
                                                     name="last_name" placeholder=" " value="{{ old('last_name') }}"
@@ -54,21 +54,21 @@
                                         <!-- Add Company Name Field -->
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="company-name" class="form-label">Company Name <span class="text-danger">*</span></label>
+                                                <label for="company-name" class="form-label">اسم الشركة <span class="text-danger">*</span></label>
                                                 <input id="company-name" name="company_name" value="assa" class="form-control" type="text" placeholder=" " required>
                                             </div>
                                         </div>
                                         <!-- Add License Number Field -->
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="license-number" class="form-label">License Number <span class="text-danger">*</span></label>
+                                                <label for="license-number" class="form-label">رقم السجل التجاري<span class="text-danger">*</span></label>
                                                 <input id="license-number" name="license_number" value="{{ old('license_number') }}" class="form-control" type="text" placeholder=" " required>
                                             </div>
                                         </div>
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="email11" class="form-label">Email <span
+                                                <label for="email11" class="form-label">البريد الالكتروني <span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control" type="email" placeholder=" "
                                                     id="email11" name="email" value="{{ old('email') }}" required>
@@ -76,14 +76,15 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="phone" class="form-label">Phone No.</label>
+                                                <label for="phone" class="form-label">رقم الهاتف<span
+                                                    class="text-danger">*</span></label>
                                                 <input class="form-control" type="text" id="phone"
                                                     name="phone_number" placeholder=" ">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="password11" class="form-label">Password <span
+                                                <label for="password11" class="form-label">كلمة المرور <span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control" type="password" placeholder=" "
                                                     id="password11" name="password" required
@@ -92,7 +93,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="confirm-password" class="form-label">Confirm Password <span
+                                                <label for="confirm-password" class="form-label">تأكيد كلمة المرور <span
                                                         class="text-danger">*</span></label>
                                                 <input id="confirm-password" class="form-control" type="password"
                                                     placeholder=" " name="password_confirmation" required>
@@ -103,15 +104,15 @@
                                                 <input type="checkbox" name="terms"
                                                     class="custom-control-input form-check-input" id="customCheck1"
                                                     required>
-                                                <label class="form-check-label" for="customCheck1">I agree with the
-                                                    terms of use</label>
+                                                <label class="form-check-label" for="customCheck1">أنا أوافق على شروط الاستخدام</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-primary"> {{ __('sign up') }}</button>
+                                        <button type="submit" class="btn btn-primary"> {{ __('اشتراك') }}</button>
                                     </div>
-                                    <p class="text-center my-3">or sign in with other accounts?</p>
+                                    {{--  or sign in with other socail media accounts? --}}
+                                    {{-- <p class="text-center my-3">or sign in with other accounts?</p>
                                     <div class="d-flex justify-content-center">
                                         <ul class="list-group list-group-horizontal list-group-flush">
                                             <li class="list-group-item border-0 pb-0">
@@ -131,10 +132,10 @@
                                                         alt="li"></a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> --}}
                                     <p class="mt-3 text-center">
-                                        Already have an Account <a href="{{ route('login') }}"
-                                            class="text-underline">Sign In</a>
+                                        هل لديك حساب <a href="{{ route('login') }}"
+                                            class="text-underline">تسجيل الدخول</a>
                                     </p>
                                 </form>
                             </div>

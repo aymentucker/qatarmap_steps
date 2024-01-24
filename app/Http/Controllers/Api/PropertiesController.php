@@ -17,7 +17,7 @@ class PropertiesController extends Controller
     public function index()
     {
 
-        $properties = Property::with(['images', 'user', 'company'])->get();
+        $properties = Property::with(['images', 'user', 'company'])->orderBy('updated_at', 'desc')->get();
 
         $propertiesData = $properties->map(function ($property) {
             return [
@@ -40,6 +40,7 @@ class PropertiesController extends Controller
                 'company_id' => $property->company_id,
                 'company_name' => $property->company->company_name ?? 'Not Available',
                 'images' => $property->images->map(fn($image) => $image->url),
+                'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
             ];
         });
 
@@ -161,11 +162,12 @@ class PropertiesController extends Controller
             'price' => $property->price,
             'description' => $property->description,
             'status' => $property->status,
-
             'user_email' => $property->user->email ?? 'Not Available',
             'phone_number' => $property->user->phone_number ?? 'Not Available',
             'company_id' => $property->company_id,
             'company_name' => $property->company->company_name ?? 'Not Available',
+            'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
+
         
             // 'company_logo' => $property->company->logo_url ?? 'Not Available', // Add this line
 

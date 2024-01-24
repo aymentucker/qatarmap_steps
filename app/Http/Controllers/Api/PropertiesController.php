@@ -5,6 +5,8 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PropertyCollection;
+
 use Illuminate\Http\Request;
 
 class PropertiesController extends Controller
@@ -14,6 +16,7 @@ class PropertiesController extends Controller
      */
     public function index()
     {
+
         $properties = Property::with(['images', 'user', 'company'])->get();
 
         $propertiesData = $properties->map(function ($property) {
@@ -40,7 +43,9 @@ class PropertiesController extends Controller
             ];
         });
 
-        return response()->json($propertiesData);
+        return new PropertyCollection($propertiesData);
+
+        // return response()->json($propertiesData);
     }
 
 

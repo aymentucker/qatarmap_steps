@@ -49,23 +49,16 @@
                           </div>
                
                            {{-- Sub-Property Type --}}
-                           <div class="col-md-4 mb-3">
-                               <label for="categories" class="form-label">الفئات الفرعية</label>
-                               <select class="form-select" id="categories" name="categories">
-                                   <option value="">اختر...</option>
-                                   <option value="شقق سكنية">شقق سكنية</option>
-                                   <option value="فلل سكنية">فلل سكنية</option>
-                                   <option value="مستودعات">مستودعات</option>
-                                   <option value="مكاتب تجارية">مكاتب تجارية</option>
-                                   <option value="محلات تجارية">محلات تجارية</option>
-                                   <option value="فلل ادارية وتجارية"> فلل ادارية وتجارية</option>
-                                   <option value="عمارات وابراج">عمارات وابراج </option>
-                                   <option value="بيوت شعبية">بيوت شعبية</option>
-                                   <option value="سكن عمال"> سكن عمال</option>
-                                   <option value="عقارات اخري"> عقارات اخري</option>
-                                   <option value="خارج قطر "> خارج قطر </option>
-                                 </select>
-                           </div>
+                           <!-- Assuming this code is in a file within the resources/views directory -->
+                        <div class="col-md-4 mb-3">
+                            <label for="category_id" class="form-label">الفئات الفرعية</label>
+                            <select class="form-select" id="category_id" name="category_id">
+                                <option value="">اختر...</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                        </div>
                
                        <div class="row">

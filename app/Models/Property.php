@@ -11,7 +11,7 @@ class Property extends Model
 
     // Fillable fields for mass assignment
     protected $fillable = [
-        'user_id', 'company_id', 'property_name', 'property_type', 'categories',
+        'user_id', 'company_id', 'property_name', 'property_type', 'category_id',
         'city', 'region', 'floor', 'rooms', 'bathrooms', 'furnishing', 'ad_type',
         'property_area', 'price', 'description','status'
     ];
@@ -36,6 +36,10 @@ class Property extends Model
         return $this->hasMany(Comment::class)->whereNull('parent_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
     
 
 

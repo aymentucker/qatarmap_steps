@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\User;
+use App\Models\Category; 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PropertyCollection;
 
@@ -17,14 +18,14 @@ class PropertiesController extends Controller
     public function index()
     {
 
-        $properties = Property::with(['images', 'user', 'company'])->orderBy('updated_at', 'desc')->get();
+        $properties = Property::with(['images', 'user', 'company','category'])->orderBy('updated_at', 'desc')->get();
 
         $propertiesData = $properties->map(function ($property) {
             return [
                 'id' => $property->id,
                 'property_name' => $property->property_name,
                 'property_type' => $property->property_type,
-                'categories' => $property->categories,
+                'category_name' => $property->category->name,
                 'city' => $property->city,
                 'region' => $property->region,
                 'floor' => $property->floor,
@@ -51,18 +52,55 @@ class PropertiesController extends Controller
 
 
      /**
-     * get Properties By Category
+     * Display a listing of properties for a given category.
+     *
+     * @param int $categoryId
+     * @return \Illuminate\Http\Response
      */
-
-
-    public function getPropertiesByCategory($category)
+    public function getPropertiesByCategory($categoryId)
     {
-        $properties = Property::with(['images', 'user', 'company'])
-            ->where('categories', 'like', '%' . $category . '%')
-            ->paginate(10); // You can adjust pagination as needed
+        // Find the category with the provided ID
+        $category = Category::find($categoryId);
 
-        return response()->json($properties);
+        // Check if category exists
+        if (!$category) {
+            return response()->json([
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        // Get properties associated with the category
+        $properties = $category->properties()->with(['images', 'user', 'company'])->get();
+
+        $propertiesData = $properties->map(function ($property) {
+            return [
+                'id' => $property->id,
+                'property_name' => $property->property_name,
+                'property_type' => $property->property_type,
+                'category_name' => $property->category->name,
+                'city' => $property->city,
+                'region' => $property->region,
+                'floor' => $property->floor,
+                'rooms' => $property->rooms,
+                'bathrooms' => $property->bathrooms,
+                'furnishing' => $property->furnishing,
+                'property_area' => $property->property_area,
+                'price' => $property->price,
+                'description' => $property->description,
+                'status' => $property->status,
+                'user_email' => $property->user->email ?? 'Not Available',
+                'phone_number' => $property->user->phone_number ?? 'Not Available',
+                'company_id' => $property->company_id,
+                'company_name' => $property->company->company_name ?? 'Not Available',
+                'images' => $property->images->map(fn($image) => $image->url),
+                'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
+            ];
+        });
+
+        return new PropertyCollection($propertiesData);
+
     }
+
 
     /**
      * search a searchTerm.

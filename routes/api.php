@@ -41,7 +41,7 @@ Route::get('/properties/{propertyId}/similar', [PropertiesController::class, 'ge
 
 
 
-Route::get('/properties/category/{category}', [PropertiesController::class, 'getPropertiesByCategory']);
+Route::get('/properties/category/{categoryId}', [PropertiesController::class, 'getPropertiesByCategory']);
 
 
 Route::get('/ad-sliders', [AdSliderController::class, 'showSliders']);

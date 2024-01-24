@@ -5,6 +5,7 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Category;
 use App\Models\City;
 use App\Models\Region;
 
@@ -32,11 +33,13 @@ class PropertiesController extends Controller
 
     public function create()
     {
-         $users = User::all();
-        // return view('properties.create', compact('employees'));
+         $users = User::all(); // Fetch all Users from the database
 
-        $cities = City::all();
-        return view('properties.create', compact('cities','users'));
+        $categories = Category::all(); // Fetch all categories from the database
+
+        $cities = City::all(); // Fetch all Cities from the database
+
+        return view('properties.create', compact('cities','users','categories'));
     }
 
     public function store(Request $request)
@@ -48,7 +51,7 @@ class PropertiesController extends Controller
         $validatedData = $request->validate([
             'property_name' => 'required|string',
             'property_type' => 'required|string|max:255',
-            'categories' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id', // Assuming the input name is 'category_id'
             'city' => 'required|string|max:255',
             'region' => 'required|string|max:255',
             'floor' => 'required|integer',
@@ -66,6 +69,8 @@ class PropertiesController extends Controller
         // Create a new property instance and fill with validated data
         $property = new Property($validatedData);
         
+        $property->category_id = $validatedData['category_id']; // Assign the category ID to the property
+
         // Assign user_id and company_id from the authenticated user
         $property->user_id = $user->id;
         $property->company_id = $user->company_id; // Assuming the company_id is directly accessible

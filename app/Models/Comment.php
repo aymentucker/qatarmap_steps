@@ -6,7 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $fillable = ['property_id', 'user_id', 'body', 'parent_id'];
+    protected $fillable = ['property_id', 'user_id', 'body', 'parent_id', 'rating'];
+
+        // In Comment.php Model
+    public static function saveComment($data)
+    {
+        $comment = self::create($data);
+
+        // Load relationships if necessary
+        $comment->load('user', 'property');
+
+        return $comment;
+    }
+
 
     public function property()
     {

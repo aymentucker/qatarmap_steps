@@ -10,7 +10,9 @@ class CreateCitiesTable extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name'); // Arabic name
+            $table->string('name_en'); // English name
+            $table->string('lat_lng_city'); // Latitude and Longitude
             $table->timestamps();
         });
     }

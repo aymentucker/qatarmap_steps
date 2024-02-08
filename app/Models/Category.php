@@ -11,8 +11,8 @@ class Category extends Model
 
     // Fillable fields for mass assignment
     protected $fillable = [
-        'name',
-        // Include any other fields you may have in the categories table
+        'name', // Arabic name
+        'name_en', // English name
     ];
 
     /**

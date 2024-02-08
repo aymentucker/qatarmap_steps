@@ -9,7 +9,7 @@ class City extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'name_en', 'lat_lng_city'];
 
     /**
      * Get the regions for the city.

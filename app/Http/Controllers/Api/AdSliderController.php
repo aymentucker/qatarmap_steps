@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\AdSlider;
+use App\Http\Resources\AdSliderCollection;
+
+
 
 class AdSliderController extends Controller
 {
@@ -13,15 +17,14 @@ class AdSliderController extends Controller
      * Display a Sliders of the resource.
      */
 
+     // Display a listing of ad sliders
     public function showSliders()
     {
-        $sliders = AdSlider::all();
+        $adSliders = AdSlider::all();
+        return new AdSliderCollection($adSliders);
 
-        // You can add additional logic here if needed, e.g., filtering based on active dates
-
-        return response()->json($sliders, Response::HTTP_OK);
+        // return response()->json($adSliders);
     }
-
 
     /**
      * Display a listing of the resource.

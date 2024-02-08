@@ -73,4 +73,41 @@ class UsersController extends Controller
     {
         //
     }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'token' => 'required|string', // Token for further validation if needed
+        ]);
+
+        $name = explode(' ', $request->name, 2); // Assuming the name is a single string
+        $firstName = $name[0];
+        $lastName = count($name) > 1 ? $name[1] : '';
+
+        $user = User::firstOrCreate(
+            ['email' => $request->email],
+            [
+                'username' => $this->generateUniqueUsername($firstName, $lastName),
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'password' => Hash::make(Str::random(10)), // Random password, as it won't be used
+                'status' => 'active', // or 'pending' based on your logic
+                // Set other default values if necessary
+            ]
+        );
+
+        // Here, you can implement logic to generate and return an API token
+        // if your application requires it.
+
+        return response()->json(['message' => 'User logged in successfully', 'user' => $user]);
+    }
+
+    private function generateUniqueUsername($firstName, $lastName)
+    {
+        $username = Str::slug($firstName . '-' . $lastName);
+        $count = User::where('username', 'LIKE', "$username%")->count();
+        return $count ? "{$username}-{$count}" : $username;
+    }
 }

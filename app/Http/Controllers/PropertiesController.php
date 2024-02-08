@@ -91,6 +91,9 @@ class PropertiesController extends Controller
                 // Create full URL including the domain
                  $fullUrl = config('app.url') . Storage::url($filename);
 
+                // $fullUrl = config('http://10.0.2.2:8000') . Storage::url($filename);
+                
+
                 // Create and save property image
             
                 $propertyImage = new PropertyImage();

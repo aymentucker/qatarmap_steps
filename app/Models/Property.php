@@ -41,6 +41,11 @@ class Property extends Model
         return $this->belongsTo(Category::class);
     }
     
+    public function propertyView()
+    {
+        return $this->hasOne(PropertyView::class);
+    }
+    
 
 
     // Add other relationships here if needed, like favorited by users, etc.

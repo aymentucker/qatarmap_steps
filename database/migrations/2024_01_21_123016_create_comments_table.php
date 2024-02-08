@@ -12,6 +12,7 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('property_id');
             $table->unsignedBigInteger('user_id');
             $table->text('body');
+            $table->integer('rating')->default(0);
             $table->unsignedBigInteger('parent_id')->nullable(); // For replies
             $table->timestamps();
 

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            // Add other fields here if needed
+            $table->string('name'); // Arabic name
+            $table->string('name_en'); // English name
             $table->timestamps();
         });
-    }
+    }    
 
     /**
      * Reverse the migrations.

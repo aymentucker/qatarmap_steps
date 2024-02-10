@@ -1,10 +1,9 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserProfilesTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +12,16 @@ class CreateUserProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_profiles', function (Blueprint $table) {
+        Schema::create('file_docs', function (Blueprint $table) {
             $table->id();
-            $table->string('address')->nullable();
-            $table->string('img_profile')->nullable();
-            $table->foreignId('user_id')->cascade('delete');
+            $table->unsignedBigInteger('user_id');
+            $table->string('url');
             $table->timestamps();
+        
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+        
+        
     }
 
     /**
@@ -29,6 +31,6 @@ class CreateUserProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_profiles');
+        Schema::dropIfExists('filedoc');
     }
 }

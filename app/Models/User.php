@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Model;
+use App\Models\FileDoc;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -31,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'email',
         'password',
         'company_id',
+        'user_type', // Ensure this is included
         'personal_photo',
     ];
 
@@ -80,6 +82,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function filedoc()
+    {
+        return $this->hasMany(FileDoc::class);
     }
 
 }

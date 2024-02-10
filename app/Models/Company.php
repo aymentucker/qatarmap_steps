@@ -17,10 +17,11 @@ class Company extends Model
     protected $fillable = [
         'company_name',
         'license_number',
-        // 'address',
-        // 'phone_number',
-        // 'logo',
+        'status', // Since you're setting a default value, you might still want to allow mass assignment in case you need to override the default.
+        'about',
+        'logo',
     ];
+    
 
     /**
      * Get the users for the company.
@@ -30,13 +31,18 @@ class Company extends Model
         return $this->hasMany(User::class);
     }
 
-    ///In your Company model, define a relationship to Property:
+    /// a relationship to Property:
 
     public function properties()
     {
         return $this->hasMany(Property::class);
     }
+    /// a relationship to files:
 
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 
     // Other model methods...
 
@@ -60,6 +66,7 @@ class Company extends Model
         ]);
 
         $user->company()->save($company);
+    
 
         // ... remaining code ...
 

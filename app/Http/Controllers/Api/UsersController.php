@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User; // Assuming you have a User model
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-
-use App\Http\Controllers\Controller;
+use App\Models\User; // User model
+use App\Models\FileDoc; // FileDoc model
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+
+
 
 class UsersController extends Controller
 {
@@ -110,4 +116,161 @@ class UsersController extends Controller
         $count = User::where('username', 'LIKE', "$username%")->count();
         return $count ? "{$username}-{$count}" : $username;
     }
+
+
+     /**
+     * Store a new owner with file uploads.
+     */
+    public function storeOwner(Request $request)
+    {
+        // Validate the incoming request
+        $validatedData = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'phone_number' => 'required|string',
+            'password' => 'required|string|min:6',
+            'email' => 'required|string|email|unique:users',
+            'files.*' => 'sometimes|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+        ]);
+
+        if ($validatedData->fails()) {
+            return response()->json($validatedData->errors(), 400);
+        }
+
+        // Extract first and last name from the full name
+        list($firstName, $lastName) = explode(' ', $request->name, 2) + [null, ''];
+
+        // Create the user  with user_type => owner
+        $user = User::create([
+            'username' => $this->generateUsername($request->name),
+            'first_name' => $firstName,
+            'last_name' => $lastName ?? '',
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'user_type' => 'owner',
+        ]);
+
+        // Generate file folder : uploads/owners
+
+        if (!Storage::disk('public')->exists('uploads/owners')) {
+            Storage::disk('public')->makeDirectory('uploads/owners');
+        }        
+    
+
+        // Handle file uploads
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filename = $file->store('uploads/owners', 'public');
+                $fullUrl = config('app.url') . Storage::url($filename);
+                Log::info("Uploading file: {$filename}"); //Debugging the File Saving Process
+
+                // Create and save the file record
+                $fileDoc = FileDoc::create([
+                    'user_id' => $user->id,
+                    'url' => $fullUrl,
+                ]);
+                
+                Log::info("FileDoc created: " . json_encode($fileDoc));
+                
+            }
+        }
+
+        return response()->json(['message' => 'Owner created successfully', 'user' => $user], 201);
+    }
+
+
+    /**
+     * Store a new manager with file uploads and company information.
+     */
+    public function storeManager(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'company_name' => 'required|string',
+            'license_number' => 'required|string|unique:companies',
+            'phone_number' => 'required|string',
+            'password' => 'required|string|min:6',
+            'email' => 'required|string|email|unique:users',
+            'about' => 'nullable|string',
+            'files.*' => 'sometimes|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $company = Company::create([
+            'company_name' => $request->company_name,
+            'license_number' => $request->license_number,
+            'status' => 'Active', // Assuming you want to set the status to Active once created
+            'about' => $request->about,
+        ]);
+
+        // Extract first and last name from the full name
+          list($firstName, $lastName) = explode(' ', $request->name, 2) + [null, ''];
+
+        // Create the user with user_type => manager
+
+        $user = User::create([
+            'username' => $this->generateUsername($request->name),
+            'first_name' => explode(' ', $request->name, 2)[0],
+            'last_name' => explode(' ', $request->name, 2)[1] ?? '',
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'user_type' => 'manager',
+            'company_id' => $company->id, // Ensure this column exists in your users table
+        ]);
+
+        // Handle file uploads
+        if ($request->hasFile('files')) {
+            // Generate file folder : uploads/owners
+            if (!Storage::disk('public')->exists('uploads/companies')) {
+                Storage::disk('public')->makeDirectory('uploads/companies');
+            }
+
+            foreach ($request->file('files') as $file) {
+                $filename = $file->store('uploads/companies', 'public');
+                $fullUrl = config('app.url') . Storage::url($filename);
+                Log::info("Uploading file: {$filename}");
+
+                FileDoc::create([
+                    'user_id' => $user->id,
+                    'url' => $fullUrl,
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Manager created successfully', 'user' => $user, 'company' => $company], 201);
+    }
+
+
+      /**
+     * Generate a unique username for the user based on their name.
+     * Implement this method based on your application's requirements.
+     *
+     * @param string $name The name of the user.
+     * @return string The generated username.
+     */
+    protected function generateUsername($name)
+    {
+        // Placeholder implementation - adjust as needed
+        return strtolower(str_replace(' ', '_', $name));
+    }
+
+    /**
+     * Handle file uploads for a user.
+     */
+    protected function handleFileUploads(Request $request, $user)
+    {
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('public/files');
+                $user->files()->create([
+                    'file_path' => $path,
+                ]);
+            }
+        }
+    }
 }
+

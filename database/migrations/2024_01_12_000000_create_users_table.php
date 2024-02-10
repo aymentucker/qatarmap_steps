@@ -26,12 +26,11 @@ class CreateUsersTable extends Migration
             $table->string('status')->default('pending');
             $table->rememberToken();
             $table->timestamps();
-
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-
-            
+        
         });
+
     }
 
     /**

@@ -16,11 +16,8 @@ return new class extends Migration
             $table->string('company_name');
             $table->string('license_number')->unique();
             $table->string('status')->default('Pending');
-
-            // $table->text('address');
-            // $table->text('description')->nullable();
-            // $table->string('logo')->nullable();
-            // $table->json('social_media_links')->nullable();
+            $table->text('about')->nullable();
+            $table->string('logo')->nullable();
             $table->timestamps();
         });
     }

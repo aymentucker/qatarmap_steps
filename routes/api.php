@@ -99,3 +99,6 @@ Route::get('/properties/city/{cityName}', [PropertiesController::class, 'fetchPr
 Route::get('/properties/region/{regionName}', [PropertiesController::class, 'fetchPropertiesForRegion']);
 
 
+
+Route::post('/owners', [UsersController::class, 'storeOwner']);
+Route::post('/managers', [UsersController::class, 'storeManager']);

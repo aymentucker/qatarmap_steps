@@ -29,17 +29,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('properties', PropertiesController::class);
 
-
 Route::get('/filter', [PropertiesController::class, 'filter']);
 
 // // // Place this in routes/api.php for API routes
 Route::get('/properties/search', [PropertiesController::class, 'search']);
 
 Route::get('/search', [PropertiesController::class, 'search']);
-
-
-
-// Route::get('/properties/{property}/comments', [PropertiesController::class, 'comment']);
 
 Route::get('/properties/{propertyId}/similar', [PropertiesController::class, 'getSimilarProperties']);
 
@@ -49,9 +44,15 @@ Route::get('/properties/{propertyId}/similar', [PropertiesController::class, 'ge
 
 // Route::post('/properties/{property}/comments', [PropertiesController::class, 'storeComment'])->middleware('auth:api');
 
+// Route::get('/properties/{property}/comments', [PropertiesController::class, 'comment']);
 
+
+/// get and post comments 
 
 Route::post('properties/{property}/comments', [PropertiesController::class, 'addComment']);
+
+Route::get('/properties/{property}/comments', [PropertiesController::class, 'comment']);
+
 
 
 Route::get('/properties/category/{categoryId}', [PropertiesController::class, 'getPropertiesByCategory']);

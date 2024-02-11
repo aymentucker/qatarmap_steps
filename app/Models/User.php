@@ -25,8 +25,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     protected $fillable = [
       
         'username',
-        'first_name',
-        'last_name',
+        'name',
+        'name_en',
         'phone_number',
         'status',
         'banned',
@@ -60,7 +60,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
 
     public function getFullNameAttribute()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->name . ' ' . $this->name_en;
     }
 
     public function userProfile() {

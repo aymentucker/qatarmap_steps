@@ -53,8 +53,8 @@ class EmployeesController extends Controller
         // Validate the request data
         
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
             // Add any other necessary validation rules
@@ -67,13 +67,13 @@ class EmployeesController extends Controller
     
         // Generate a unique username
         $id = User::orderBy('id', 'desc')->first()->id + 1;
-        $username = strtolower($request->first_name).strtolower($request->last_name).'_'.$id;
+        $username = strtolower($request->name).strtolower($request->name_en).'_'.$id;
     
         // Create new employee
         $user = User::create([
             'username' => $username,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'name' => $request->name,
+            'name_en' => $request->name_en,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
             'company_id' => $company_id,
@@ -126,8 +126,8 @@ class EmployeesController extends Controller
         {
             // Validate the request data
             $validatedData = $request->validate([
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'name_en' => 'required|string|max:255',
                 'phone_number' => 'required',
                 'email' => 'required|email|unique:users,email,' . $id,
                 'password' => $id ? 'nullable|string|confirmed|min:8' : 'required|string|confirmed|min:8',
@@ -138,8 +138,8 @@ class EmployeesController extends Controller
 
             // Update the user data
             $user->update([
-                'first_name' => $validatedData['first_name'],
-                'last_name' => $validatedData['last_name'],
+                'name' => $validatedData['name'],
+                'name_en' => $validatedData['name_en'],
                 'phone_number' => $validatedData['phone_number'],
                 'email' => $validatedData['email'],
                 // Other fields...

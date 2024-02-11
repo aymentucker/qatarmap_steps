@@ -117,8 +117,8 @@
                                  <label for="ad_type" class="form-label">نوع الاعلان</label>
                                  <select class="form-select" id="ad_type" name="ad_type_id">
                                     <option value="">اختر...</option>
-                                    @foreach ($adTypes as $ad_type)
-                                        <option value="{{ $ad_type->id }}">{{ $type->name }}</option>
+                                    @foreach ($adTypes as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                 </select>
                            </div>

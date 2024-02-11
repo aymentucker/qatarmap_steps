@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('company_name');
+            $table->string('company_name');    // Arabic name for the company
+            $table->string('company_name_en')->nullable(); // English name for the company
             $table->string('license_number')->unique();
             $table->string('status')->default('Pending');
             $table->text('about')->nullable();
+            $table->text('about_en')->nullable();
             $table->string('logo')->nullable();
             $table->timestamps();
         });

@@ -22,8 +22,8 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $fname = $this->faker->firstName;
-        $lname = $this->faker->lastName;
+        $fname = $this->faker->name;
+        $lname = $this->faker->name_en;
         $fullname = Str::lower($fname).Str::lower($lname);
         $status = $this->faker->numberBetween(0,2);
         switch ($status) {
@@ -41,8 +41,8 @@ class UserFactory extends Factory
         }
         return [
             'username' => $fullname,
-            'first_name' => $fname,
-            'last_name' => $lname,
+            'name' => $fname,
+            'name_en' => $lname,
             'phone_number' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),

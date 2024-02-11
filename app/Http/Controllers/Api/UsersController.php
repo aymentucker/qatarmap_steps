@@ -89,15 +89,15 @@ class UsersController extends Controller
         ]);
 
         $name = explode(' ', $request->name, 2); // Assuming the name is a single string
-        $firstName = $name[0];
-        $lastName = count($name) > 1 ? $name[1] : '';
+        $name = $name[0];
+        $name_en = count($name) > 1 ? $name[1] : '';
 
         $user = User::firstOrCreate(
             ['email' => $request->email],
             [
-                'username' => $this->generateUniqueUsername($firstName, $lastName),
-                'first_name' => $firstName,
-                'last_name' => $lastName,
+                'username' => $this->generateUniqueUsername($name, $name_en),
+                'name' => $name,
+                'name_en' => $name_en,
                 'password' => Hash::make(Str::random(10)), // Random password, as it won't be used
                 'status' => 'active', // or 'pending' based on your logic
                 // Set other default values if necessary
@@ -110,9 +110,9 @@ class UsersController extends Controller
         return response()->json(['message' => 'User logged in successfully', 'user' => $user]);
     }
 
-    private function generateUniqueUsername($firstName, $lastName)
+    private function generateUniqueUsername($name, $name_en)
     {
-        $username = Str::slug($firstName . '-' . $lastName);
+        $username = Str::slug($name . '-' . $name_en);
         $count = User::where('username', 'LIKE', "$username%")->count();
         return $count ? "{$username}-{$count}" : $username;
     }
@@ -125,7 +125,8 @@ class UsersController extends Controller
     {
         // Validate the incoming request
         $validatedData = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'name' => 'required|string', // Arabic name
+            'name_en' => 'required|string', // English name
             'phone_number' => 'required|string',
             'password' => 'required|string|min:6',
             'email' => 'required|string|email|unique:users',
@@ -136,19 +137,20 @@ class UsersController extends Controller
             return response()->json($validatedData->errors(), 400);
         }
 
-        // Extract first and last name from the full name
-        list($firstName, $lastName) = explode(' ', $request->name, 2) + [null, ''];
-
         // Create the user  with user_type => owner
         $user = User::create([
-            'username' => $this->generateUsername($request->name),
-            'first_name' => $firstName,
-            'last_name' => $lastName ?? '',
+            'username' => $this->generateUsername($request->name), // This will temporarily set username without ID
+            'name' => $request->name,
+            'name_en' => $request->name_en,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'user_type' => 'owner',
         ]);
+
+        // Update the username to include the user ID for uniqueness
+        $user->username = $user->username . $user->id;
+        $user->save();
 
          // After successful user creation, automatically log in the user and generate a token
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -195,13 +197,16 @@ class UsersController extends Controller
     public function storeManager(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'company_name' => 'required|string',
+            'name' => 'required|string', // Arabic name
+            'name_en' => 'required|string', // English name
+            'company_name' => 'required|string', //  Arabic company name
+            'company_name_en' => 'required|string', //  English company name
             'license_number' => 'required|string|unique:companies',
             'phone_number' => 'required|string',
             'password' => 'required|string|min:6',
             'email' => 'required|string|email|unique:users',
             'about' => 'nullable|string',
+            'about_en' => 'nullable|string',
             'files.*' => 'sometimes|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
         ]);
 
@@ -209,28 +214,32 @@ class UsersController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
+        // Store Company Data
         $company = Company::create([
-            'company_name' => $request->company_name,
+            'company_name' => $request->company_name, //  Arabic company name
+            'company_name_en' => $request->company_name_en, //  English company name
             'license_number' => $request->license_number,
             'status' => 'Active', // Assuming you want to set the status to Active once created
             'about' => $request->about,
+            'about' => $request->about_en,
         ]);
-
-        // Extract first and last name from the full name
-          list($firstName, $lastName) = explode(' ', $request->name, 2) + [null, ''];
 
         // Create the user with user_type => manager
 
         $user = User::create([
-            'username' => $this->generateUsername($request->name),
-            'first_name' => explode(' ', $request->name, 2)[0],
-            'last_name' => explode(' ', $request->name, 2)[1] ?? '',
+            'username' => $this->generateUsername($request->name), // This will temporarily set username without ID
+            'name' => $request->name,
+            'name_en' => $request->name_en,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'user_type' => 'manager',
             'company_id' => $company->id, // Ensure this column exists in your users table
         ]);
+
+        // Update the username to include the user ID for uniqueness
+        $user->username = $user->username . $user->id;
+        $user->save();
 
         // After successful user creation, automatically log in the user and generate a token
          $token = $user->createToken('auth_token')->plainTextToken;

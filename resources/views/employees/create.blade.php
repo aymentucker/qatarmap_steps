@@ -35,14 +35,14 @@
                         @endif
                          <div class="row">
                             <div class="form-group col-md-6">
-                               <label class="form-label" for="first_name">الاسم الاول:</label>
-                               <input type="text" class="form-control" id="first_name" name="first_name" required
-                               value="{{ old('first_name', $user->first_name ?? '') }}">
+                               <label class="form-label" for="name">الاسم الاول:</label>
+                               <input type="text" class="form-control" id="name" name="name" required
+                               value="{{ old('name', $user->name ?? '') }}">
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="form-label" for="last_name"> الاسم الاخير  :</label>
-                                <input type="text" class="form-control" id="last_name" name="last_name" required
-                                value="{{ old('last_name', $user->last_name ?? '') }}">
+                                <label class="form-label" for="name_en"> الاسم الاخير  :</label>
+                                <input type="text" class="form-control" id="name_en" name="name_en" required
+                                value="{{ old('name_en', $user->name_en ?? '') }}">
                              </div>
   
                             <div class="form-group col-md-6">

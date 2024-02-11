@@ -16,9 +16,11 @@ class Company extends Model
      */
     protected $fillable = [
         'company_name',
+        'company_name_en',
         'license_number',
         'status', // Since you're setting a default value, you might still want to allow mass assignment in case you need to override the default.
         'about',
+        'about_en',
         'logo',
     ];
     

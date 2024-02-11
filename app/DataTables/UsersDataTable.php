@@ -44,7 +44,7 @@ class UsersDataTable extends DataTable
                 return date('Y/m/d',strtotime($query->created_at));
             })
             ->filterColumn('full_name', function($query, $keyword) {
-                $sql = "CONCAT(users.first_name,' ',users.last_name)  like ?";
+                $sql = "CONCAT(users.name,' ',users.name_en)  like ?";
                 return $query->whereRaw($sql, ["%{$keyword}%"]);
             })
             ->filterColumn('userProfile.company_name', function($query, $keyword) {

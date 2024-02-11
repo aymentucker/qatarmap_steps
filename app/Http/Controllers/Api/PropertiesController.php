@@ -430,245 +430,255 @@ class PropertiesController extends Controller
     }
 
    
-    /**
-     * Method to store a new comment
-     */
-    public function storeComment(Request $request, Property $property)
-    {
-        $request->validate([
-            'property_id' => 'required|exists:properties,id',
-            'body' => 'required|string',
-            'parent_id' => 'nullable|exists:comments,id',
-            'rating' => 'required|integer|min:1|max:5' // Assuming a rating out of 5
-        ]);
+        /**
+         * Method to store a new comment.
+         */
+        // public function storeComment(Request $request, Property $property)
+        // {
+        //     $request->validate([
+        //         'body' => 'required|string',
+        //         'parent_id' => 'nullable|exists:comments,id',
+        //         'rating' => 'required|integer|min:1|max:5' // Assuming a rating out of 5
+        //     ]);
 
-        $comment = new Comment();
-        $comment->property_id = $request->property_id;
-        $comment->body = $request->body;
-        $comment->user_id = 1; // Set user_id to 1
-        // $comment->user_id = Auth::guard('api')->id(); // Modify this according to your API authentication method
-        $comment->parent_id = $request->parent_id; // For replies to other comments
-        $comment->rating = $request->rating;
-        $comment->save();
+        //     $comment = new Comment();
+        //     $comment->property_id = $property->id;
+        //     $comment->body = $request->body;
+        //     $comment->user_id = auth()->id(); // Use Laravel's built-in auth helper
+        //     $comment->parent_id = $request->parent_id; // For replies to other comments
+        //     $comment->rating = $request->rating;
+        //     $comment->save();
 
-        return response()->json([
-            'message' => 'Comment posted successfully.',
-            'comment' => $comment
-        ], 201);
-    }
+        //     return response()->json([
+        //         'message' => 'Comment posted successfully.',
+        //         'comment' => $comment
+        //     ], 201);
+        // }
 
-     /**
-     * comment the specified in property.
-     */
+         public function addComment(Request $request, $propertyId)
+            {
+                $validator = Validator::make($request->all(), [
+                    'user_id' => 'required|exists:users,id',
+                    'body' => 'required|string',
+                    'rating' => 'required|integer|min:0|max:5',
+                    'parent_id' => 'nullable|exists:comments,id'
+                ]);
 
-     public function comment($property_id)
-     {
-         $property = Property::with(['comments.user', 'comments.replies.user'])->findOrFail($property_id);
-     
-         $comments = $property->comments->map(function ($comment) {
-             $formattedReplies = $comment->replies->map(function ($reply) {
-                 return [
-                     'id' => $reply->id,
-                     'body' => $reply->body,
-                     'username' => $reply->user->name, // or username, depending on your User model
-                     'created_at' => $reply->created_at->format('d.m.Y'), // Formatting the date
-                     'rating' => $reply->rating // Include rating for each reply
-                     // Add more fields if needed
-                 ];
-             });
-     
-             return [
-                 'id' => $comment->id,
-                 'body' => $comment->body,
-                 'username' => $comment->user->name, // Assuming 'name' is the username field in your User model
-                 'created_at' => $comment->created_at->format('d.m.Y'), // Formatting the date
-                 'rating' => $comment->rating, // Include rating
-                 'replies' => $formattedReplies
-             ];
-         });
-     
-         return response()->json([
-             'property_id' => $property->id,
-             'comments' => $comments
-         ]);
-     }
-     
+                if ($validator->fails()) {
+                    return response()->json($validator->errors(), 422);
+                }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+                $data = $request->only(['user_id', 'body', 'rating', 'parent_id']);
+                $data['property_id'] = $propertyId;
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+                $comment = Comment::saveComment($data);
+
+                return response()->json([
+                    'message' => 'Comment added successfully',
+                    'comment' => $comment
+                ], 201);
+            }
 
 
-    /**
-    *Favorite properties
-    */
-     /**
-     * Display a list of the user's favorite properties.
-     */
-    public function getFavoriteIndex()
-    {
-        $user = Auth::user();
-        $favorites = $user->favorites()->with('property')->get();
+        /**
+         * comment the specified in property.
+         */
 
-        return response()->json($favorites);
-    }
+        // Assuming you've set up route model binding correctly in your routes/web.php or routes/api.php
+        public function comment(Property $property)
+        {
+            // Adjusting the load method to order comments and replies by 'updated_at' in descending order
+            $property->load([
+                'comments' => function ($query) {
+                    $query->orderBy('updated_at', 'desc');
+                },
+                'comments.user',
+                'comments.replies' => function ($query) {
+                    $query->orderBy('updated_at', 'desc');
+                },
+                'comments.replies.user'
+            ]);
+            $comments = $property->comments->map(function ($comment) {
+                $formattedReplies = $comment->replies->map(function ($reply) {
+                    return [
+                        'id' => $reply->id,
+                        'body' => $reply->body,
+                        'username' => $reply->user->name,
+                        'created_at' => $reply->created_at->toDateString(), // or use ->format('d.m.Y') if specific formatting is required
+                        'rating' => $reply->rating
+                    ];
+                });
 
-    /**
-     * Store a newly created favorite in storage.
-     */
-    public function getFavoriteStore(Request $request)
-    {
-        $user = Auth::user();
-        $favorite = new Favorite();
-        $favorite->user_id = $user->id;
-        $favorite->property_id = $request->property_id;
-        $favorite->save();
+                return [
+                    'id' => $comment->id,
+                    'body' => $comment->body,
+                    'username' => $comment->user->name,
+                    'created_at' => $comment->created_at->toDateString(), // Adjusted for consistency
+                    'rating' => $comment->rating,
+                    'replies' => $formattedReplies
+                ];
+            });
 
-        return response()->json(['message' => 'Property added to favorites successfully']);
-    }
-
-    /**
-     * Remove the specified favorite from storage.
-     */
-    public function getFavoriteDestroy($id)
-    {
-        $user = Auth::user();
-        $favorite = Favorite::where('user_id', $user->id)->where('property_id', $id)->first();
-
-        if ($favorite) {
-            $favorite->delete();
-            return response()->json(['message' => 'Favorite removed successfully']);
+            return response()->json([
+                'property_id' => $property->id,
+                'comments' => $comments
+            ]);
         }
 
-        return response()->json(['message' => 'Favorite not found'], 404);
-    }
+     
 
-     /**
-     * getSimilarProperties .
-     */
-
-    public function getSimilarProperties($propertyId)
-    {
-        $property = Property::findOrFail($propertyId);
-
-        // Assuming 'type' and 'location' are columns in your properties table
-        $similarProperties = Property::where('id', '!=', $propertyId)
-                                    ->where('type', $property->type)
-                                    ->where('location', $property->location)
-                                    ->limit(10) // You can adjust the number of similar properties
-                                    ->get();
-
-        return response()->json($similarProperties);
-    }
-
-
-    public function addComment(Request $request, $propertyId)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'body' => 'required|string',
-            'rating' => 'required|integer|min:0|max:5',
-            'parent_id' => 'nullable|exists:comments,id'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+        /**
+         * Update the specified resource in storage.
+         */
+        public function update(Request $request, string $id)
+        {
+            //
         }
 
-        $data = $request->only(['user_id', 'body', 'rating', 'parent_id']);
-        $data['property_id'] = $propertyId;
-
-        $comment = Comment::saveComment($data);
-
-        return response()->json([
-            'message' => 'Comment added successfully',
-            'comment' => $comment
-        ], 201);
-    }
-
-
-
-    /**
-     * Fetch names of all cities.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getCities()
-    {
-        $cities = City::all()->pluck('name');
-        return response()->json($cities);
-    }
-
-    public function getcategories()
-    {
-        $categories = Category::all()->pluck('name');
-        return response()->json($categories);
-    }
-
-    public function getPropertyTypes()
-    {
-        $propertyTypes = PropertyType::all();
-        return response()->json(['data' => $propertyTypes]);
-    }
-
-    public function getFurnishings()
-    {
-        $furnishings = Furnishing::all();
-        return response()->json(['data' => $furnishings]);
-    }
-
-    public function getAdTypes()
-    {
-        $adTypes = AdType::all();
-        return response()->json(['data' => $adTypes]);
-    }
-
-
-
-    /**
-     * Fetch names of regions for a specific city.
-     *
-     * @param  string  $cityName
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getRegionsForCity($cityName)
-    {
-        $city = City::where('name', $cityName)->first();
-
-        if (!$city) {
-            return response()->json(['message' => 'City not found'], 404);
+        /**
+         * Remove the specified resource from storage.
+         */
+        public function destroy(string $id)
+        {
+            //
         }
 
-        // Fetch the entire region objects
-        $regions = Region::where('city_id', $city->id)->get();
+
+        /**
+        *Favorite properties
+        */
+        /**
+         * Display a list of the user's favorite properties.
+         */
+        public function getFavoriteIndex()
+        {
+            $user = Auth::user();
+            $favorites = $user->favorites()->with('property')->get();
+
+            return response()->json($favorites);
+        }
+
+        /**
+         * Store a newly created favorite in storage.
+         */
+        public function getFavoriteStore(Request $request)
+        {
+            $user = Auth::user();
+            $favorite = new Favorite();
+            $favorite->user_id = $user->id;
+            $favorite->property_id = $request->property_id;
+            $favorite->save();
+
+            return response()->json(['message' => 'Property added to favorites successfully']);
+        }
+
+        /**
+         * Remove the specified favorite from storage.
+         */
+        public function getFavoriteDestroy($id)
+        {
+            $user = Auth::user();
+            $favorite = Favorite::where('user_id', $user->id)->where('property_id', $id)->first();
+
+            if ($favorite) {
+                $favorite->delete();
+                return response()->json(['message' => 'Favorite removed successfully']);
+            }
+
+            return response()->json(['message' => 'Favorite not found'], 404);
+        }
+
+        /**
+         * getSimilarProperties .
+         */
+
+        public function getSimilarProperties($propertyId)
+        {
+            $property = Property::findOrFail($propertyId);
+
+            // Assuming 'type' and 'location' are columns in your properties table
+            $similarProperties = Property::where('id', '!=', $propertyId)
+                                        ->where('type', $property->type)
+                                        ->where('location', $property->location)
+                                        ->limit(10) // You can adjust the number of similar properties
+                                        ->get();
+
+            return response()->json($similarProperties);
+        }
 
 
-        // Transform each region object into an array that includes all the required data
-        $regionsData = $regions->map(function ($region) {
-            return [
-                'id' => $region->id,
-                'name' => $region->name,
-                'nameEn' => $region->name_en, // Assuming you have a 'nameEn' attribute for English name
-                'latLng' => $region->lat_lng, // Assuming you have a 'latLng' attribute for latitude and longitude
-                // Add any other required fields here
-            ];
-        });
+    
 
-        
-        return response()->json(['data' => $regionsData]);
-    }
+
+        /**
+         * Fetch names of all cities.
+         *
+         * @return \Illuminate\Http\JsonResponse
+         */
+        public function getCities()
+        {
+            $cities = City::all()->pluck('name');
+            return response()->json($cities);
+        }
+
+        public function getcategories()
+        {
+            $categories = Category::all()->pluck('name');
+            return response()->json($categories);
+        }
+
+        public function getPropertyTypes()
+        {
+            $propertyTypes = PropertyType::all();
+            return response()->json(['data' => $propertyTypes]);
+        }
+
+        public function getFurnishings()
+        {
+            $furnishings = Furnishing::all();
+            return response()->json(['data' => $furnishings]);
+        }
+
+        public function getAdTypes()
+        {
+            $adTypes = AdType::all();
+            return response()->json(['data' => $adTypes]);
+        }
+
+
+
+        /**
+         * Fetch names of regions for a specific city.
+         *
+         * @param  string  $cityName
+         * @return \Illuminate\Http\JsonResponse
+         */
+        public function getRegionsForCity($cityName)
+        {
+            $city = City::where('name', $cityName)->first();
+
+            if (!$city) {
+                return response()->json(['message' => 'City not found'], 404);
+            }
+
+            // Fetch the entire region objects
+            $regions = Region::where('city_id', $city->id)->get();
+
+
+            // Transform each region object into an array that includes all the required data
+            $regionsData = $regions->map(function ($region) {
+                return [
+                    'id' => $region->id,
+                    'name' => $region->name,
+                    'nameEn' => $region->name_en, // Assuming you have a 'nameEn' attribute for English name
+                    'latLng' => $region->lat_lng, // Assuming you have a 'latLng' attribute for latitude and longitude
+                    // Add any other required fields here
+                ];
+            });
+
+            
+            return response()->json(['data' => $regionsData]);
+        }
 }
 
 

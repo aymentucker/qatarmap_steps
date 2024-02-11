@@ -17,7 +17,7 @@
                                 @foreach($users as $user)
 
                                 <tr>
-                                    <td class="text-dark">{{ $user->first_name }}</td>
+                                    <td class="text-dark">{{ $user->name }}</td>
                                     <td class="text-dark">{{ $user->phone_number }}</td>
                                     <td class="text-dark">{{ $user->email }}</td>
                                     <td>

@@ -100,11 +100,11 @@
                         <div class="row">
                            <div class="form-group col-md-6">
                               <label class="form-label" for="fname">الاسم الاول : <span class="text-danger">*</span></label>
-                              {{ Form::text('first_name', old('first_name'), ['class' => 'form-control', 'placeholder' => 'First Name', 'required']) }}
+                              {{ Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'First Name', 'required']) }}
                            </div>
                            <div class="form-group col-md-6">
                               <label class="form-label" for="lname">الاسم الاخير :<span class="text-danger">*</span></label>
-                              {{ Form::text('last_name', old('last_name'), ['class' => 'form-control', 'placeholder' => 'Last Name' ,'required']) }}
+                              {{ Form::text('name_en', old('name_en'), ['class' => 'form-control', 'placeholder' => 'Last Name' ,'required']) }}
                            </div>
                            <div class="form-group col-md-6">
                               <label class="form-label" for="add1">العنوان :</label>

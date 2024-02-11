@@ -17880,7 +17880,7 @@ function Core(rootElement, userSettings) {
    * // using an array of arrays
    * hot.selectCells([[1, 1, 2, 2], [3, 3], [6, 2, 0, 2]]);
    * // using an array of arrays with defined columns as props
-   * hot.selectCells([[1, 'id', 2, 'first_name'], [3, 'full_name'], [6, 'last_name', 0, 'first_name']]);
+   * hot.selectCells([[1, 'id', 2, 'name'], [3, 'full_name'], [6, 'name_en', 0, 'name']]);
    * // or using an array of CellRange objects (produced by `.getSelectedRange()` method)
    * const selected = hot.getSelectedRange();
    *
@@ -17955,7 +17955,7 @@ function Core(rootElement, userSettings) {
    * // select range of columns using visual indexes
    * hot.selectColumns(1, 4);
    * // select range of columns using column properties
-   * hot.selectColumns('id', 'last_name');
+   * hot.selectColumns('id', 'name_en');
    * ```
    *
    * @memberof Core#

@@ -37,7 +37,7 @@
                                             <div class="form-group">
                                                 <label for="full-name" class="form-label">الاسم الاول <span
                                                         class="text-danger">*</span></label>
-                                                <input id="full-name" name="first_name" value="{{ old('first_name') }}"
+                                                <input id="full-name" name="name" value="{{ old('name') }}"
                                                     class="form-control" type="text" placeholder=" " required
                                                     autofocus>
                                             </div>
@@ -47,7 +47,7 @@
                                                 <label for="last-name" class="form-label">الاسم الاخير <span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control" id="last-name" type="text"
-                                                    name="last_name" placeholder=" " value="{{ old('last_name') }}"
+                                                    name="name_en" placeholder=" " value="{{ old('name_en') }}"
                                                     required>
                                             </div>
                                         </div>

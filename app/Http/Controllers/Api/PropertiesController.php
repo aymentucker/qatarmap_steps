@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\Category; 
 use App\Models\City;
 use App\Models\Region;
+use App\Models\PropertyType;
+use App\Models\Furnishing;
+use App\Models\AdType;
 use App\Models\Favorite;
 use App\Models\Comment;
 use App\Models\PropertyView;
@@ -25,20 +28,23 @@ class PropertiesController extends Controller
     public function index()
     {
 
-        $properties = Property::with(['images', 'user', 'company','category'])->orderBy('updated_at', 'desc')->get();
+        $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'adType'])
+        ->orderBy('updated_at', 'desc')
+        ->get();
 
         $propertiesData = $properties->map(function ($property) {
             return [
                 'id' => $property->id,
                 'property_name' => $property->property_name,
-                'property_type' => $property->property_type,
+                'property_type' => $property->propertyType->name ?? 'Not Available', // Ensure null safety
                 'category_name' => $property->category->name,
                 'city' => $property->city,
                 'region' => $property->region,
                 'floor' => $property->floor,
                 'rooms' => $property->rooms,
                 'bathrooms' => $property->bathrooms,
-                'furnishing' => $property->furnishing,
+                'furnishing' => $property->furnishing->name ?? 'Not Available',
+                'ad_type' => $property->adType->name ?? 'Not Available',
                 'property_area' => $property->property_area,
                 'price' => $property->price,
                 'description' => $property->description,
@@ -62,19 +68,20 @@ class PropertiesController extends Controller
      */
     public function show($id)
     {
-        $property = Property::with(['images', 'user', 'company'])->findOrFail($id);
+        $property = Property::with(['propertyType', 'furnishing', 'adType', 'category', 'images', 'user', 'company'])->findOrFail($id);
 
         return response()->json([
             'id' => $property->id,
             'property_name' => $property->property_name,
-            'property_type' => $property->property_type,
+            'property_type' => $property->propertyType->name ?? 'Not Available',
             'category_name' => $property->category->name,
             'city' => $property->city,
             'region' => $property->region,
             'floor' => $property->floor,
             'rooms' => $property->rooms,
             'bathrooms' => $property->bathrooms,
-            'furnishing' => $property->furnishing,
+            'furnishing' => $property->furnishing->name ?? 'Not Available',
+            'ad_type' => $property->adType->name ?? 'Not Available',
             'property_area' => $property->property_area,
             'price' => $property->price,
             'description' => $property->description,
@@ -83,6 +90,7 @@ class PropertiesController extends Controller
             'phone_number' => $property->user->phone_number ?? 'Not Available',
             'company_id' => $property->company_id,
             'company_name' => $property->company->company_name ?? 'Not Available',
+            'company_logo' => $property->company->logo ?? 'Not Available',
             'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
 
         
@@ -130,6 +138,12 @@ class PropertiesController extends Controller
          return response()->json($cities);
      }
 
+     public function getallCategories()
+     {
+         $categories = Category::all(); // Fetches all cities with their fields
+         return response()->json(['data' => $categories]);
+        }
+
 
      public function getallRegions()
      {
@@ -141,63 +155,24 @@ class PropertiesController extends Controller
     /**
      *  Fetch all Properties For City.
      */
-    public function fetchPropertiesForCity($cityName)
-    {
+        public function fetchPropertiesForCity($cityName)
+        {
+            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
+                ->where('city', $cityName)
+                ->orderBy('updated_at', 'desc')->get();
 
-        $properties = Property::with(['images', 'user', 'company', 'category'])
-        ->where('city', $cityName)
-        ->orderBy('updated_at', 'desc')->get();
-        $propertiesData = $properties->map(function ($property) {
-            return [
-                'id' => $property->id,
-                'property_name' => $property->property_name,
-                'property_type' => $property->property_type,
-                'category_name' => $property->category->name,
-                'city' => $property->city,
-                'region' => $property->region,
-                'floor' => $property->floor,
-                'rooms' => $property->rooms,
-                'bathrooms' => $property->bathrooms,
-                'furnishing' => $property->furnishing,
-                'property_area' => $property->property_area,
-                'price' => $property->price,
-                'description' => $property->description,
-                'status' => $property->status,
-                'user_email' => $property->user->email ?? 'Not Available',
-                'phone_number' => $property->user->phone_number ?? 'Not Available',
-                'company_id' => $property->company_id,
-                'company_name' => $property->company->company_name ?? 'Not Available',
-                'images' => $property->images->map(fn($image) => $image->url),
-                'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
-            ];
-        });
-            
-        // Return an instance of PropertyCollection
-        return new PropertyCollection($propertiesData);
-    }
-
-
-     /**
-     *  Fetch all Properties For Region.
-     */
-
-     public function fetchPropertiesForRegion($regionName)
-    {
-        $properties = Property::with(['images', 'user', 'company', 'category'])
-            ->where('region', $regionName)
-            ->orderBy('updated_at', 'desc')->get();
             $propertiesData = $properties->map(function ($property) {
                 return [
                     'id' => $property->id,
                     'property_name' => $property->property_name,
-                    'property_type' => $property->property_type,
-                    'category_name' => $property->category->name ?? 'Not Available',
+                    'property_type' => $property->propertyType->name ?? 'Not Available', // Assuming the propertyType relationship is correctly defined
+                    'category_name' => $property->category->name,
                     'city' => $property->city,
                     'region' => $property->region,
                     'floor' => $property->floor,
                     'rooms' => $property->rooms,
                     'bathrooms' => $property->bathrooms,
-                    'furnishing' => $property->furnishing,
+                    'furnishing' => $property->furnishing->name ?? 'Not Available', // Assuming the furnishing relationship is correctly defined
                     'property_area' => $property->property_area,
                     'price' => $property->price,
                     'description' => $property->description,
@@ -205,16 +180,59 @@ class PropertiesController extends Controller
                     'user_email' => $property->user->email ?? 'Not Available',
                     'phone_number' => $property->user->phone_number ?? 'Not Available',
                     'company_id' => $property->company_id,
-                    'company_name' => $property->company->company_name ?? 'Not Available',
-                    'updated_at' => $property->updated_at->toDateTimeString(),
-                    'images' => $property->images->map(function ($image) {
-                        return $image->url; // Assuming 'url' is the field for image URL
-                    }),
+                    'company_name' => $property->company->name ?? 'Not Available', // Adjusted to match company relationship's attribute
+                    'images' => $property->images->map(fn($image) => $image->url),
+                    'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
                 ];
             });
-            // Return an instance of PropertyCollection
-        return new PropertyCollection($propertiesData);
-    }
+
+            // Assuming PropertyCollection is a custom collection or resource that formats the response
+            return new PropertyCollection($propertiesData);
+        }
+
+
+
+     /**
+     *  Fetch all Properties For Region.
+     */
+
+     public function fetchPropertiesForRegion($regionName)
+     {
+         $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
+             ->where('region', $regionName)
+             ->orderBy('updated_at', 'desc')->get();
+     
+         $propertiesData = $properties->map(function ($property) {
+             return [
+                 'id' => $property->id,
+                 'property_name' => $property->property_name,
+                 'property_type' => $property->propertyType->name ?? 'Not Available', // Correctly access the property type name
+                 'category_name' => $property->category->name ?? 'Not Available',
+                 'city' => $property->city,
+                 'region' => $property->region,
+                 'floor' => $property->floor,
+                 'rooms' => $property->rooms,
+                 'bathrooms' => $property->bathrooms,
+                 'furnishing' => $property->furnishing->name ?? 'Not Available', // Correctly access the furnishing name
+                 'property_area' => $property->property_area,
+                 'price' => $property->price,
+                 'description' => $property->description,
+                 'status' => $property->status,
+                 'user_email' => $property->user->email ?? 'Not Available',
+                 'phone_number' => $property->user->phone_number ?? 'Not Available',
+                 'company_id' => $property->company_id,
+                 'company_name' => $property->company->name ?? 'Not Available', // Correctly access the company name
+                 'updated_at' => $property->updated_at->toDateTimeString(),
+                 'images' => $property->images->map(function ($image) {
+                     return $image->url; // Ensure 'url' is the correct field name
+                 })->all(),
+             ];
+         });
+     
+         // Assuming PropertyCollection is a resource or collection class that formats your response
+         return new PropertyCollection($propertiesData);
+     }
+     
 
 
 
@@ -225,48 +243,52 @@ class PropertiesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getPropertiesByCategory($categoryId)
-    {
-        // Find the category with the provided ID
-        $category = Category::find($categoryId);
+        {
+            // Find the category with the provided ID
+            $category = Category::find($categoryId);
 
-        // Check if category exists
-        if (!$category) {
-            return response()->json([
-                'message' => 'Category not found'
-            ], 404);
+            // Check if category exists
+            if (!$category) {
+                return response()->json([
+                    'message' => 'Category not found'
+                ], 404);
+            }
+
+            // Get properties associated with the category
+            $properties = $category->properties()
+                ->with(['images', 'user', 'company', 'propertyType', 'furnishing', 'category'])
+                ->orderBy('updated_at', 'desc')
+                ->get();
+
+            $propertiesData = $properties->map(function ($property) {
+                return [
+                    'id' => $property->id,
+                    'property_name' => $property->property_name,
+                    'property_type' => $property->propertyType->name ?? 'Not Available', // Adjusted to use the relationship
+                    'category_name' => $property->category->name,
+                    'city' => $property->city,
+                    'region' => $property->region,
+                    'floor' => $property->floor,
+                    'rooms' => $property->rooms,
+                    'bathrooms' => $property->bathrooms,
+                    'furnishing' => $property->furnishing->name ?? 'Not Available', // Adjusted to use the relationship
+                    'property_area' => $property->property_area,
+                    'price' => $property->price,
+                    'description' => $property->description,
+                    'status' => $property->status,
+                    'user_email' => $property->user->email ?? 'Not Available',
+                    'phone_number' => $property->user->phone_number ?? 'Not Available',
+                    'company_id' => $property->company_id,
+                    'company_name' => $property->company->name ?? 'Not Available', // Ensuring it matches your company relationship
+                    'images' => $property->images->map(fn($image) => $image->url),
+                    'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
+                ];
+            });
+
+            // Assuming PropertyCollection is a custom collection or resource that formats the response
+            return new PropertyCollection($propertiesData);
         }
 
-        // Get properties associated with the category
-        $properties = $category->properties()->with(['images', 'user', 'company'])->orderBy('updated_at', 'desc')->get();
-
-        $propertiesData = $properties->map(function ($property) {
-            return [
-                'id' => $property->id,
-                'property_name' => $property->property_name,
-                'property_type' => $property->property_type,
-                'category_name' => $property->category->name,
-                'city' => $property->city,
-                'region' => $property->region,
-                'floor' => $property->floor,
-                'rooms' => $property->rooms,
-                'bathrooms' => $property->bathrooms,
-                'furnishing' => $property->furnishing,
-                'property_area' => $property->property_area,
-                'price' => $property->price,
-                'description' => $property->description,
-                'status' => $property->status,
-                'user_email' => $property->user->email ?? 'Not Available',
-                'phone_number' => $property->user->phone_number ?? 'Not Available',
-                'company_id' => $property->company_id,
-                'company_name' => $property->company->company_name ?? 'Not Available',
-                'images' => $property->images->map(fn($image) => $image->url),
-                'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
-            ];
-        });
-
-        return new PropertyCollection($propertiesData);
-
-    }
 
 
     /**
@@ -595,6 +617,26 @@ class PropertiesController extends Controller
         return response()->json($categories);
     }
 
+    public function getPropertyTypes()
+    {
+        $propertyTypes = PropertyType::all();
+        return response()->json(['data' => $propertyTypes]);
+    }
+
+    public function getFurnishings()
+    {
+        $furnishings = Furnishing::all();
+        return response()->json(['data' => $furnishings]);
+    }
+
+    public function getAdTypes()
+    {
+        $adTypes = AdType::all();
+        return response()->json(['data' => $adTypes]);
+    }
+
+
+
     /**
      * Fetch names of regions for a specific city.
      *
@@ -609,8 +651,23 @@ class PropertiesController extends Controller
             return response()->json(['message' => 'City not found'], 404);
         }
 
-        $regions = Region::where('city_id', $city->id)->pluck('name');
-        return response()->json($regions);
+        // Fetch the entire region objects
+        $regions = Region::where('city_id', $city->id)->get();
+
+
+        // Transform each region object into an array that includes all the required data
+        $regionsData = $regions->map(function ($region) {
+            return [
+                'id' => $region->id,
+                'name' => $region->name,
+                'nameEn' => $region->name_en, // Assuming you have a 'nameEn' attribute for English name
+                'latLng' => $region->lat_lng, // Assuming you have a 'latLng' attribute for latitude and longitude
+                // Add any other required fields here
+            ];
+        });
+
+        
+        return response()->json(['data' => $regionsData]);
     }
 }
 

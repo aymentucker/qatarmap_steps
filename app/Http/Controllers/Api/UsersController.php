@@ -150,6 +150,10 @@ class UsersController extends Controller
             'user_type' => 'owner',
         ]);
 
+         // After successful user creation, automatically log in the user and generate a token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+
         // Generate file folder : uploads/owners
 
         if (!Storage::disk('public')->exists('uploads/owners')) {
@@ -175,7 +179,13 @@ class UsersController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Owner created successfully', 'user' => $user], 201);
+         // Return the token along with the success message and user data
+        return response()->json([
+            'message' => 'Owner created and logged in successfully',
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ], 201);
     }
 
 
@@ -222,6 +232,9 @@ class UsersController extends Controller
             'company_id' => $company->id, // Ensure this column exists in your users table
         ]);
 
+        // After successful user creation, automatically log in the user and generate a token
+         $token = $user->createToken('auth_token')->plainTextToken;
+
         // Handle file uploads
         if ($request->hasFile('files')) {
             // Generate file folder : uploads/owners
@@ -241,7 +254,14 @@ class UsersController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Manager created successfully', 'user' => $user, 'company' => $company], 201);
+        // Return the token along with the success message, user data, and company data
+            return response()->json([
+                'message' => 'Manager created and logged in successfully',
+                'user' => $user,
+                'company' => $company,
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ], 201);
     }
 
 

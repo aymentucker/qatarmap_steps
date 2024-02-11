@@ -41,11 +41,12 @@
                             {{-- Property Type --}}
                             <div class="col-md-4 mb-3">
                               <label for="property_type" class="form-label">نوع العقار </label>
-                              <select class="form-select" id="property_type" name="property_type">
-                                  <option value="">اختر...</option>
-                                  <option value="سكني"> سكني</option>
-                                  <option value="تجاري">تجاري </option>
-                                </select>
+                              <select class="form-select" id="property_type" name="property_type_id">
+                                <option value="">اختر...</option>
+                                @foreach ($propertyTypes as $type)
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @endforeach
+                            </select>
                           </div>
                
                            {{-- Sub-Property Type --}}
@@ -103,21 +104,23 @@
                            {{-- furnishing type --}}
                            <div class="col-md-4 mb-3">
                               <label for="furnishing" class="form-label">التاثيث</label>
-                              <select class="form-select" id="furnishing" name="furnishing" required>
-                                  <option value="">اختر...</option>
-                                  <option value="مفروشة">مفروشة </option>
-                                  <option value="شبه مفروشة ">شبه مفروشة </option>
-                                  <option value="غير مفروشة ">غير مفروشة </option>
-                              </select>
+                              <select class="form-select" id="furnishing" name="furnishing_id" required>
+                                <option value="">اختر...</option>
+                                @foreach ($furnishings as $furnishing)
+                                    <option value="{{ $furnishing->id }}">{{ $furnishing->name }}</option>
+                                @endforeach
+                            </select>
                           </div>
                           
                               {{-- ad Type --}}
                               <div class="col-md-4 mb-3">
                                  <label for="ad_type" class="form-label">نوع الاعلان</label>
-                                 <select class="form-select" id="ad_type" name="ad_type">
-                                    <option value="للايجار">للايجار</option>
-                                    <option value="للبيع">للبيع</option>
-                                 </select>
+                                 <select class="form-select" id="ad_type" name="ad_type_id">
+                                    <option value="">اختر...</option>
+                                    @foreach ($adTypes as $ad_type)
+                                        <option value="{{ $ad_type->id }}">{{ $type->name }}</option>
+                                    @endforeach
+                                </select>
                            </div>
                                 {{-- Area --}}
                                 <div class="col-md-4 mb-3">

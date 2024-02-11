@@ -70,6 +70,21 @@ Route::get('/allcities', [PropertiesController::class, 'getallCities']);
 
 Route::get('/allregions', [PropertiesController::class, 'getallRegions']);
 
+Route::get('/allregions', [PropertiesController::class, 'getallRegions']);
+
+Route::get('/property-types', [PropertiesController::class, 'getPropertyTypes']);
+
+
+Route::get('/furnishings', [PropertiesController::class, 'getFurnishings']);
+
+Route::get('/ad-types', [PropertiesController::class, 'getAdTypes']);
+
+
+
+
+Route::get('/getallcategories', [PropertiesController::class, 'getallCategories']);
+
+
 
 
 /// get  all categories 

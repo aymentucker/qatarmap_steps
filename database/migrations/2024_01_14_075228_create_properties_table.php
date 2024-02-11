@@ -44,6 +44,45 @@ return new class extends Migration
     
             $table->foreign('property_id')->references('id')->on('properties');
         });
+        Schema::table('properties', function (Blueprint $table) {
+            $table->string('property_name_en')->nullable();
+            $table->text('description_en')->nullable();
+            // Assuming `property_type`, `furnishing`, and `ad_type` columns exist and you're refactoring
+            $table->dropColumn(['property_type', 'furnishing', 'ad_type']);
+        });
+
+        Schema::create('property_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('name_en');
+            $table->timestamps();
+        });
+        
+        Schema::create('furnishings', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('name_en');
+            $table->timestamps();
+        });
+        
+        Schema::create('ad_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('name_en');
+            $table->timestamps();
+        });
+        
+        Schema::table('properties', function (Blueprint $table) {
+            $table->unsignedBigInteger('property_type_id')->after('category_id');
+            $table->unsignedBigInteger('furnishing_id')->after('property_type_id');
+            $table->unsignedBigInteger('ad_type_id')->after('furnishing_id');
+        
+            $table->foreign('property_type_id')->references('id')->on('property_types')->onDelete('cascade');
+            $table->foreign('furnishing_id')->references('id')->on('furnishings')->onDelete('cascade');
+            $table->foreign('ad_type_id')->references('id')->on('ad_types')->onDelete('cascade');
+        });
+        
+        
     }
 
     /**

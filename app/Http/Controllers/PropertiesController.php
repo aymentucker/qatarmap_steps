@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\User;
+use App\Models\PropertyType;
+use App\Models\Furnishing;
+use App\Models\AdType;
 use App\Models\Company;
 use App\Models\Category;
 use App\Models\City;
@@ -39,8 +42,12 @@ class PropertiesController extends Controller
 
         $cities = City::all(); // Fetch all Cities from the database
 
-        return view('properties.create', compact('cities','users','categories'));
-    }
+        $propertyTypes = PropertyType::all(); // Fetch all property types from the database
+        $furnishings = Furnishing::all(); // Fetch all furnishing statuses from the database
+        $adTypes = AdType::all(); // Fetch all ad types from the database
+    
+        return view('properties.create', compact('cities', 'users', 'categories', 'propertyTypes', 'furnishings', 'adTypes'));
+        }
 
     public function store(Request $request)
     {
@@ -50,15 +57,15 @@ class PropertiesController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'property_name' => 'required|string',
-            'property_type' => 'required|string|max:255',
+            'property_type_id' => 'required|exists:property_types,id', // Updated
             'category_id' => 'required|exists:categories,id', // Assuming the input name is 'category_id'
             'city' => 'required|string|max:255',
             'region' => 'required|string|max:255',
             'floor' => 'required|integer',
             'rooms' => 'required|integer',
             'bathrooms' => 'required|integer',
-            'furnishing' => 'required|string|max:255',
-            'ad_type' => 'required|string|max:255',
+            'furnishing_id' => 'required|exists:furnishings,id', // Updated
+            'ad_type_id' => 'required|exists:ad_types,id', // Updated
             'property_area' => 'required|numeric',
             'price' => 'required|numeric',
             'description' => 'required|string',
@@ -70,6 +77,12 @@ class PropertiesController extends Controller
         $property = new Property($validatedData);
         
         $property->category_id = $validatedData['category_id']; // Assign the category ID to the property
+
+        $property->property_type_id = $validatedData['property_type_id']; 
+
+        $property->furnishing_id = $validatedData['furnishing_id'];
+        
+        $property->ad_type_id = $validatedData['ad_type_id']; 
 
         // Assign user_id and company_id from the authenticated user
         $property->user_id = $user->id;

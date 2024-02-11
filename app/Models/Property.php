@@ -11,9 +11,9 @@ class Property extends Model
 
     // Fillable fields for mass assignment
     protected $fillable = [
-        'user_id', 'company_id', 'property_name', 'property_type', 'category_id',
-        'city', 'region', 'floor', 'rooms', 'bathrooms', 'furnishing', 'ad_type',
-        'property_area', 'price', 'description','status'
+        'user_id', 'company_id', 'property_name','property_name_en', 'property_type_id', 'category_id',
+        'city', 'region', 'floor', 'rooms', 'bathrooms', 'furnishing_id', 'ad_type_id',
+        'property_area', 'price', 'description' , 'description_en','status'
     ];
 
     public function images()
@@ -45,6 +45,20 @@ class Property extends Model
     {
         return $this->hasOne(PropertyView::class);
     }
+    public function propertyType() {
+        return $this->belongsTo(PropertyType::class);
+    }
+    
+    public function furnishing() {
+        return $this->belongsTo(Furnishing::class);
+    }
+    
+    public function adType() {
+        return $this->belongsTo(AdType::class);
+    }
+    
+    
+    
     
 
 

@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             CategoriesTableSeeder::class,
             CityRegionSeeder::class,
             AdSliderSeeder::class,
+            PropertyTypeSeeder::class,
+            FurnishingSeeder::class,
+            AdTypeSeeder::class,
         ]);
         if(env('IS_DEMO')) {
             $count = $this->command->ask("How much demo user you wan't", 0);

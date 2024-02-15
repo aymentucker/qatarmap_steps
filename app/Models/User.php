@@ -90,4 +90,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $this->hasMany(FileDoc::class);
     }
 
+    public function followedCompanies()
+    {
+        return $this->belongsToMany(Company::class, 'company_user', 'user_id', 'company_id')->withTimestamps();
+    }
+
+
 }

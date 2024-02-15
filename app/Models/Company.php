@@ -22,9 +22,11 @@ class Company extends Model
         'about',
         'about_en',
         'logo',
+        'valuation',
+        'address',
+        
     ];
     
-
     /**
      * Get the users for the company.
      */
@@ -74,4 +76,10 @@ class Company extends Model
 
         return redirect(RouteServiceProvider::HOME);
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'company_user', 'company_id', 'user_id')->withTimestamps();
+    }
+
 }

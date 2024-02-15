@@ -17,154 +17,154 @@ use Illuminate\Http\Request;
 class PropertiesController extends Controller
 {
     public function index()
-    {
-        $properties = Property::with('user')->get();
-        return view('properties.index', compact('properties'));
-    }
+        {
+            $properties = Property::with('user')->get();
+            return view('properties.index', compact('properties'));
+        }
 
     public function getRegionsForCity($cityName)
-    {
-        $city = City::where('name', $cityName)->first();
-        if (!$city) {
-            return response()->json([], 404);
+        {
+            $city = City::where('name', $cityName)->first();
+            if (!$city) {
+                return response()->json([], 404);
+            }
+        
+            $regions = Region::where('city_id', $city->id)->get();
+            return response()->json($regions);
         }
-    
-        $regions = Region::where('city_id', $city->id)->get();
-        return response()->json($regions);
-    }
     
 
     public function create()
-    {
-         $users = User::all(); // Fetch all Users from the database
+        {
+            $users = User::all(); // Fetch all Users from the database
 
-        $categories = Category::all(); // Fetch all categories from the database
+            $categories = Category::all(); // Fetch all categories from the database
 
-        $cities = City::all(); // Fetch all Cities from the database
+            $cities = City::all(); // Fetch all Cities from the database
 
-        $propertyTypes = PropertyType::all(); // Fetch all property types from the database
-        $furnishings = Furnishing::all(); // Fetch all furnishing statuses from the database
-        $adTypes = AdType::all(); // Fetch all ad types from the database
-    
-        return view('properties.create', compact('cities', 'users', 'categories', 'propertyTypes', 'furnishings', 'adTypes'));
+            $propertyTypes = PropertyType::all(); // Fetch all property types from the database
+            $furnishings = Furnishing::all(); // Fetch all furnishing statuses from the database
+            $adTypes = AdType::all(); // Fetch all ad types from the database
+        
+            return view('properties.create', compact('cities', 'users', 'categories', 'propertyTypes', 'furnishings', 'adTypes'));
         }
 
     public function store(Request $request)
-    {
-        // Get the current authenticated user
-        $user = auth()->user();
-    
-        // Validate the request data
-        $validatedData = $request->validate([
-            'property_name' => 'required|string',
-            'property_type_id' => 'required|exists:property_types,id', // Updated
-            'category_id' => 'required|exists:categories,id', // Assuming the input name is 'category_id'
-            'city' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
-            'floor' => 'required|integer',
-            'rooms' => 'required|integer',
-            'bathrooms' => 'required|integer',
-            'furnishing_id' => 'required|exists:furnishings,id', // Updated
-            'ad_type_id' => 'required|exists:ad_types,id', // Updated
-            'property_area' => 'required|numeric',
-            'price' => 'required|numeric',
-            'description' => 'required|string',
-            'images' => 'required|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2 MB
-        ]);
-    
-        // Create a new property instance and fill with validated data
-        $property = new Property($validatedData);
+        {
+            // Get the current authenticated user
+            $user = auth()->user();
         
-        $property->category_id = $validatedData['category_id']; // Assign the category ID to the property
-
-        $property->property_type_id = $validatedData['property_type_id']; 
-
-        $property->furnishing_id = $validatedData['furnishing_id'];
+            // Validate the request data
+            $validatedData = $request->validate([
+                'property_name' => 'required|string',
+                'property_type_id' => 'required|exists:property_types,id', // Updated
+                'category_id' => 'required|exists:categories,id', // Assuming the input name is 'category_id'
+                'city' => 'required|string|max:255',
+                'region' => 'required|string|max:255',
+                'floor' => 'required|integer',
+                'rooms' => 'required|integer',
+                'bathrooms' => 'required|integer',
+                'furnishing_id' => 'required|exists:furnishings,id', // Updated
+                'ad_type_id' => 'required|exists:ad_types,id', // Updated
+                'property_area' => 'required|numeric',
+                'price' => 'required|numeric',
+                'description' => 'required|string',
+                'images' => 'required|array',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2 MB
+            ]);
         
-        $property->ad_type_id = $validatedData['ad_type_id']; 
-
-        // Assign user_id and company_id from the authenticated user
-        $property->user_id = $user->id;
-        $property->company_id = $user->company_id; // Assuming the company_id is directly accessible
-        $property->status = 'منشور'; // Default status
-    
-        // Save the property
-        $property->save();
-
-        if (!Storage::disk('public')->exists('images/properties')) {
-            Storage::disk('public')->makeDirectory('images/properties');
-        }        
-    
-        // Handle image upload
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $filename = $image->store('images/properties', 'public');
-
-                // Create full URL including the domain
-                 $fullUrl = config('app.url') . Storage::url($filename);
-
-                // $fullUrl = config('http://10.0.2.2:8000') . Storage::url($filename);
-                
-
-                // Create and save property image
+            // Create a new property instance and fill with validated data
+            $property = new Property($validatedData);
             
-                $propertyImage = new PropertyImage();
-                $propertyImage->property_id = $property->id; // Ensure this is the correct foreign key
-                $propertyImage->url = $fullUrl; // Store the full URL, including the domain
-                $propertyImage->save();
+            $property->category_id = $validatedData['category_id']; // Assign the category ID to the property
+
+            $property->property_type_id = $validatedData['property_type_id']; 
+
+            $property->furnishing_id = $validatedData['furnishing_id'];
+            
+            $property->ad_type_id = $validatedData['ad_type_id']; 
+
+            // Assign user_id and company_id from the authenticated user
+            $property->user_id = $user->id;
+            $property->company_id = $user->company_id; // Assuming the company_id is directly accessible
+            $property->status = 'منشور'; // Default status
+        
+            // Save the property
+            $property->save();
+
+            if (!Storage::disk('public')->exists('images/properties')) {
+                Storage::disk('public')->makeDirectory('images/properties');
+            }        
+        
+            // Handle image upload
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $filename = $image->store('images/properties', 'public');
+
+                    // Create full URL including the domain
+                    $fullUrl = config('app.url') . Storage::url($filename);
+
+                    // $fullUrl = config('http://10.0.2.2:8000') . Storage::url($filename);
+                    
+
+                    // Create and save property image
+                
+                    $propertyImage = new PropertyImage();
+                    $propertyImage->property_id = $property->id; // Ensure this is the correct foreign key
+                    $propertyImage->url = $fullUrl; // Store the full URL, including the domain
+                    $propertyImage->save();
+                }
             }
+        
+            // Redirect with success message
+            return redirect()->back()->with('message', 'Property added successfully!');
         }
-    
-        // Redirect with success message
-        return redirect()->back()->with('message', 'Property added successfully!');
-    }
     public function show(Property $property)
-    {
-        return view('properties.show', compact('property'));
-    }
+        {
+            return view('properties.show', compact('property'));
+        }
 
     public function edit(Property $property)
-    {
-        $employees = user::all();
-        return view('properties.edit', compact('property', 'users'));
-    }
+        {
+            $employees = user::all();
+            return view('properties.edit', compact('property', 'users'));
+        }
 
     public function update(Request $request, Property $property)
-    {
-       // Validate the request data
-       $validatedData = $request->validate([
-        'user_id' => 'required|exists:users,id',
-        'company_id' => 'required|exists:companies,id',
-        'property_name' => 'required|string|max:255',
-        'property_type' => 'required|string|max:255',
-        'categories' => 'required|string|max:255',
-        'city' => 'required|string|max:255',
-        'region' => 'required|string|max:255',
-        'floor' => 'required|integer',
-        'rooms' => 'required|integer',
-        'bathrooms' => 'required|integer',
-        'furnishing' => 'required|string|max:255',
-        'ad_type' => 'required|string|max:255',
-        'property_area' => 'required|numeric',
-        'price' => 'required|numeric',
-        'description' => 'required|string',
-        'status' => 'required|string|max:255',
-        // Uncomment the line below if you want to handle pictures
-        // 'pictures' => 'nullable|string',
-    ]);
+            {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'company_id' => 'required|exists:companies,id',
+                'property_name' => 'required|string|max:255',
+                'property_type' => 'required|string|max:255',
+                'categories' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'region' => 'required|string|max:255',
+                'floor' => 'required|integer',
+                'rooms' => 'required|integer',
+                'bathrooms' => 'required|integer',
+                'furnishing' => 'required|string|max:255',
+                'ad_type' => 'required|string|max:255',
+                'property_area' => 'required|numeric',
+                'price' => 'required|numeric',
+                'description' => 'required|string',
+                'status' => 'required|string|max:255',
+                // Uncomment the line below if you want to handle pictures
+                // 'pictures' => 'nullable|string',
+            ]);
 
-    // Create a new property
-    $property = Property::create($validatedData);
+            // Create a new property
+            $property = Property::create($validatedData);
 
-    // Redirect or return a response
-    // Change the redirection as per your application's flow
-    return redirect()->back()->with('message', 'Property added successfully!');
-  }
+            // Redirect or return a response
+            // Change the redirection as per your application's flow
+            return redirect()->back()->with('message', 'Property added successfully!');
+        }
 
     public function destroy(Property $property)
-    {
-        $property->delete();
-        return redirect()->route('properties.index')->with('success', 'Property deleted successfully.');
-    }
+        {
+            $property->delete();
+            return redirect()->route('properties.index')->with('success', 'Property deleted successfully.');
+        }
 }

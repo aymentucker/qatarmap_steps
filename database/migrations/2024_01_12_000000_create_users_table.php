@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('user_type')->default('user');
             $table->string('password');
             $table->string('status')->default('pending');
+            $table->unsignedBigInteger('favorites_count')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->unsignedBigInteger('company_id')->nullable();

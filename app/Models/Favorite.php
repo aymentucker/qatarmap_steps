@@ -29,4 +29,17 @@ class Favorite extends Model
     {
         return $this->belongsTo(Property::class);
     }
+    
+    protected static function boot() {
+        parent::boot();
+    
+        static::created(function ($favorite) {
+            $favorite->property->increment('favorites_count');
+        });
+    
+        static::deleted(function ($favorite) {
+            $favorite->property->decrement('favorites_count');
+        });
+    }
+    
 }

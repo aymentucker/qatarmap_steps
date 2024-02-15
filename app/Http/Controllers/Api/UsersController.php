@@ -182,12 +182,13 @@ class UsersController extends Controller
         }
 
          // Return the token along with the success message and user data
-        return response()->json([
+         return response()->json([
             'message' => 'Owner created and logged in successfully',
-            'user' => $user,
+            'user' => $user->toArray(), // Ensure this contains 'id'
             'access_token' => $token,
             'token_type' => 'Bearer',
         ], 201);
+        
     }
 
 
@@ -196,6 +197,12 @@ class UsersController extends Controller
      */
     public function storeManager(Request $request)
     {
+
+        // Preprocess the valuation field to convert from "true"/"false" string to boolean
+        $request->merge([
+            'valuation' => $request->input('valuation') === 'true',
+        ]);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string', // Arabic name
             'name_en' => 'required|string', // English name
@@ -207,12 +214,15 @@ class UsersController extends Controller
             'email' => 'required|string|email|unique:users',
             'about' => 'nullable|string',
             'about_en' => 'nullable|string',
+            'valuation' => 'required|boolean', // Validation for the valuation field
             'files.*' => 'sometimes|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+
+        
 
         // Store Company Data
         $company = Company::create([
@@ -222,6 +232,7 @@ class UsersController extends Controller
             'status' => 'Active', // Assuming you want to set the status to Active once created
             'about' => $request->about,
             'about' => $request->about_en,
+            'valuation' => $request->valuation, // Store the valuation field
         ]);
 
         // Create the user with user_type => manager
@@ -266,8 +277,8 @@ class UsersController extends Controller
         // Return the token along with the success message, user data, and company data
             return response()->json([
                 'message' => 'Manager created and logged in successfully',
-                'user' => $user,
-                'company' => $company,
+                'user' => $user->toArray(), // Ensure this contains 'id'
+                'company' => $company->toArray(), // Ensure this contains 'id'
                 'access_token' => $token,
                 'token_type' => 'Bearer',
             ], 201);

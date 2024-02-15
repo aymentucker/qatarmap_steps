@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('about')->nullable();
             $table->text('about_en')->nullable();
             $table->string('logo')->nullable();
+            $table->string('address')->nullable()->default('الدوحة');
+            $table->boolean('valuation')->default(false); 
             $table->timestamps();
         });
     }

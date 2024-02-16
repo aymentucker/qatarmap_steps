@@ -80,35 +80,35 @@ class UsersController extends Controller
         //
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'token' => 'required|string', // Token for further validation if needed
-        ]);
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string',
+    //         'email' => 'required|email',
+    //         'token' => 'required|string', // Token for further validation if needed
+    //     ]);
 
-        $name = explode(' ', $request->name, 2); // Assuming the name is a single string
-        $name = $name[0];
-        $name_en = count($name) > 1 ? $name[1] : '';
+    //     $name = explode(' ', $request->name, 2); // Assuming the name is a single string
+    //     $name = $name[0];
+    //     $name_en = count($name) > 1 ? $name[1] : '';
 
-        $user = User::firstOrCreate(
-            ['email' => $request->email],
-            [
-                'username' => $this->generateUniqueUsername($name, $name_en),
-                'name' => $name,
-                'name_en' => $name_en,
-                'password' => Hash::make(Str::random(10)), // Random password, as it won't be used
-                'status' => 'active', // or 'pending' based on your logic
-                // Set other default values if necessary
-            ]
-        );
+    //     $user = User::firstOrCreate(
+    //         ['email' => $request->email],
+    //         [
+    //             'username' => $this->generateUniqueUsername($name, $name_en),
+    //             'name' => $name,
+    //             'name_en' => $name_en,
+    //             'password' => Hash::make(Str::random(10)), // Random password, as it won't be used
+    //             'status' => 'active', // or 'pending' based on your logic
+    //             // Set other default values if necessary
+    //         ]
+    //     );
 
-        // Here, you can implement logic to generate and return an API token
-        // if your application requires it.
+    //     // Here, you can implement logic to generate and return an API token
+    //     // if your application requires it.
 
-        return response()->json(['message' => 'User logged in successfully', 'user' => $user]);
-    }
+    //     return response()->json(['message' => 'User logged in successfully', 'user' => $user]);
+    // }
 
     private function generateUniqueUsername($name, $name_en)
     {
@@ -283,6 +283,80 @@ class UsersController extends Controller
                 'token_type' => 'Bearer',
             ], 201);
     }
+
+    /**
+     * Register a new regular user.
+     */
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'phone_number' => 'required|string',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            // Add other fields as necessary
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user = User::create([
+            'username' => $this->generateUsername($request->name), // This will temporarily set username without ID
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
+            'user_type' => 'user',
+            'password' => Hash::make($request->password),
+            // Add other fields as necessary
+        ]);
+
+        // Update the username to include the user ID for uniqueness
+        $user->username = $user->username . $user->id;
+        $user->save();
+
+        // Automatically log in the user upon registration
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user->toArray(), // Ensure this contains 'id'
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ]);
+    }
+
+    /**
+     * Authenticate a user and return the token if the provided credentials are correct.
+     */
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        // Attempt to authenticate the user
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $user = User::where('email', $request->email)->firstOrFail();
+
+        // Generate token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'User logged in successfully',
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ]);
+    }
+
+
 
 
       /**

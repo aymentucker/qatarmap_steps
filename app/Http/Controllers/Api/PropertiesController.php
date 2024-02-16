@@ -297,79 +297,77 @@ class PropertiesController extends Controller
     /**
      * search a searchTerm.
      */
-
-     public function search(Request $request)
-        {
-            $searchTerm = $request->query('searchTerm', '');
+    public function search(Request $request)
+    {
+        $searchTerm = $request->query('searchTerm', '');
         
-            $properties = Property::where('property_name', 'LIKE', "%{$searchTerm}%")
-                        ->orWhere('region', 'LIKE', "%{$searchTerm}%")
-                        ->orWhere('property_type', 'LIKE', "%{$searchTerm}%") 
-                        ->get(); // Retrieve all matching records without pagination
+        $properties = Property::where('property_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('region', 'LIKE', "%{$searchTerm}%")
+                    ->get(); // Retrieve all matching records without pagination
         
-                        return new PropertyCollection($properties);
-
-            //  return response()->json($properties);
+        if ($properties->isEmpty()) {
+            return response()->json(['message' => 'No properties found matching the search term'], 404);
+        } else {
+            return new PropertyCollection($properties);
         }
+    }
+
+    
+    
      
 
      /**
      * filter properties
      */
 
-    public function filter(Request $request)
-        {
-            $query = Property::query();
-        
-            // Filter by City
-            if ($request->has('city') && $request->city != '') {
-                $query->where('city', $request->city);
-            }
-        
-            // Filter by Region
-            if ($request->has('region') && $request->region != '') {
-                $query->where('region', $request->region);
-            }
-        
-            // Filter by Ad Type
-            if ($request->has('ad_type') && is_array($request->ad_type) && count($request->ad_type) > 0) {
-                $query->whereIn('ad_type', $request->ad_type);
-            }
+     public function filter(Request $request)
+    {
+        $query = Property::query(); // Start with all properties
 
-            // Filter by Furnishing
-            if ($request->has('furnishing') && is_array($request->furnishing) && count($request->furnishing) > 0) {
-                $query->whereIn('furnishing', $request->furnishing);
-            }
-        
-            // Filter by Price Range
-            if ($request->has('price_from') && $request->price_from != '') {
-                $query->where('price', '>=', $request->price_from);
-            }
-            if ($request->has('price_to') && $request->price_to != '') {
-                $query->where('price', '<=', $request->price_to);
-            }
-        
-            // Filter by Property Type
-            if ($request->has('property_type') && is_array($request->property_type) && count($request->property_type) > 0) {
-                $query->whereIn('property_type', $request->property_type);
-            }
-        
-            // Filter by Number of Bedrooms
-            if ($request->has('bedrooms') && $request->bedrooms != '') {
-                $query->where('bedrooms', $request->bedrooms);
-            }
-        
-            // Filter by Number of Bathrooms
-            if ($request->has('bathrooms') && $request->bathrooms != '') {
-                $query->where('bathrooms', $request->bathrooms);
-            }
-        
-            // Add other filters as needed
-        
-            $properties = $query->get();
-        
-            return response()->json($properties);
+        // Apply filters
+        if ($request->has('city')) {
+            $query->where('city', $request->city);
         }
+
+        if ($request->has('region')) {
+            $query->where('region', $request->region);
+        }
+
+        if ($request->has('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->has('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        if ($request->has('min_area')) {
+            $query->where('property_area', '>=', $request->min_area);
+        }
+
+        if ($request->has('max_area')) {
+            $query->where('property_area', '<=', $request->max_area);
+        }
+
+        if ($request->has('bedrooms')) {
+            $query->where('rooms', $request->bedrooms); // Assuming 'rooms' represents bedrooms
+        }
+
+        if ($request->has('bathrooms')) {
+            $query->where('bathrooms', $request->bathrooms);
+        }
+
+        // if ($request->has('property_type')) {
+        //     $query->where('property_type_id', $request->property_type); // Correctly filter based on property_type_id
+        // }
+
+        // Add more filters as needed
+
+        $properties = $query->get(); // Execute the query
+
+        return response()->json(['data' => $properties]);
+    }
+
      
 
     /**

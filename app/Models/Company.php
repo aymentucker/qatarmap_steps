@@ -82,4 +82,17 @@ class Company extends Model
         return $this->belongsToMany(User::class, 'company_user', 'company_id', 'user_id')->withTimestamps();
     }
 
+    // Subscriptions for companies, if different from individual users
+    public function subscriptions()
+    {
+        return $this->belongsToMany(Subscription::class, 'company_subscriptions')->withTimestamps();
+    }
+
+    // Packages could be handled similarly if different from individual users
+    public function packages()
+    {
+        return $this->belongsToMany(Package::class, 'company_packages')->withTimestamps();
+    }
+
+
 }

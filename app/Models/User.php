@@ -95,5 +95,16 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $this->belongsToMany(Company::class, 'company_user', 'user_id', 'company_id')->withTimestamps();
     }
 
+    public function subscriptions()
+        {
+            return $this->belongsToMany(Subscription::class, 'user_subscriptions')->withTimestamps();
+        }
+
+    public function packages()
+        {
+            return $this->belongsToMany(Package::class, 'user_packages')->withTimestamps();
+        }
+
+
 
 }

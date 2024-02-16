@@ -47,10 +47,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('properties', PropertiesController::class);
 
-Route::get('/filter', [PropertiesController::class, 'filter']);
+Route::get('/properties/filter', [PropertiesController::class, 'filter']);
+
 
 // // // Place this in routes/api.php for API routes
-Route::get('/properties/search', [PropertiesController::class, 'search']);
+// Route::get('/properties/search', [PropertiesController::class, 'search']);
 
 Route::get('/search', [PropertiesController::class, 'search']);
 
@@ -138,10 +139,10 @@ Route::post('/properties/{id}/count-view', [PropertiesController::class, 'countV
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/properties', [PropertiesController::class,'store']);
-    Route::get('favorites', [FavoriteController::class, 'getFavoriteIndex']);
-    Route::post('favorites', [FavoriteController::class, 'getFavoriteStore']);
-    Route::delete('favorites/{propertyId}', [FavoriteController::class, 'getFavoriteDestroy']);
-    Route::get('properties/{propertyId}/is-favorite', [FavoriteController::class, 'isFavorite']);
+    Route::get('favorites', [PropertiesController::class, 'getFavoriteIndex']);
+    Route::post('favorites', [PropertiesController::class, 'getFavoriteStore']);
+    Route::delete('favorites/{propertyId}', [PropertiesController::class, 'getFavoriteDestroy']);
+    Route::get('properties/{propertyId}/is-favorite', [PropertiesController::class, 'isFavorite']);
 });
 
 Route::get('/companies', [CompaniesController::class, 'index']);
@@ -151,7 +152,10 @@ Route::post('/follow/company/{companyId}', [CompaniesController::class, 'followC
 Route::delete('/unfollow/company/{companyId}',  [CompaniesController::class,'unfollowCompany']);
 
 
+// User registration
+Route::post('/register', [UsersController::class, 'register']);
 
+// User login
 Route::post('/login', [UsersController::class, 'login']);
 
 

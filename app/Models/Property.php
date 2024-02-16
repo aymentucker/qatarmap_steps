@@ -31,6 +31,11 @@ class Property extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // If owned by an individual user
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class)->whereNull('parent_id');

@@ -16,22 +16,31 @@ use Illuminate\Http\Request;
 
 class PropertiesController extends Controller
 {
-    public function index()
-        {
-            $properties = Property::with('user')->get();
-            return view('properties.index', compact('properties'));
-        }
+    public function index(Request $request)
+{
+    // Start the query
+    $query = Property::with(['user', 'images', 'company', 'category', 'propertyType', 'adType', 'city', 'region']);
 
-    public function getRegionsForCity($cityName)
-        {
-            $city = City::where('name', $cityName)->first();
-            if (!$city) {
-                return response()->json([], 404);
-            }
-        
-            $regions = Region::where('city_id', $city->id)->get();
-            return response()->json($regions);
-        }
+    // If a company_id is provided, add it to the query conditions
+    if ($request->has('company_id') && $request->company_id) {
+        $query->where('company_id', $request->company_id);
+    }
+
+    // Execute the query
+    $properties = $query->get();
+
+    // Fetch all companies for the filter dropdown
+    $companies = Company::all();
+
+    // Pass the properties and companies to the view
+    return view('properties.index', compact('properties', 'companies'));
+}
+ 
+public function getRegionsForCity($cityId)
+{
+    $regions = Region::where('city_id', $cityId)->get();
+    return response()->json($regions);
+}
     
 
     public function create()
@@ -57,15 +66,15 @@ class PropertiesController extends Controller
             // Validate the request data
             $validatedData = $request->validate([
                 'property_name' => 'required|string',
-                'property_type_id' => 'required|exists:property_types,id', // Updated
+                'property_type_id' => 'required|exists:property_types,id', 
                 'category_id' => 'required|exists:categories,id', // Assuming the input name is 'category_id'
-                'city' => 'required|string|max:255',
-                'region' => 'required|string|max:255',
-                'floor' => 'required|integer',
+                'city_id' => 'required|exists:cities,id', 
+                'region_id' => 'required|exists:regions,id', 
+                 'floor' => 'required|integer',
                 'rooms' => 'required|integer',
                 'bathrooms' => 'required|integer',
-                'furnishing_id' => 'required|exists:furnishings,id', // Updated
-                'ad_type_id' => 'required|exists:ad_types,id', // Updated
+                'furnishing_id' => 'required|exists:furnishings,id', 
+                'ad_type_id' => 'required|exists:ad_types,id', 
                 'property_area' => 'required|numeric',
                 'price' => 'required|numeric',
                 'description' => 'required|string',
@@ -83,6 +92,9 @@ class PropertiesController extends Controller
             $property->furnishing_id = $validatedData['furnishing_id'];
             
             $property->ad_type_id = $validatedData['ad_type_id']; 
+
+            $property->city_id = $validatedData['city_id'];
+            $property->region_id = $validatedData['region_id'];        
 
             // Assign user_id and company_id from the authenticated user
             $property->user_id = $user->id;
@@ -162,9 +174,58 @@ class PropertiesController extends Controller
             return redirect()->back()->with('message', 'Property added successfully!');
         }
 
-    public function destroy(Property $property)
+        public function destroy($id)
         {
-            $property->delete();
-            return redirect()->route('properties.index')->with('success', 'Property deleted successfully.');
+            try {
+                // Find the property by its ID
+                $property = Property::findOrFail($id);
+        
+                // Delete associated images from the storage and database
+                $images = $property->images; // Assuming you have a relationship defined in Property model as 'images'
+                foreach ($images as $image) {
+                    // Extract the file path relative to the disk root from the URL
+                    $relativePath = str_replace(config('app.url') . '/storage/', '', $image->url);
+                    if (Storage::disk('public')->exists($relativePath)) {
+                        Storage::disk('public')->delete($relativePath);
+                    }
+                    $image->delete();
+                }
+        
+                // Delete the property itself
+                $property->delete();
+        
+                // Redirect with a success message
+                return redirect()->route('properties.index')->with('success', 'Property and all associated images deleted successfully.');
+            } catch (\Exception $e) {
+                // Handle the error appropriately
+                return back()->withErrors(['error' => 'An error occurred while deleting the property: ' . $e->getMessage()]);
+            }
         }
-}
+
+
+
+    public function fetchPropertiesForCompany($companyId)
+        {
+            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
+                ->where('company_id', $companyId)
+                ->where('ad_type_id', 1) // Assuming 1 signifies a specific ad type, like sales
+                ->orderBy('updated_at', 'desc')
+                ->get();
+        
+            // No need to transform the data if you're going to access the properties directly in the view
+            return view('properties.index', ['properties' => $properties]); // Adjust 'properties.index' to your view's path
+        }
+    public function fetchRentPropertiesForCompany($companyId)
+        {
+            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
+                ->where('company_id', $companyId)
+                ->where('ad_type_id', 2) // Assuming 2 signifies another specific ad type, like rentals
+                ->orderBy('updated_at', 'desc')
+                ->get();
+
+            // Again, directly pass the properties collection to the view
+            return view('properties.rentals', ['properties' => $properties]); // Adjust 'properties.rentals' to your view's path
+        }
+
+
+    }

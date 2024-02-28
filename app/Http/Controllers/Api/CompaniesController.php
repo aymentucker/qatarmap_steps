@@ -28,7 +28,12 @@ class CompaniesController extends Controller
      // Return all companies
      public function index()
      {
-         return new CompanyCollection(Company::all());
+        // Filter companies by 'Active' status before wrapping them in CompanyCollection
+        $activeCompanies = Company::where('status', 'Active')->get();
+
+        return new CompanyCollection($activeCompanies);
+
+        //  return new CompanyCollection(Company::all());
      }
 
      // Return a single company
@@ -65,6 +70,7 @@ class CompaniesController extends Controller
     public function fetchValuationCompanies()
     {
         $valuationCompanies = Company::where('valuation', true)
+            ->where('status', 'Active') // filter by Active status
             ->orderBy('updated_at', 'desc')
             ->get();
     

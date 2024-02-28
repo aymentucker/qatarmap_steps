@@ -12,7 +12,7 @@ class Property extends Model
     // Fillable fields for mass assignment
     protected $fillable = [
         'user_id', 'company_id', 'property_name','property_name_en', 'property_type_id', 'category_id',
-        'city', 'region', 'floor', 'rooms', 'bathrooms', 'furnishing_id', 'ad_type_id',
+        'city_id', 'region_id', 'floor', 'rooms', 'bathrooms', 'furnishing_id', 'ad_type_id',
         'property_area', 'price', 'description' , 'description_en','status'
     ];
 
@@ -44,6 +44,16 @@ class Property extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
     }
     
     public function propertyView()

@@ -28,87 +28,111 @@ class PropertiesController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-        {
-
-            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'adType'])
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
-            $propertiesData = $properties->map(function ($property) {
-                return [
-                    'id' => $property->id,
-                    'property_name' => $property->property_name,
-                    'property_type' => $property->propertyType->name ?? 'Not Available', // Ensure null safety
-                    'category_name' => $property->category->name,
-                    'city' => $property->city,
-                    'region' => $property->region,
-                    'floor' => $property->floor,
-                    'rooms' => $property->rooms,
-                    'bathrooms' => $property->bathrooms,
-                    'furnishing' => $property->furnishing->name ?? 'Not Available',
-                    'ad_type' => $property->adType->name ?? 'Not Available',
-                    'property_area' => $property->property_area,
-                    'price' => $property->price,
-                    'description' => $property->description,
-                    'status' => $property->status,
-                    'user_email' => $property->user->email ?? 'Not Available',
-                    'phone_number' => $property->user->phone_number ?? 'Not Available',
-                    'company_id' => $property->company_id,
-                    'company_name' => $property->company->company_name ?? 'Not Available',
-                    'images' => $property->images->map(fn($image) => $image->url),
-                    'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
-                ];
-            });
-
-            return new PropertyCollection($propertiesData);
-
-            // return response()->json($propertiesData);
-        }
-
-     /**
-     * Display the specified resource.
-     */
-    public function show($id)
-        {
-            $property = Property::with(['propertyType', 'furnishing', 'adType', 'category', 'images', 'user', 'company'])->findOrFail($id);
-
-            return response()->json([
+    {
+        $properties = Property::with([
+            'images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'adType', 'city', 'region'
+        ])
+        ->orderBy('updated_at', 'desc')
+        ->get();
+    
+        $propertiesData = $properties->map(function ($property) {
+            return [
                 'id' => $property->id,
                 'property_name' => $property->property_name,
+                'property_name_en' => $property->property_name_en, // Assuming this attribute exists
                 'property_type' => $property->propertyType->name ?? 'Not Available',
+                'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
                 'category_name' => $property->category->name,
-                'city' => $property->city,
-                'region' => $property->region,
+                'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
+                'city' => $property->city->name,
+                'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
+                'region' => $property->region->name,
+                'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
                 'floor' => $property->floor,
                 'rooms' => $property->rooms,
                 'bathrooms' => $property->bathrooms,
                 'furnishing' => $property->furnishing->name ?? 'Not Available',
+                'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
                 'ad_type' => $property->adType->name ?? 'Not Available',
+                'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
                 'property_area' => $property->property_area,
                 'price' => $property->price,
                 'description' => $property->description,
+                'description_en' => $property->description_en ?? '', // Assuming this attribute exists
                 'status' => $property->status,
                 'user_email' => $property->user->email ?? 'Not Available',
+                'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
                 'phone_number' => $property->user->phone_number ?? 'Not Available',
                 'company_id' => $property->company_id,
-                'company_name' => $property->company->company_name ?? 'Not Available',
-                'company_logo' => $property->company->logo ?? 'Not Available',
+                'company_name' => $property->company->name ?? 'Not Available',
+                'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
+                'images' => $property->images->map(fn($image) => $image->url),
                 'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
+            ];
+        });
+    
+        return new PropertyCollection($propertiesData); // Assuming PropertyCollection is a custom collection or resource that formats the response
+        // or use
+        // return response()->json($propertiesData);
+    }
+    public function show($id)
+    {
+        $property = Property::with([
+            'propertyType', 'furnishing', 'adType', 'category', 'images', 'user', 'company', 'city', 'region'
+        ])->findOrFail($id);
 
-            
-                // 'company_logo' => $property->company->logo_url ?? 'Not Available', // Add this line
+        // Assuming the User model has a relationship 'userProfile' that contains 'img_profile'
+         $imgProfile = $property->user->userProfile->img_profile ?? 'Not Available';
 
-                'images' => $property->images->map(function ($image) {
-                    return $image->url; // Assuming 'url' is the field for image URL
-                }),
-            ]);
-        }
-        
+        // Assuming the Company model contains 'logo' and 'address' fields
+        $companyLogo = $property->company->logo ?? 'Not Available';
+        $companyAddress = $property->company->address ?? 'Not Available';
 
-    /**
+    
+        $propertyData = [
+            'id' => $property->id,
+            'property_name' => $property->property_name,
+            'property_name_en' => $property->property_name_en ?? 'Not Available',
+            'property_type' => $property->propertyType->name ?? 'Not Available',
+            'property_type_en' => $property->propertyType->name_en ?? 'Not Available',
+            'category_name' => $property->category->name,
+            'category_name_en' => $property->category->name_en ?? 'Not Available',
+            'city' => $property->city->name,
+            'city_name_en' => $property->city->name_en ?? 'Not Available',
+            'region' => $property->region->name,
+            'region_name_en' => $property->region->name_en ?? 'Not Available',
+            'floor' => $property->floor,
+            'rooms' => $property->rooms,
+            'bathrooms' => $property->bathrooms,
+            'furnishing' => $property->furnishing->name ?? 'Not Available',
+            'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available',
+            'ad_type' => $property->adType->name ?? 'Not Available',
+            'ad_type_name_en' => $property->adType->name_en ?? 'Not Available',
+            'property_area' => $property->property_area,
+            'price' => $property->price,
+            'description' => $property->description,
+            'description_en' => $property->description_en ?? 'Not Available',
+            'status' => $property->status,
+            'user_email' => $property->user->email ?? 'Not Available',
+            'user_name' => $property->user->name ?? 'Not Available',
+            'user_name_en' => $property->user->name_en ?? 'Not Available',
+            'phone_number' => $property->user->phone_number ?? 'Not Available',
+            'img_profile' => $imgProfile, // Add the user's profile image URL here
+            'company_id' => $property->company_id,
+            'company_name' => $property->company->name ?? 'Not Available',
+            'company_name_en' => $property->company->name_en ?? 'Not Available',
+            'company_logo' => $companyLogo, // Company logo URL
+            'company_address' => $companyAddress, // company address
+            'images' => $property->images->map(fn($image) => $image->url),
+            'updated_at' => $property->updated_at->toDateTimeString(),
+        ];
+    
+        return response()->json($propertyData);
+    }
+     /**
      *  CountView of listing properties 
      */
-
 
     public function countView($id)
         {
@@ -158,35 +182,49 @@ class PropertiesController extends Controller
     /**
      *  Fetch all Properties For City.
      */
-    public function fetchPropertiesForCity($cityName)
+    public function fetchPropertiesForCity($cityId)
         {
-            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
-                ->where('city', $cityName)
-                ->orderBy('updated_at', 'desc')->get();
-
+            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
+            ->whereHas('city', function ($query) use ($cityId) {
+                $query->where('id', $cityId); // Filter by city ID
+            })
+            ->orderBy('updated_at', 'desc')->get();
+    
             $propertiesData = $properties->map(function ($property) {
                 return [
                     'id' => $property->id,
                     'property_name' => $property->property_name,
-                    'property_type' => $property->propertyType->name ?? 'Not Available', // Assuming the propertyType relationship is correctly defined
+                    'property_name_en' => $property->property_name_en, // Assuming this attribute exists
+                    'property_type' => $property->propertyType->name ?? 'Not Available',
+                    'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'category_name' => $property->category->name,
-                    'city' => $property->city,
-                    'region' => $property->region,
+                    'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'city' => $property->city->name,
+                    'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'region' => $property->region->name,
+                    'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
                     'floor' => $property->floor,
                     'rooms' => $property->rooms,
                     'bathrooms' => $property->bathrooms,
-                    'furnishing' => $property->furnishing->name ?? 'Not Available', // Assuming the furnishing relationship is correctly defined
+                    'furnishing' => $property->furnishing->name ?? 'Not Available',
+                    'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'ad_type' => $property->adType->name ?? 'Not Available',
+                    'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'property_area' => $property->property_area,
                     'price' => $property->price,
                     'description' => $property->description,
+                    'description_en' => $property->description_en ?? '', // Assuming this attribute exists
                     'status' => $property->status,
                     'user_email' => $property->user->email ?? 'Not Available',
+                    'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                    'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
                     'phone_number' => $property->user->phone_number ?? 'Not Available',
                     'company_id' => $property->company_id,
-                    'company_name' => $property->company->name ?? 'Not Available', // Adjusted to match company relationship's attribute
+                    'company_name' => $property->company->name ?? 'Not Available',
+                    'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
                     'images' => $property->images->map(fn($image) => $image->url),
                     'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
-                ];
+                    ];
             });
 
             // Assuming PropertyCollection is a custom collection or resource that formats the response
@@ -199,33 +237,50 @@ class PropertiesController extends Controller
      *  Fetch all Properties For Region.
      */
 
-     public function fetchPropertiesForRegion($regionName)
+     public function fetchPropertiesForRegion($regionId)
      {
-         $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
-             ->where('region', $regionName)
+          $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
+             ->whereHas('region', function ($query) use ($regionId) {
+              $query->where('id', $regionId); // Filter by region ID
+             })
              ->orderBy('updated_at', 'desc')->get();
      
+     
+             
          $propertiesData = $properties->map(function ($property) {
              return [
-                 'id' => $property->id,
-                 'property_name' => $property->property_name,
-                 'property_type' => $property->propertyType->name ?? 'Not Available', // Correctly access the property type name
-                 'category_name' => $property->category->name ?? 'Not Available',
-                 'city' => $property->city,
-                 'region' => $property->region,
-                 'floor' => $property->floor,
-                 'rooms' => $property->rooms,
-                 'bathrooms' => $property->bathrooms,
-                 'furnishing' => $property->furnishing->name ?? 'Not Available', // Correctly access the furnishing name
-                 'property_area' => $property->property_area,
-                 'price' => $property->price,
-                 'description' => $property->description,
-                 'status' => $property->status,
-                 'user_email' => $property->user->email ?? 'Not Available',
-                 'phone_number' => $property->user->phone_number ?? 'Not Available',
-                 'company_id' => $property->company_id,
-                 'company_name' => $property->company->name ?? 'Not Available', // Correctly access the company name
-                 'updated_at' => $property->updated_at->toDateTimeString(),
+                'id' => $property->id,
+                'property_name' => $property->property_name,
+                'property_name_en' => $property->property_name_en, // Assuming this attribute exists
+                'property_type' => $property->propertyType->name ?? 'Not Available',
+                'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
+                'category_name' => $property->category->name,
+                'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
+                'city' => $property->city->name,
+                'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
+                'region' => $property->region->name,
+                'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
+                'floor' => $property->floor,
+                'rooms' => $property->rooms,
+                'bathrooms' => $property->bathrooms,
+                'furnishing' => $property->furnishing->name ?? 'Not Available',
+                'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
+                'ad_type' => $property->adType->name ?? 'Not Available',
+                'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
+                'property_area' => $property->property_area,
+                'price' => $property->price,
+                'description' => $property->description,
+                'description_en' => $property->description_en ?? '', // Assuming this attribute exists
+                'status' => $property->status,
+                'user_email' => $property->user->email ?? 'Not Available',
+                'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
+                'phone_number' => $property->user->phone_number ?? 'Not Available',
+                'company_id' => $property->company_id,
+                'company_name' => $property->company->name ?? 'Not Available',
+                'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
+                'images' => $property->images->map(fn($image) => $image->url),
+                'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
                  'images' => $property->images->map(function ($image) {
                      return $image->url; // Ensure 'url' is the correct field name
                  })->all(),
@@ -259,7 +314,7 @@ class PropertiesController extends Controller
 
             // Get properties associated with the category
             $properties = $category->properties()
-                ->with(['images', 'user', 'company', 'propertyType', 'furnishing', 'category'])
+                ->with(['images', 'user', 'company', 'propertyType', 'furnishing', 'category', 'city', 'region'])
                 ->orderBy('updated_at', 'desc')
                 ->get();
 
@@ -267,25 +322,37 @@ class PropertiesController extends Controller
                 return [
                     'id' => $property->id,
                     'property_name' => $property->property_name,
-                    'property_type' => $property->propertyType->name ?? 'Not Available', // Adjusted to use the relationship
+                    'property_name_en' => $property->property_name_en, // Assuming this attribute exists
+                    'property_type' => $property->propertyType->name ?? 'Not Available',
+                    'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'category_name' => $property->category->name,
-                    'city' => $property->city,
-                    'region' => $property->region,
+                    'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'city' => $property->city->name,
+                    'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'region' => $property->region->name,
+                    'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
                     'floor' => $property->floor,
                     'rooms' => $property->rooms,
                     'bathrooms' => $property->bathrooms,
-                    'furnishing' => $property->furnishing->name ?? 'Not Available', // Adjusted to use the relationship
+                    'furnishing' => $property->furnishing->name ?? 'Not Available',
+                    'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'ad_type' => $property->adType->name ?? 'Not Available',
+                    'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'property_area' => $property->property_area,
                     'price' => $property->price,
                     'description' => $property->description,
+                    'description_en' => $property->description_en ?? '', // Assuming this attribute exists
                     'status' => $property->status,
                     'user_email' => $property->user->email ?? 'Not Available',
+                    'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                    'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
                     'phone_number' => $property->user->phone_number ?? 'Not Available',
                     'company_id' => $property->company_id,
-                    'company_name' => $property->company->name ?? 'Not Available', // Ensuring it matches your company relationship
+                    'company_name' => $property->company->name ?? 'Not Available',
+                    'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
                     'images' => $property->images->map(fn($image) => $image->url),
                     'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
-                ];
+                    ];
             });
 
             // Assuming PropertyCollection is a custom collection or resource that formats the response
@@ -301,14 +368,50 @@ class PropertiesController extends Controller
     {
         $searchTerm = $request->query('searchTerm', '');
         
-        $properties = Property::where('property_name', 'LIKE', "%{$searchTerm}%")
-                    ->orWhere('region', 'LIKE', "%{$searchTerm}%")
+        $properties = Property::with([ 'propertyType', 'furnishing', 'adType', 'category', 'images', 'user', 'company', 'city', 'region'])
+                    ->where('property_name', 'LIKE', "%{$searchTerm}%")
+                    ->leftJoin('regions', 'properties.region_id', '=', 'regions.id') // Assuming 'region_id' is the FK in 'properties' table
+                    ->where('properties.property_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('regions.name', 'LIKE', "%{$searchTerm}%") // Search by region name in 'regions' table
+                    ->select('properties.*', 'regions.name as region_name', 'regions.name_en as region_name_en') // Select region names
                     ->get(); // Retrieve all matching records without pagination
         
         if ($properties->isEmpty()) {
             return response()->json(['message' => 'No properties found matching the search term'], 404);
         } else {
-            return new PropertyCollection($properties);
+            $propertiesData = $properties->map(function ($property) {
+                return [
+                    // Structured data similar to fetchSellPropertiesForCategory method
+                    'id' => $property->id,
+                    'property_name' => $property->property_name,
+                    'property_name_en' => $property->property_name_en ?? 'Not Available',
+                    'property_type' => $property->propertyType->name ?? 'Not Available',
+                    'property_type_en' => $property->propertyType->name_en ?? 'Not Available',
+                    'category_name' => $property->category->name,
+                    'category_name_en' => $property->category->name_en ?? 'Not Available',
+                    'city' => $property->city->name,
+                    'city_name_en' => $property->city->name_en ?? 'Not Available',
+                    'region' => $property->region->name,
+                    'region_name_en' => $property->region->name_en ?? 'Not Available',
+                    'floor' => $property->floor,
+                    'rooms' => $property->rooms,
+                    'bathrooms' => $property->bathrooms,
+                    'furnishing' => $property->furnishing->name ?? 'Not Available',
+                    'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available',
+                    'ad_type' => $property->adType->name ?? 'Not Available',
+                    'ad_type_name_en' => $property->adType->name_en ?? 'Not Available',
+                    'property_area' => $property->property_area,
+                    'price' => $property->price,
+                    'status' => $property->status,
+                    'user_email' => $property->user->email ?? 'Not Available',
+                    'user_name_en' => $property->user->name_en ?? 'Not Available',
+                    'phone_number' => $property->user->phone_number ?? 'Not Available',
+                    'images' => $property->images->map(fn($image) => $image->url),
+                    'updated_at' => $property->updated_at->toDateTimeString(),                ];
+            });
+            
+            // Return the structured properties data
+            return response()->json(['data' => $propertiesData]);
         }
     }
 
@@ -320,55 +423,73 @@ class PropertiesController extends Controller
      * filter properties
      */
 
-     public function filter(Request $request)
-    {
-        $query = Property::query(); // Start with all properties
+ // Method to handle property filtering
+ public function filterProperties(Request $request)
+ {
+     $user = auth()->user();
 
-        // Apply filters
-        if ($request->has('city')) {
-            $query->where('city', $request->city);
-        }
+     if (!$user) {
+         return response()->json(['message' => 'Unauthorized access.'], 401);
+     }
 
-        if ($request->has('region')) {
-            $query->where('region', $request->region);
-        }
+     // Starting the query builder
+     $query = Property::query();
 
-        if ($request->has('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
+     // Applying filters
+     if ($request->filled('city')) {
+         $query->where('city', $request->city);
+     }
 
-        if ($request->has('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
+     if ($request->filled('region')) {
+         $query->where('region', $request->region);
+     }
 
-        if ($request->has('min_area')) {
-            $query->where('property_area', '>=', $request->min_area);
-        }
+     if ($request->filled('minPrice')) {
+         $query->where('price', '>=', $request->minPrice);
+     }
 
-        if ($request->has('max_area')) {
-            $query->where('property_area', '<=', $request->max_area);
-        }
+     if ($request->filled('maxPrice')) {
+         $query->where('price', '<=', $request->maxPrice);
+     }
 
-        if ($request->has('bedrooms')) {
-            $query->where('rooms', $request->bedrooms); // Assuming 'rooms' represents bedrooms
-        }
+     if ($request->filled('minArea')) {
+         $query->where('property_area', '>=', $request->minArea);
+     }
 
-        if ($request->has('bathrooms')) {
-            $query->where('bathrooms', $request->bathrooms);
-        }
+     if ($request->filled('maxArea')) {
+         $query->where('property_area', '<=', $request->maxArea);
+     }
 
-        // if ($request->has('property_type')) {
-        //     $query->where('property_type_id', $request->property_type); // Correctly filter based on property_type_id
-        // }
+     if ($request->filled('bedrooms')) {
+         $query->where('rooms', $request->bedrooms);
+     }
 
-        // Add more filters as needed
+     if ($request->filled('bathrooms')) {
+         $query->where('bathrooms', $request->bathrooms);
+     }
 
-        $properties = $query->get(); // Execute the query
+     if ($request->filled('propertyType')) {
+         $query->whereHas('propertyType', function ($query) use ($request) {
+             $query->where('name', $request->propertyType);
+         });
+     }
 
-        return response()->json(['data' => $properties]);
-    }
+     if ($request->filled('furnishing')) {
+         $query->whereHas('furnishing', function ($query) use ($request) {
+             $query->where('name', $request->furnishing);
+         });
+     }
 
-     
+     // Execute the query and get the results
+     $properties = $query->with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'adType'])->get();
+
+     return response()->json([
+        'message' => 'Filtered properties retrieved successfully!',
+        'data' => $properties, // Changed 'properties' to 'data'
+    ]);
+    
+ }
+
 
     /**
     * Store a newly created resource in storage.
@@ -377,7 +498,7 @@ class PropertiesController extends Controller
     public function store(Request $request)
         {
             $user = auth()->user();
-
+ 
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized access.'], 401);
             }
@@ -389,8 +510,10 @@ class PropertiesController extends Controller
                 'property_name_en' => 'sometimes|string',
                 'property_type_id' => 'required|exists:property_types,id',
                 'category_id' => 'required|exists:categories,id',
-                'city' => 'required|string|max:255',
-                'region' => 'required|string|max:255',
+                'city_id' => 'required|exists:cities,id',
+                'region_id' => 'required|exists:regions,id',
+                // 'city' => 'required|string|max:255',
+                // 'region' => 'required|string|max:255',
                 'floor' => 'required|integer',
                 'rooms' => 'required|integer',
                 'bathrooms' => 'required|integer',
@@ -410,6 +533,10 @@ class PropertiesController extends Controller
             $property->company_id = $user->company_id ?? null; // Handle null company_id if necessary
             $property->status = 'منشور';
             $property->save();
+
+            if (!Storage::disk('public')->exists('images/properties')) {
+                Storage::disk('public')->makeDirectory('images/properties');
+            }  
         
             if ($property->save()) {
                 if ($request->hasFile('images')) {
@@ -426,7 +553,7 @@ class PropertiesController extends Controller
         
                 return response()->json([
                     'message' => 'Property added successfully!',
-                    'property' => $property->load(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'adType']),
+                    'property' => $property->load(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'adType' , 'city', 'region']),
                 ], 201);
             } else {
                 return response()->json(['message' => 'Failed to save property.'], 500);
@@ -605,58 +732,106 @@ class PropertiesController extends Controller
     * Display a list of the user's favorite properties.
     */
     public function getFavoriteIndex()
-            {
-                $user = Auth::user();
-                $favorites = $user->favorites()->with('property')->get();
+    {
+        $user = Auth::user();
+        $favorites = $user->favorites()->with(['property.images', 'property.user', 'property.company', 'property.category', 'property.propertyType', 'property.furnishing', 'property.city', 'property.region'])->get();
 
-                return response()->json($favorites);
-            }
+        $favoritesData = $favorites->map(function ($favorite) {
+            $property = $favorite->property;
+            return [
+                'id' => $property->id,
+                'property_name' => $property->property_name,
+                'property_name_en' => $property->property_name_en, // Assuming this attribute exists
+                'property_type' => $property->propertyType->name ?? 'Not Available',
+                'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
+                'category_name' => $property->category->name,
+                'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
+                'city' => $property->city->name,
+                'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
+                'region' => $property->region->name,
+                'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
+                'floor' => $property->floor,
+                'rooms' => $property->rooms,
+                'bathrooms' => $property->bathrooms,
+                'furnishing' => $property->furnishing->name ?? 'Not Available',
+                'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
+                'ad_type' => $property->adType->name ?? 'Not Available',
+                'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
+                'property_area' => $property->property_area,
+                'price' => $property->price,
+                'description' => $property->description,
+                'description_en' => $property->description_en ?? '', // Assuming this attribute exists
+                'status' => $property->status,
+                'user_email' => $property->user->email ?? 'Not Available',
+                'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
+                'phone_number' => $property->user->phone_number ?? 'Not Available',
+                'company_id' => $property->company_id,
+                'company_name' => $property->company->name ?? 'Not Available',
+                'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
+                'images' => $property->images->map(fn($image) => $image->url),
+                'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
+                // Include any other details you want from the $favorite or related models
+            ];
+        });
 
+        return response()->json(['data' => $favoritesData]);
+    }
 
-    /**
+     /**
     * Store a newly created favorite in storage.
     */
-        public function getFavoriteStore(Request $request)
-            {
-                $user = Auth::user();
-                $favorite = new Favorite();
-                $favorite->user_id = $user->id;
-                $favorite->property_id = $request->property_id;
-                $favorite->save();
-
-                return response()->json(['message' => 'Property added to favorites successfully']);
-            }
-
-
-    /**
+    public function getFavoriteStore(Request $request)
+    {
+        $request->validate(['property_id' => 'required|exists:properties,id']);
+    
+        $user = Auth::user();
+        $exists = $user->favorites()->where('property_id', $request->property_id)->exists();
+        if ($exists) {
+            return response()->json(['message' => 'Property is already added to favorites'], 409);
+        }
+    
+        $favorite = new Favorite();
+        $favorite->user_id = $user->id;
+        $favorite->property_id = $request->property_id;
+        $favorite->save();
+    
+        return response()->json(['message' => 'Property added to favorites successfully'], 201);
+    }
+     /**
     * Remove the specified favorite from storage.
     */
     public function getFavoriteDestroy($id)
-            {
-                $user = Auth::user();
-                try {
-                    $favorite = Favorite::where('user_id', $user->id)->where('property_id', $id)->firstOrFail();
-                    $favorite->delete();
-                    return response()->json(['message' => 'Favorite removed successfully']);
-                } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-                    return response()->json(['message' => 'Favorite not found'], 404);
-                }
-            }
+    {
+        $user = Auth::user();
+        $favorite = Favorite::where('user_id', $user->id)->where('property_id', $id)->first();
+        if (!$favorite) {
+            return response()->json(['message' => 'Favorite not found'], 404);
+        }
 
+        $favorite->delete();
+        return response()->json(['message' => 'Favorite removed successfully']);
+    }
     /**
     * checkIfFavorite property
     */
     public function isFavorite($propertyId)
-        {
-            $user = Auth::user();
-            $isFavorite = Favorite::where('user_id', $user->id)
-                                  ->where('property_id', $propertyId)
-                                  ->exists();
-        
-            return response()->json(['isFavorite' => $isFavorite]);
-        }        
+    {
+        $user = Auth::user();
+        $isFavorite = Favorite::where('user_id', $user->id)
+                              ->where('property_id', $propertyId)
+                              ->exists();
+    
+        return response()->json(['isFavorite' => $isFavorite]);
+    }
 
-
+    public function getUserFavoritePropertyIds() {
+        $user = Auth::user(); // Get the authenticated user
+    
+        $favoritePropertyIds = $user->favorites()->pluck('property_id');
+    
+        return response()->json(['favoritePropertyIds' => $favoritePropertyIds]);
+    }
     /**
     * getSimilarProperties .
     */
@@ -762,7 +937,7 @@ class PropertiesController extends Controller
 
         public function fetchPropertiesForCompany($companyId)
         {
-            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
+            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing' , 'city', 'region'])
                 ->where('company_id', $companyId)
                 ->where('ad_type_id', 1)
                 ->orderBy('updated_at', 'desc')
@@ -774,8 +949,8 @@ class PropertiesController extends Controller
                     'property_name' => $property->property_name,
                     'property_type' => $property->propertyType->name ?? 'Not Available',
                     'category_name' => $property->category->name ?? 'Not Available',
-                    'city' => $property->city,
-                    'region' => $property->region,
+                    'city' => $property->city->name,
+                    'region' => $property->region->name,
                     'floor' => $property->floor,
                     'rooms' => $property->rooms,
                     'bathrooms' => $property->bathrooms,
@@ -799,7 +974,7 @@ class PropertiesController extends Controller
         
         public function fetchRentPropertiesForCompany($companyId)
         {
-            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
+            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
                 ->where('company_id', $companyId)
                 ->where('ad_type_id', 2)
                 ->orderBy('updated_at', 'desc')
@@ -809,25 +984,37 @@ class PropertiesController extends Controller
                 return [
                     'id' => $property->id,
                     'property_name' => $property->property_name,
+                    'property_name_en' => $property->property_name_en, // Assuming this attribute exists
                     'property_type' => $property->propertyType->name ?? 'Not Available',
-                    'category_name' => $property->category->name ?? 'Not Available',
-                    'city' => $property->city,
-                    'region' => $property->region,
+                    'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'category_name' => $property->category->name,
+                    'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'city' => $property->city->name,
+                    'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'region' => $property->region->name,
+                    'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
                     'floor' => $property->floor,
                     'rooms' => $property->rooms,
                     'bathrooms' => $property->bathrooms,
                     'furnishing' => $property->furnishing->name ?? 'Not Available',
+                    'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'ad_type' => $property->adType->name ?? 'Not Available',
+                    'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'property_area' => $property->property_area,
                     'price' => $property->price,
                     'description' => $property->description,
+                    'description_en' => $property->description_en ?? '', // Assuming this attribute exists
                     'status' => $property->status,
                     'user_email' => $property->user->email ?? 'Not Available',
+                    'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                    'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
                     'phone_number' => $property->user->phone_number ?? 'Not Available',
                     'company_id' => $property->company_id,
                     'company_name' => $property->company->name ?? 'Not Available',
-                    'images' => $property->images->pluck('url'), // pluck is more concise for this case
-                    'updated_at' => $property->updated_at->toDateTimeString(),
-                ];
+                    'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'images' => $property->images->map(fn($image) => $image->url),
+                    'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
+                    ];
             });
         
             // Return the properties data, wrapping it into a Resource or a simple array as per your application's design
@@ -837,7 +1024,7 @@ class PropertiesController extends Controller
         public function fetchRentPropertiesForCategory($categoryId)
         {
             // Fetch properties filtered by category_id instead of company_id
-            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
+            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
                 ->where('category_id', $categoryId) // Changed from company_id to category_id
                 ->where('ad_type_id', 2) // Assuming you still want to filter by ad_type_id for rent properties
                 ->orderBy('updated_at', 'desc')
@@ -847,25 +1034,37 @@ class PropertiesController extends Controller
                 return [
                     'id' => $property->id,
                     'property_name' => $property->property_name,
+                    'property_name_en' => $property->property_name_en, // Assuming this attribute exists
                     'property_type' => $property->propertyType->name ?? 'Not Available',
-                    'category_name' => $property->category->name ?? 'Not Available',
-                    'city' => $property->city,
-                    'region' => $property->region,
+                    'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'category_name' => $property->category->name,
+                    'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'city' => $property->city->name,
+                    'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'region' => $property->region->name,
+                    'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
                     'floor' => $property->floor,
                     'rooms' => $property->rooms,
                     'bathrooms' => $property->bathrooms,
                     'furnishing' => $property->furnishing->name ?? 'Not Available',
+                    'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'ad_type' => $property->adType->name ?? 'Not Available',
+                    'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'property_area' => $property->property_area,
                     'price' => $property->price,
                     'description' => $property->description,
+                    'description_en' => $property->description_en ?? '', // Assuming this attribute exists
                     'status' => $property->status,
                     'user_email' => $property->user->email ?? 'Not Available',
+                    'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                    'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
                     'phone_number' => $property->user->phone_number ?? 'Not Available',
                     'company_id' => $property->company_id,
                     'company_name' => $property->company->name ?? 'Not Available',
-                    'images' => $property->images->pluck('url'),
-                    'updated_at' => $property->updated_at->toDateTimeString(),
-                ];
+                    'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'images' => $property->images->map(fn($image) => $image->url),
+                    'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
+                    ];
             });
 
             // Return the properties data, wrapping it into a Resource or a simple array as per your application's design
@@ -875,7 +1074,7 @@ class PropertiesController extends Controller
         public function fetchSellPropertiesForCategory($categoryId)
         {
             // Fetch properties filtered by category_id and ad_type_id for sell properties
-            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
+            $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
                 ->where('category_id', $categoryId) // Filter by category_id
                 ->where('ad_type_id', 1) // Adjusted for sell properties
                 ->orderBy('updated_at', 'desc')
@@ -885,25 +1084,37 @@ class PropertiesController extends Controller
                 return [
                     'id' => $property->id,
                     'property_name' => $property->property_name,
+                    'property_name_en' => $property->property_name_en, // Assuming this attribute exists
                     'property_type' => $property->propertyType->name ?? 'Not Available',
-                    'category_name' => $property->category->name ?? 'Not Available',
-                    'city' => $property->city,
-                    'region' => $property->region,
+                    'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'category_name' => $property->category->name,
+                    'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'city' => $property->city->name,
+                    'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'region' => $property->region->name,
+                    'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
                     'floor' => $property->floor,
                     'rooms' => $property->rooms,
                     'bathrooms' => $property->bathrooms,
                     'furnishing' => $property->furnishing->name ?? 'Not Available',
+                    'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'ad_type' => $property->adType->name ?? 'Not Available',
+                    'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'property_area' => $property->property_area,
                     'price' => $property->price,
                     'description' => $property->description,
+                    'description_en' => $property->description_en ?? '', // Assuming this attribute exists
                     'status' => $property->status,
                     'user_email' => $property->user->email ?? 'Not Available',
+                    'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                    'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
                     'phone_number' => $property->user->phone_number ?? 'Not Available',
                     'company_id' => $property->company_id,
                     'company_name' => $property->company->name ?? 'Not Available',
-                    'images' => $property->images->pluck('url'),
-                    'updated_at' => $property->updated_at->toDateTimeString(),
-                ];
+                    'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
+                    'images' => $property->images->map(fn($image) => $image->url),
+                    'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
+                    ];
             });
 
             // Return the properties data, wrapping it into a Resource or a simple array as per your application's design
@@ -920,7 +1131,7 @@ class PropertiesController extends Controller
                     return response()->json(['error' => 'User not authenticated'], 401);
                 }
 
-                $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing'])
+                $properties = Property::with(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
                 ->where('user_id', $user->id)
                 ->orderBy('updated_at', 'desc')
                 ->get();

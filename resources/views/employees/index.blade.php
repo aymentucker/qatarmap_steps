@@ -3,6 +3,17 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+                    <form action="{{ route('employees.index') }}" method="GET">
+                        <div class="form-group">
+                            <label for="company_id">التصفية حسب الشركة:</label>
+                            <select class="form-control" name="company_id" id="company_id" onchange="this.form.submit()">
+                                <option value="">اختر شركة</option>
+                                @foreach($companies as $company)
+                                <option value="{{ $company->id }}" {{ request('company_id') == $company->id ? 'selected' : '' }}>{{ $company->company_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
                     <div class="fancy-table table-responsive border rounded">
                         <table class="table table-striped mb-0">
                             <thead>

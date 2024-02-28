@@ -1,8 +1,20 @@
 <x-app-layout :assets="$assets ?? []" title=' عرض العقارات' :isBanner="true">
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+                    <form action="{{ route('employees.index') }}" method="GET">
+                        <div class="form-group">
+                            <label for="company_id">التصفية حسب الشركة:</label>
+                            <select class="form-control" name="company_id" id="company_id" onchange="this.form.submit()">
+                                <option value="">اختر شركة</option>
+                                @foreach($companies as $company)
+                                <option value="{{ $company->id }}" {{ request('company_id') == $company->id ? 'selected' : '' }}>{{ $company->company_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
                     <div class="fancy-table table-responsive border rounded">
                         <table class="table table-striped mb-0">
                             <thead>
@@ -20,13 +32,21 @@
                                 @if (count($properties) > 0)
                                 @foreach ($properties as $property)
                                 <tr>
-                                    <td class="text-dark">{{$property['property_name']}}</td>
-                                    <td class="text-dark">{{$property['property_type']}}</td>
-                                    <td class="text-dark">{{$property['categories']}}</td>
-                                    <td class="text-dark">{{$property['region']}}</td>
-                                    <td class="text-dark">{{$property['price']}}</td>
-                                    <td> <span class="badge bg-soft-primary p-2 text-primary">{{$property['ad_type']}}</span></td>
+                                    <td class="text-dark">{{ $property->property_name }}</td>
+                                    <td class="text-dark">{{ $property->propertyType->name ?? 'نوع غير محدد' }}</td>
+                                    <td class="text-dark">{{ $property->category->name ?? 'فئة غير محددة' }}</td>
+                                    <td class="text-dark">{{ $property->region->name ?? 'منطقة غير محددة' }}</td>
+                                    <td class="text-dark">{{ $property->price }}</td>
                                     <td>
+                                        @if ($property->adType->id == 1)
+                                            <span class="badge bg-success p-2 text-white">{{ $property->adType->name ?? 'نوع الاعلان غير محدد' }}</span>
+                                        @elseif ($property->adType->id == 2)
+                                            <span class="badge bg-danger p-2 text-white">{{ $property->adType->name ?? 'نوع الاعلان غير محدد' }}</span>
+                                        @else
+                                            <span class="badge bg-secondary p-2 text-white">{{ $property->adType->name ?? 'نوع الاعلان غير محدد' }}</span>
+                                        @endif
+                                    </td>
+                                                                        <td>
                                         <div class="d-flex justify-content-evenly">
                                             <a class="btn btn-primary btn-icon btn-sm rounded-pill ms-2"
                                                 href="#" role="button">
@@ -45,8 +65,12 @@
                                                     </svg>
                                                 </span>
                                             </a>
-                                            <a class="btn btn-primary btn-icon btn-sm rounded-pill ms-2"
-                                                href="#" role="button">
+                                                        <!-- Delete Form -->
+                                                        <form action="{{ route('properties.destroy', $property->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this property?');">
+                                                            @csrf
+                                                            @method('DELETE')                                            
+                                                            <button type="submit" class="btn btn-danger btn-icon btn-sm rounded-pill ms-2">
+
                                                 <span class="btn-inner">
                                                     <svg class="icon-32" width="32" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,8 +82,10 @@
                                                             fill="currentColor"></path>
                                                     </svg>
                                                 </span>
-                                            </a>
-                                        </div>
+                                            </button>
+                                        </form>
+
+                                    </div>
                                     </td>
                                 </tr>
                                 @endforeach

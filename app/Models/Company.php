@@ -41,12 +41,12 @@ class Company extends Model
     {
         return $this->hasMany(Property::class);
     }
-    /// a relationship to files:
+    // /// a relationship to files:
 
-    public function files()
-    {
-        return $this->morphMany(File::class, 'fileable');
-    }
+    // public function files()
+    // {
+    //     return $this->morphMany(File::class, 'fileable');
+    // }
 
     // Other model methods...
 

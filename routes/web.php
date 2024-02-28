@@ -36,6 +36,16 @@ Route::get('/storage', function () {
 
 Route::resource('companies' , CompaniesController::class);
 
+// Define a route for showing a specific company by its ID
+Route::get('/companies/{id}', [CompaniesController::class, 'show'])->name('companies.show');
+
+Route::post('/companies/{id}/update', [CompaniesController::class, 'update'])->name('companies.update');
+
+
+Route::delete('/companies/{id}', [CompaniesController::class, 'destroy'])->name('companies.destroy');
+// Route::put('/companies/{id}', [CompaniesController::class, 'update'])->name('companies.update');
+
+
 Route::resource('properties' , PropertiesController::class);
 
 Route::resource('employees' , EmployeesController::class);

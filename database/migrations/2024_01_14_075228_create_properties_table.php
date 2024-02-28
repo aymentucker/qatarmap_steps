@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
+            $table->string('property_name');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('company_id')->nullable();
             $table->unsignedBigInteger('category_id');
-            $table->string('property_name');
             $table->string('property_type');
-            $table->string('city');
-            $table->string('region');
+            // $table->string('city');
+            // $table->string('region');
+            $table->unsignedBigInteger('city_id');
+            $table->unsignedBigInteger('region_id');
             $table->integer('floor');
             $table->integer('rooms');
             $table->integer('bathrooms');
@@ -31,9 +33,11 @@ return new class extends Migration
             $table->string('status');
             $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');         
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade'); 
+            $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade'); 
 
         });
         Schema::create('property_images', function (Blueprint $table) {

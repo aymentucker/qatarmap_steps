@@ -18,4 +18,8 @@ class Region extends Model
     {
         return $this->belongsTo(City::class);
     }
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
+    }
 }

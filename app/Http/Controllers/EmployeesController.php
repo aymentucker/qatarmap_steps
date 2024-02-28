@@ -18,28 +18,49 @@ class EmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        // Retrieve the company_id of the currently logged-in user
-        $currentCompanyId = Auth::user()->company_id;
+    // public function index()
+    // {
+    //     // Retrieve the company_id of the currently logged-in user
+    //     $currentCompanyId = Auth::user()->company_id;
 
-        // Fetch users who belong to the same company
-        $users = User::where('company_id', $currentCompanyId)->get();
+    //     // Fetch users who belong to the same company
+    //     $users = User::where('company_id', $currentCompanyId)->get();
 
-        // Pass the users to the view
-        return view('employees.index', compact('users'));
+    //     // Pass the users to the view
+    //     return view('employees.index', compact('users'));
+    // }
+
+    public function index(Request $request)
+{
+    // Fetch all companies for the filter dropdown
+    $companies = Company::all();
+
+    // Check if a company_id filter is applied
+    if ($request->has('company_id') && $request->company_id != '') {
+        // Filter users belonging to the selected company
+        $users = User::where('company_id', $request->company_id)->get();
+    } else {
+        // No company filter applied, fetch all users
+        $users = User::all();
     }
+
+    // Pass users and companies to the view
+    return view('employees.index', compact('users', 'companies'));
+}
+
 
     /**
      * Show the form for creating a new employee.
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function create()
     {
-        $companies = Company::all();
-        $user = new User(); // Create an empty User object
-        return view('employees.create', compact('user', 'companies'));
+        // Fetch companies
+        $companies = Company::all()->pluck('company_name', 'id');
+        // $user = new User(); // Create an empty User object
+        return view('employees.create', compact('companies'));
     }
 
     /**
@@ -50,43 +71,42 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
-        
+        // Validate the incoming request data
         $request->validate([
             'name' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
-            // Add any other necessary validation rules
+            'password' => 'required|string|min:6|confirmed',
+            'company_id' => 'required|integer|exists:companies,id',
+            'status' => 'required|string|in:Active,Inactive,Pending', // Validate status
         ]);
-    
-        // Retrieve company_id of the currently logged-in user
-        $currentUserId = Auth::id();
-        $currentUser = User::find($currentUserId);
-        $company_id = $currentUser->company_id;
-    
+
         // Generate a unique username
-        $id = User::orderBy('id', 'desc')->first()->id + 1;
-        $username = strtolower($request->name).strtolower($request->name_en).'_'.$id;
-    
-        // Create new employee
+        $id = User::orderBy('id', 'desc')->first() ? User::orderBy('id', 'desc')->first()->id + 1 : 1;
+        $username = strtolower($request->name) . strtolower($request->name_en) . '_' . $id;
+
+        // Create the user with employee type and status
         $user = User::create([
             'username' => $username,
             'name' => $request->name,
             'name_en' => $request->name_en,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
-            'company_id' => $company_id,
             'password' => Hash::make($request->password),
-            'user_type' => 'employee' // Explicitly setting user_type to 'employee'
+            'company_id' => $request->company_id,
+            'user_type' => 'employee', // Set user_type to 'employee'
+            'status' => $request->status, // Set the user status
         ]);
-    
-        // Assign 'employee' role to the user
-        $user->assignRole('employee');
-    
-        // Redirect to the employees index page with a success message
-        return redirect()->route('employees.index')->withSuccess('Employee created successfully');
+
+        // Optionally, assign 'employee' role to the user if you're using a role management package like spatie/laravel-permission
+        // $user->assignRole('employee');
+
+        // Redirect to a given route with a success message
+        return redirect()->route('employees.index')->with('success', 'Employee added successfully.');
     }
+
+
     /**
      * Display the specified employee.
      *
@@ -106,13 +126,19 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id); // Fetch the user by ID
-        $companies = Company::all(); // Assuming you need to list companies
+        // Fetch the user by ID
+        $user = User::findOrFail($id);
     
-        // Pass the user and companies to the view. 
-        // The user object includes the user's ID.
-        return view('employees.create', compact('user', 'id'));
+        // Fetch all companies and create a list suitable for a dropdown.
+        // Here, 'id' is the value of the option, and 'company_name' is the display text.
+        $companies = Company::pluck('company_name', 'id');
+    
+        // Pass both the user and the companies list to the view.
+        // Additionally, pass the 'id' of the user to the view, though it's accessible through the $user object as well.
+        // You might not need to pass 'id' separately if the $user object suffices.
+        return view('employees.create', compact('user', 'companies', 'id'));
     }
+    
     
     
     /**
@@ -131,6 +157,8 @@ class EmployeesController extends Controller
                 'phone_number' => 'required',
                 'email' => 'required|email|unique:users,email,' . $id,
                 'password' => $id ? 'nullable|string|confirmed|min:8' : 'required|string|confirmed|min:8',
+                'status' => 'required|string|in:Active,Inactive,Pending', // Validate status
+
             ]);
 
             // Find the user by ID
@@ -142,7 +170,7 @@ class EmployeesController extends Controller
                 'name_en' => $validatedData['name_en'],
                 'phone_number' => $validatedData['phone_number'],
                 'email' => $validatedData['email'],
-                // Other fields...
+                'status' => $validatedData['status'], // Update the status
             ]);
 
             // Update password if provided

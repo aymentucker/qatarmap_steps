@@ -23,6 +23,8 @@ use App\Http\Controllers\Api\CompaniesController;
 Route::get('/hello', function () {
     return "Hello World!";
   });
+
+
 // Make sure to use the appropriate middleware for authentication, e.g., 'auth:sanctum'
 Route::middleware('auth:sanctum')->get('/properties/current-user', [PropertiesController::class, 'fetchPropertiesForCurrentUser']);
 
@@ -47,7 +49,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('properties', PropertiesController::class);
 
-Route::get('/properties/filter', [PropertiesController::class, 'filter']);
+Route::get('properties/filter', [PropertiesController::class, 'filterProperties']);
 
 
 // // // Place this in routes/api.php for API routes
@@ -77,7 +79,6 @@ Route::get('/properties/{property}/comments', [PropertiesController::class, 'com
 Route::get('/properties/category/{categoryId}', [PropertiesController::class, 'getPropertiesByCategory']);
 
 
-Route::get('/ad-sliders', [AdSliderController::class, 'showSliders']);
 
 /// get cities and regions of city
 Route::get('/cities', [PropertiesController::class, 'getCities']);
@@ -139,10 +140,34 @@ Route::post('/properties/{id}/count-view', [PropertiesController::class, 'countV
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/properties', [PropertiesController::class,'store']);
-    Route::get('favorites', [PropertiesController::class, 'getFavoriteIndex']);
-    Route::post('favorites', [PropertiesController::class, 'getFavoriteStore']);
-    Route::delete('favorites/{propertyId}', [PropertiesController::class, 'getFavoriteDestroy']);
-    Route::get('properties/{propertyId}/is-favorite', [PropertiesController::class, 'isFavorite']);
+    Route::get('/favorites', [PropertiesController::class, 'getFavoriteIndex']);
+    Route::get('/favorites/ids', [PropertiesController::class, 'getUserFavoritePropertyIds']);
+    Route::post('/favorites', [PropertiesController::class, 'getFavoriteStore']);
+    Route::delete('/favorites/{propertyId}', [PropertiesController::class, 'getFavoriteDestroy']);
+    Route::get('/properties/{propertyId}/is-favorite', [PropertiesController::class, 'isFavorite']);
+    Route::post('/logout', [UsersController::class, 'logoutUser']);
+    Route::get('/user-company-status', [UsersController::class, 'fetchStatusForCurrentUserAndCompany']);
+
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Fetch employees for a company
+    Route::get('/employees', [UsersController::class, 'fetchEmployeeForCompany']);
+
+    // Store a new employee
+    Route::post('/employees', [UsersController::class, 'storeEmployee']);
+
+    // Delete an employee
+    Route::delete('/employees/{id}', [UsersController::class, 'deleteEmployee']);
+
+    Route::delete('/users/{id}', [UsersController::class, 'deleteUser']);
+
+    Route::delete('/managers/{id}', [UsersController::class, 'deleteManagerAndCompany']);
+
+    Route::delete('/owner/{id}', [UsersController::class, 'deleteOwner']);
+
+
+
 });
 
 Route::get('/companies', [CompaniesController::class, 'index']);
@@ -159,8 +184,9 @@ Route::post('/register', [UsersController::class, 'register']);
 Route::post('/login', [UsersController::class, 'login']);
 
 
-Route::get('/properties/city/{cityName}', [PropertiesController::class, 'fetchPropertiesForCity']);
-Route::get('/properties/region/{regionName}', [PropertiesController::class, 'fetchPropertiesForRegion']);
+
+Route::get('/properties/city/{cityId}', [PropertiesController::class, 'fetchPropertiesForCity']);
+Route::get('/properties/region/{regionId}', [PropertiesController::class, 'fetchPropertiesForRegion']);
 
 
 Route::get('/properties/company/{companyId}', [PropertiesController::class, 'fetchPropertiesForCompany']);
@@ -174,3 +200,11 @@ Route::post('/managers', [UsersController::class, 'storeManager']);
 
 
 // Route::post('/properties', [PropertiesController::class,'store'])->middleware('auth:api');
+
+
+Route::get('/ad-sliders', [AdSliderController::class, 'showSliders']);
+
+Route::post('/user/update', [UsersController::class, 'updateProfile'])->middleware('auth:sanctum');
+Route::post('/company/update', [UsersController::class, 'updateCompanyProfile'])->middleware('auth:sanctum');
+
+

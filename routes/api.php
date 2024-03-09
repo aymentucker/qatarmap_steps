@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\PropertiesController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\AdSliderController;
 use App\Http\Controllers\Api\UsersController;
+use App\Http\Controllers\API\OrderPropertiesController;
 use App\Http\Controllers\Api\CompaniesController;
 
 
@@ -28,6 +29,10 @@ Route::get('/hello', function () {
 // Make sure to use the appropriate middleware for authentication, e.g., 'auth:sanctum'
 Route::middleware('auth:sanctum')->get('/properties/current-user', [PropertiesController::class, 'fetchPropertiesForCurrentUser']);
 
+
+Route::middleware('auth:sanctum')->get('/user/order-properties', [OrderPropertiesController::class, 'fetchOrdersPropertiesForCurrentUser']);
+
+
 // Define a POST route for property redeployment
 Route::post('/properties/{propertyId}/redeploy', [PropertiesController::class, 'redeployProperty'])
      ->middleware('auth:sanctum'); // Ensure that the route is protected by Sanctum authentication
@@ -36,6 +41,14 @@ Route::post('/properties/{propertyId}/redeploy', [PropertiesController::class, '
 
 Route::delete('/properties/{id}', [PropertiesController::class, 'destroy'])
      ->middleware('auth:sanctum'); // Assuming you are using Sanctum for API authentication
+
+
+     // Delete a order property
+
+Route::delete('/order-properties/{id}', [OrderPropertiesController::class, 'destroy'])
+->middleware('auth:sanctum'); // Assuming you are using Sanctum for API authentication
+
+
 
 // Deleting Images for property
 
@@ -48,6 +61,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('properties', PropertiesController::class);
+Route::apiResource('order-properties', OrderPropertiesController::class);
+
 
 Route::get('properties/filter', [PropertiesController::class, 'filterProperties']);
 
@@ -83,7 +98,7 @@ Route::get('/properties/category/{categoryId}', [PropertiesController::class, 'g
 /// get cities and regions of city
 Route::get('/cities', [PropertiesController::class, 'getCities']);
 
-Route::get('/regions/{cityName}', [PropertiesController::class, 'getRegionsForCity']);
+Route::get('/regions/{cityId}', [PropertiesController::class, 'getRegionsForCity']);
 
 /// * Fetch all cities with their regions and latlng.
 
@@ -140,6 +155,7 @@ Route::post('/properties/{id}/count-view', [PropertiesController::class, 'countV
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/properties', [PropertiesController::class,'store']);
+    Route::post('/order-properties', [OrderPropertiesController::class,'store']);
     Route::get('/favorites', [PropertiesController::class, 'getFavoriteIndex']);
     Route::get('/favorites/ids', [PropertiesController::class, 'getUserFavoritePropertyIds']);
     Route::post('/favorites', [PropertiesController::class, 'getFavoriteStore']);

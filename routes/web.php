@@ -13,6 +13,10 @@ use App\Http\Controllers\PropertiesController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\InvoicesController;
+use App\Http\Controllers\AdSliderController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\PackageController;
+
 // Packages
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +56,15 @@ Route::resource('employees' , EmployeesController::class);
 
 Route::resource('clients' , ClientsController::class);
 Route::resource('invoices' ,InvoicesController::class);
+
+Route::resource('adsliders' , AdSliderController::class);
+
+
+// Resource route for Subscriptions
+Route::resource('subscriptions', SubscriptionController::class);
+
+// Resource route for Packages
+Route::resource('packages', PackageController::class);
 
 Route::get('/regions-for-city/{cityId}', [PropertiesController::class, 'getRegionsForCity']);
 

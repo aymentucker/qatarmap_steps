@@ -17,30 +17,30 @@ use Illuminate\Http\Request;
 class PropertiesController extends Controller
 {
     public function index(Request $request)
-{
-    // Start the query
-    $query = Property::with(['user', 'images', 'company', 'category', 'propertyType', 'adType', 'city', 'region']);
+    {
+        // Start the query
+        $query = Property::with(['user', 'images', 'company', 'category', 'propertyType', 'adType', 'city', 'region']);
 
-    // If a company_id is provided, add it to the query conditions
-    if ($request->has('company_id') && $request->company_id) {
-        $query->where('company_id', $request->company_id);
+        // If a company_id is provided, add it to the query conditions
+        if ($request->has('company_id') && $request->company_id) {
+            $query->where('company_id', $request->company_id);
+        }
+
+        // Execute the query
+        $properties = $query->get();
+
+        // Fetch all companies for the filter dropdown
+        $companies = Company::all();
+
+        // Pass the properties and companies to the view
+        return view('properties.index', compact('properties', 'companies'));
     }
-
-    // Execute the query
-    $properties = $query->get();
-
-    // Fetch all companies for the filter dropdown
-    $companies = Company::all();
-
-    // Pass the properties and companies to the view
-    return view('properties.index', compact('properties', 'companies'));
-}
  
-public function getRegionsForCity($cityId)
-{
-    $regions = Region::where('city_id', $cityId)->get();
-    return response()->json($regions);
-}
+    public function getRegionsForCity($cityId)
+    {
+        $regions = Region::where('city_id', $cityId)->get();
+        return response()->json($regions);
+    }
     
 
     public function create()

@@ -71,10 +71,6 @@ class Property extends Model
     public function adType() {
         return $this->belongsTo(AdType::class);
     }
-    
-    
-    
-    
 
 
     // Add other relationships here if needed, like favorited by users, etc.

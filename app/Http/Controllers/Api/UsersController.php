@@ -50,7 +50,7 @@ class UsersController extends Controller
     public function updateProfile(Request $request)
     {
         $user = $request->user(); // Using Laravel's authentication
-    
+
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
             'phone_number' => 'sometimes|required|string',
@@ -58,11 +58,11 @@ class UsersController extends Controller
             'password' => 'sometimes|required|string|min:6',
             'img_profile' => 'sometimes|file|image|max:2048', // Validate only if file is provided
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-    
+
         // Update user info if provided
         if ($request->has('name')) {
             $user->name = $request->name;
@@ -77,32 +77,39 @@ class UsersController extends Controller
             $user->password = Hash::make($request->password);
         }
 
+        // Initialize $userProfile with current profile data or null
+        $userProfile = $user->userProfile()->first();
+
         if (!Storage::disk('public')->exists('images/img_profile')) {
             Storage::disk('public')->makeDirectory('images/img_profile');
         }  
-    
+
         if ($request->hasFile('img_profile')) {
             $path = $request->file('img_profile')->store('uploads/img_profile', 'public');
             $pathUrl = config('app.url') . Storage::url($path);
             Log::info("Uploading file: {$path}");
-    
-            // Check if user already has a profile, then update or create
+
+            // Update or create user profile with new img_profile
             $userProfile = $user->userProfile()->updateOrCreate(
                 ['user_id' => $user->id], // Keys to match
                 ['img_profile' => $pathUrl] // Values to update or create
             );
-    
+
             Log::info("img_profile updated or created: " . json_encode($userProfile));
         }
-    
+
         $user->save();
-    
+
+        // Prepare the userProfile data for the response
+        $userProfileData = $userProfile ? $userProfile->toArray() : null;
+
         return response()->json([
             'message' => 'User updated successfully',
             'user' => $user->toArray(),
-            'userProfile' => $userProfile->toArray(),
+            'userProfile' => $userProfileData,
         ], 201);
     }
+
 
     /**
      * updateProfile the specified resource in storage.

@@ -21,7 +21,7 @@ class UserController extends Controller
         $pageTitle = trans('global-message.list_form_title',['form' => trans('users.title')] );
         $auth_user = AuthHelper::authSession();
         $assets = ['data-table'];
-        $headerAction = '<a href="'.route('users.create').'" class="btn btn-sm btn-primary" role="button">Add User</a>';
+        $headerAction = '<a href="'.route('users.create').'" class="btn btn-sm btn-primary" role="button">اضافة مستخدم جديد</a>';
         return $dataTable->render('global.datatable', compact('pageTitle','auth_user','assets', 'headerAction'));
     }
 

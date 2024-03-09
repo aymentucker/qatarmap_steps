@@ -22,9 +22,9 @@ class UsersDataTable extends DataTable
             ->editColumn('userProfile.country', function($query) {
                 return $query->userProfile->country ?? '-';
             })
-            ->editColumn('userProfile.company_name', function($query) {
-                return $query->userProfile->company_name ?? '-';
-            })
+            // ->editColumn('userProfile.company_name', function($query) {
+            //     return $query->userProfile->company_name ?? '-';
+            // })
             ->editColumn('status', function($query) {
                 $status = 'warning';
                 switch ($query->status) {
@@ -40,23 +40,23 @@ class UsersDataTable extends DataTable
                 }
                 return '<span class="text-capitalize badge bg-'.$status.'">'.$query->status.'</span>';
             })
-            ->editColumn('created_at', function($query) {
+            ->editColumn('updated_at', function($query) {
                 return date('Y/m/d',strtotime($query->created_at));
             })
             ->filterColumn('full_name', function($query, $keyword) {
                 $sql = "CONCAT(users.name,' ',users.name_en)  like ?";
                 return $query->whereRaw($sql, ["%{$keyword}%"]);
             })
-            ->filterColumn('userProfile.company_name', function($query, $keyword) {
-                return $query->orWhereHas('userProfile', function($q) use($keyword) {
-                    $q->where('company_name', 'like', "%{$keyword}%");
-                });
-            })
-            ->filterColumn('userProfile.country', function($query, $keyword) {
-                return $query->orWhereHas('userProfile', function($q) use($keyword) {
-                    $q->where('country', 'like', "%{$keyword}%");
-                });
-            })
+            // ->filterColumn('userProfile.company_name', function($query, $keyword) {
+            //     return $query->orWhereHas('userProfile', function($q) use($keyword) {
+            //         $q->where('company_name', 'like', "%{$keyword}%");
+            //     });
+            // })
+            // ->filterColumn('userProfile.country', function($query, $keyword) {
+            //     return $query->orWhereHas('userProfile', function($q) use($keyword) {
+            //         $q->where('country', 'like', "%{$keyword}%");
+            //     });
+            // })
             ->addColumn('action', 'users.action')
             ->rawColumns(['action','status']);
     }
@@ -88,11 +88,11 @@ class UsersDataTable extends DataTable
 
                     ->parameters([
                         "buttons" => [
-                            [ "extend" => 'print', "text" => 'Print', "className" => 'btn btn-sm btn-outline-primary', ],
+                            [ "extend" => 'print', "text" => 'طباعة', "className" => 'btn btn-sm btn-outline-primary', ],
                             [ "extend" => 'excel', "text" => 'Excel', "className" => 'btn btn-sm btn-outline-primary', ],
                             [ "extend" => 'csv', "text" => 'CSV', "className" => 'btn btn-sm btn-outline-primary', ],
-                            [ "extend" => 'reload', "text" => 'Reload', "className" => 'btn btn-sm btn-outline-primary', ],
-                            [ "extend" => 'reset', "text" => 'Reset', "className" => 'btn btn-sm btn-outline-primary', ],
+                            [ "extend" => 'reload', "text" => 'تحديث', "className" => 'btn btn-sm btn-outline-primary', ],
+                            [ "extend" => 'reset', "text" => 'اعادة ضبط', "className" => 'btn btn-sm btn-outline-primary', ],
                             ],
                         "processing" => true,
                         "autoWidth" => false,
@@ -126,14 +126,14 @@ class UsersDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            ['data' => 'id', 'name' => 'id', 'title' => 'id'],
-            ['data' => 'full_name', 'name' => 'full_name', 'title' => 'FULL NAME', 'orderable' => false],
-            ['data' => 'phone_number', 'name' => 'phone_number', 'title' => 'Phone Number'],
-            ['data' => 'email', 'name' => 'email', 'title' => 'Email'],
-            ['data' => 'userProfile.country', 'name' => 'userProfile.country', 'title' => 'Country'],
-            ['data' => 'status', 'name' => 'status', 'title' => 'Status'],
-            ['data' => 'userProfile.company_name', 'name' => 'userProfile.company_name', 'title' => 'Company'],
-            ['data' => 'created_at', 'name' => 'created_at', 'title' => 'Join Date'],
+            ['data' => 'id', 'name' => 'id', 'title' => '#'],
+            ['data' => 'full_name', 'name' => 'full_name', 'title' => 'الاسم', 'orderable' => false],
+            ['data' => 'phone_number', 'name' => 'phone_number', 'title' => 'رقم الهاتف'],
+            ['data' => 'email', 'name' => 'email', 'title' => 'البريدالالكتروني'],
+            // ['data' => 'userProfile.country', 'name' => 'userProfile.country', 'title' => 'Country'],
+            ['data' => 'status', 'name' => 'status', 'title' => 'الحالة'],
+            // ['data' => 'userProfile.company_name', 'name' => 'userProfile.company_name', 'title' => 'Company'],
+            ['data' => 'updated_at', 'name' => 'updated_at', 'title' => 'اخر تحديث'],
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

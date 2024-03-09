@@ -13,7 +13,7 @@
             <div class="card">
                <div class="card-header d-flex justify-content-between">
                   <div class="header-title">
-                     <h4 class="card-title">{{$id !== null ? 'Update' : 'Add' }} User</h4>
+                     <h4 class="card-title">{{$id !== null ? 'تعديل' : 'اضافة' }} مستخدم</h4>
                   </div>
                </div>
                <div class="card-body">
@@ -89,7 +89,7 @@
             <div class="card">
                <div class="card-header d-flex justify-content-between">
                   <div class="header-title">
-                     <h4 class="card-title">{{$id !== null ? 'Update' : 'New' }} بيانات المستخدم</h4>
+                     <h4 class="card-title">{{$id !== null ? 'تعديل' : 'اضافة' }} بيانات المستخدم</h4>
                   </div>
                   <div class="card-action">
                         <a href="{{route('users.index')}}" class="btn btn-sm btn-primary" role="button">رجوع</a>
@@ -99,11 +99,11 @@
                   <div class="new-user-info">
                         <div class="row">
                            <div class="form-group col-md-6">
-                              <label class="form-label" for="fname">الاسم الاول : <span class="text-danger">*</span></label>
+                              <label class="form-label" for="fname">الاسم بالعربي : <span class="text-danger">*</span></label>
                               {{ Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'First Name', 'required']) }}
                            </div>
                            <div class="form-group col-md-6">
-                              <label class="form-label" for="lname">الاسم الاخير :<span class="text-danger">*</span></label>
+                              <label class="form-label" for="lname">الاسم بالانجليزي :<span class="text-danger">*</span></label>
                               {{ Form::text('name_en', old('name_en'), ['class' => 'form-control', 'placeholder' => 'Last Name' ,'required']) }}
                            </div>
                            <div class="form-group col-md-6">
@@ -136,7 +136,7 @@
                               {{ Form::email('email', old('email'), ['class' => 'form-control', 'placeholder' => 'Enter e-mail', 'required']) }}
                            </div>
                            <div class="form-group col-md-6">
-                              <label class="form-label" for="pno">Pin Code:</label>
+                              <label class="form-label" for="pno">الرمز البريدي:</label>
                               {{ Form::number('userProfile[pin_code]', old('userProfile[pin_code]'), ['class' => 'form-control', 'id' => 'pin_code','step' => 'any']) }}
                            </div>
                            <div class="form-group col-md-12">
@@ -160,7 +160,7 @@
                               {{ Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Repeat Password']) }}
                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">{{$id !== null ? 'Update' : 'Add' }} User</button>
+                        <button type="submit" class="btn btn-primary">{{$id !== null ? 'تعديل' : 'اضافة' }} مستخدم</button>
                   </div>
                </div>
             </div>

@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\AdSliderController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\API\OrderPropertiesController;
 use App\Http\Controllers\Api\CompaniesController;
-
+use App\Http\Controllers\Api\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +58,13 @@ Route::delete('/properties/images/{imageName}', [PropertiesController::class, 'd
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::apiResource('message', MessageController::class);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/messages/{userId}', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
 });
 
 Route::apiResource('properties', PropertiesController::class);

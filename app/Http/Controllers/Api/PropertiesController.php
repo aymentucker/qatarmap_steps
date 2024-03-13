@@ -395,30 +395,36 @@ class PropertiesController extends Controller
                     // Structured data similar to fetchSellPropertiesForCategory method
                     'id' => $property->id,
                     'property_name' => $property->property_name,
-                    'property_name_en' => $property->property_name_en ?? 'Not Available',
+                    'property_name_en' => $property->property_name_en, // Assuming this attribute exists
                     'property_type' => $property->propertyType->name ?? 'Not Available',
-                    'property_type_en' => $property->propertyType->name_en ?? 'Not Available',
+                    'property_type_en' => $property->propertyType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'category_name' => $property->category->name,
-                    'category_name_en' => $property->category->name_en ?? 'Not Available',
+                    'category_name_en' => $property->category->name_en ?? 'Not Available', // Assuming this attribute exists
                     'city' => $property->city->name,
-                    'city_name_en' => $property->city->name_en ?? 'Not Available',
+                    'city_name_en' => $property->city->name_en ?? 'Not Available', // Assuming this attribute exists
                     'region' => $property->region->name,
-                    'region_name_en' => $property->region->name_en ?? 'Not Available',
+                    'region_name_en' => $property->region->name_en ?? 'Not Available', // Assuming this attribute exists
                     'floor' => $property->floor,
                     'rooms' => $property->rooms,
                     'bathrooms' => $property->bathrooms,
                     'furnishing' => $property->furnishing->name ?? 'Not Available',
-                    'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available',
+                    'furnishing_name_en' => $property->furnishing->name_en ?? 'Not Available', // Assuming this attribute exists
                     'ad_type' => $property->adType->name ?? 'Not Available',
-                    'ad_type_name_en' => $property->adType->name_en ?? 'Not Available',
+                    'ad_type_name_en' => $property->adType->name_en ?? 'Not Available', // Assuming this attribute exists
                     'property_area' => $property->property_area,
                     'price' => $property->price,
+                    'description' => $property->description,
+                    'description_en' => $property->description_en ?? '', // Assuming this attribute exists
                     'status' => $property->status,
                     'user_email' => $property->user->email ?? 'Not Available',
-                    'user_name_en' => $property->user->name_en ?? 'Not Available',
+                    'user_name' => $property->user->name ?? 'Not Available', // Assuming user has a name attribute
+                    'user_name_en' => $property->user->name_en ?? 'Not Available', // Assuming this attribute exists
                     'phone_number' => $property->user->phone_number ?? 'Not Available',
+                    'company_id' => $property->company_id,
+                    'company_name' => $property->company->name ?? 'Not Available',
+                    'company_name_en' => $property->company->name_en ?? 'Not Available', // Assuming this attribute exists
                     'images' => $property->images->map(fn($image) => $image->url),
-                    'updated_at' => $property->updated_at->toDateTimeString(),
+                    'updated_at' => $property->updated_at->toDateTimeString(), // Format updated_at to a DateTime string
                 ];
             });
 
@@ -670,10 +676,80 @@ class PropertiesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $user = auth()->user();
+
+        // Ensure the user is authenticated
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized access.'], 401);
+        }
+
+        // Find the property by ID
+        $property = Property::find($id);
+
+        // Ensure the property exists and belongs to the user or their company (if applicable)
+        if (!$property || $property->user_id !== $user->id) {
+            return response()->json(['message' => 'Property not found or access denied.'], 404);
+        }
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'property_name' => 'sometimes|string',
+            'property_name_en' => 'sometimes|string',
+            'property_type_id' => 'sometimes|exists:property_types,id',
+            'category_id' => 'sometimes|exists:categories,id',
+            'city_id' => 'sometimes|exists:cities,id',
+            'region_id' => 'sometimes|exists:regions,id',
+            'floor' => 'sometimes|integer',
+            'rooms' => 'sometimes|integer',
+            'bathrooms' => 'sometimes|integer',
+            'furnishing_id' => 'sometimes|exists:furnishings,id',
+            'ad_type_id' => 'sometimes|exists:ad_types,id',
+            'property_area' => 'sometimes|numeric',
+            'price' => 'sometimes|numeric',
+            'description' => 'sometimes|string',
+            'description_en' => 'sometimes|string',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Update the property with validated data
+        $property->fill($validatedData);
+        // Optionally, refresh redeploy time or other attributes here
+
+        $property->save();
+
+        // Handle deletion of specified images
+        if ($request->has('images_to_delete')) {
+            foreach ($request->images_to_delete as $imageId) {
+                $image = PropertyImage::find($imageId);
+                if ($image && Storage::disk('public')->exists($image->filename)) {
+                    Storage::disk('public')->delete($image->filename); // Adjust path as needed
+                    $image->delete(); // Remove the image entry from the database
+                }
+            }
+        }
+
+        // Handle image upload if provided
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $filename = $image->store('images/properties', 'public');
+                $fullUrl = url(Storage::url($filename));
+
+                $propertyImage = new PropertyImage();
+                $propertyImage->property_id = $property->id;
+                $propertyImage->url = $fullUrl;
+                $propertyImage->save();
+            }
+        }
+
+        return response()->json([
+            'message' => 'Property updated successfully!',
+            'property' => $property->load(['images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'adType', 'city', 'region']),
+        ], 200);
     }
+
 
     /**
      * Deleting Images for peoperty
@@ -1157,7 +1233,7 @@ class PropertiesController extends Controller
             }
 
 
-            $properties = Property::with(['propertyView','images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
+            $properties = Property::with(['propertyView', 'images', 'user', 'company', 'category', 'propertyType', 'furnishing', 'city', 'region'])
                 ->where('user_id', $user->id)
                 ->orderBy('updated_at', 'desc')
                 ->get();

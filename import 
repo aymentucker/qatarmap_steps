@@ -1,0 +1,1031 @@
+import 'dart:io';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:qatarmap/model/city_region_model.dart';
+import 'package:qatarmap/model/furnishing_type_adtype_model.dart';
+import 'package:qatarmap/models/property_model.dart';
+import 'package:qatarmap/screens/SignUpScreen.dart';
+import 'package:qatarmap/screens/my_properties.dart';
+import 'package:qatarmap/services/api_service.dart';
+import 'package:qatarmap/services/preferences_service.dart';
+import 'package:qatarmap/generated/l10n.dart' as loc;
+import '../model/category_model.dart';
+import '../services/property_service.dart';
+import '../utils/Colors.dart';
+import 'new_users.dart';
+
+class AddNewPropertyScreen extends StatefulWidget {
+  final Property? property; // To except edit property
+
+  final VoidCallback? onPropertyAdded; // Callback when a property is added
+
+
+  const AddNewPropertyScreen({Key? key, this.property, this.onPropertyAdded}) : super(key: key);
+
+  @override
+  _AddNewPropertyScreenState createState() => _AddNewPropertyScreenState();
+}
+
+class _AddNewPropertyScreenState extends State<AddNewPropertyScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController loadingController;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  List<Category> _categories = [];
+  Category? _selectedCategory;
+
+  List<PropertyType> _propertyTypes = [];
+  PropertyType? _propertyType;
+
+  List<Furnishing> _furnishings = [];
+  Furnishing? _furnishing;
+
+  List<AdType> _adTypes = [];
+  AdType? _adType;
+
+  List<String> _remoteImages = [];
+
+
+  TextEditingController propertyNameController = TextEditingController();
+  TextEditingController propertyNameEnController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController roomsController = TextEditingController();
+  TextEditingController bathroomsController = TextEditingController();
+  TextEditingController propertyAreaController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController descriptionEnController = TextEditingController();
+
+
+  @override
+  void dispose() {
+    propertyNameController.dispose();
+    propertyNameEnController.dispose();
+    floorController.dispose();
+    roomsController.dispose();
+    bathroomsController.dispose();
+    propertyAreaController.dispose();
+    priceController.dispose();
+    descriptionController.dispose();
+    descriptionEnController.dispose();
+    super.dispose();
+  }
+
+  ApiService apiService = ApiService();
+
+  List<City> _cities = [];
+  List<Region> _regions = [];
+  City? _selectedCity;
+  Region? _selectedRegion;
+
+  final PropertyService propertyService = PropertyService();
+
+  final List<File> _files = []; // List of selected files
+  final List<PlatformFile> _platformFiles = [
+  ]; // Corresponding platform file information
+
+  bool isUploading = false; // Indicates if files are being uploaded
+
+  // Method to select multiple files
+  selectFiles() async {
+    final result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg', 'jpeg']);
+
+    if (result != null) {
+      setState(() {
+        // Append new files to existing list
+        _files.addAll(result.paths.map((path) => File(path!)).toList());
+        _platformFiles.addAll(result.files);
+      });
+    }
+
+    // Start upload animation
+    loadingController.forward();
+  }
+
+  // Method to delete a selected file
+  deleteFile(int index) {
+    setState(() {
+      _files.removeAt(index);
+      _platformFiles.removeAt(index);
+    });
+  }
+
+  @override
+  void initState() {
+    loadingController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 6),
+    )
+      ..addListener(() {
+        setState(() {
+          isUploading = loadingController.isCompleted;
+        });
+      });
+
+    super.initState();
+    _loadCities();
+    _fetchCategories();
+    _fetchfurnishings();
+    _fetchadtypes();
+    _fetchpropertytypes();
+    getUserInfo();
+
+    if (widget.property != null) {
+      // Initialize text controllers
+      propertyNameController.text = widget.property!.propertyName ?? '';
+      propertyNameEnController.text = widget.property!.propertyNameEn ?? '';
+      floorController.text = widget.property!.floor.toString();
+      roomsController.text = widget.property!.rooms.toString();
+      bathroomsController.text = widget.property!.bathrooms.toString();
+      propertyAreaController.text = widget.property!.propertyArea.toString();
+      priceController.text = widget.property!.price.toString();
+      descriptionController.text = widget.property!.description ?? '';
+      descriptionEnController.text = widget.property!.description_en ?? '';
+    }
+
+    if (widget.property != null) {
+      _remoteImages.addAll(widget.property!.images);
+    }
+  }
+
+  void getUserInfo() {
+    var userData = PreferencesService().getUserData(); // This gets user data
+    // String? userId = PreferencesService().getUserId(); // This should get the user_id
+    // String? companyId = PreferencesService().getCompanyId();
+    print("User Data: $userData");
+  }
+
+  _fetchfurnishings() async {
+    _furnishings = await apiService.fetchFurnishings();
+    if (widget.property != null) {
+      // Assuming widget.property has a furnishingId or similar attribute
+      _furnishing = _furnishings.firstWhere(
+            (furnishing) => furnishing.name == widget.property!.furnishing,
+      );
+    }
+    setState(() {});
+  }
+
+
+  _fetchadtypes() async {
+    _adTypes = await apiService.fetchAdTypes();
+    if (widget.property != null) {
+      // Assuming widget.property has an adTypeId or similar attribute
+      _adType = _adTypes.firstWhere(
+            (adType) => adType.name == widget.property!.adType,
+      );
+    }
+    setState(() {});
+  }
+
+  _fetchpropertytypes() async {
+    _propertyTypes = await apiService.fetchPropertyTypes();
+    if (widget.property != null) {
+      // Assuming widget.property has a propertyTypeId or similar attribute
+      _propertyType = _propertyTypes.firstWhere(
+            (propertyType) =>
+        propertyType.name == widget.property!.propertyType,
+      );
+    }
+    setState(() {});
+  }
+
+  _fetchCategories() async {
+    _categories = await apiService.fetchCategories();
+    if (widget.property != null) {
+      _selectedCategory = _categories.firstWhere(
+            (cat) => cat.name == widget.property!.category_name,
+      );
+    }
+    setState(() {});
+  }
+
+  _loadCities() async {
+    final cities = await apiService.fetchCities();
+    setState(() {
+      _cities = cities;
+      if (widget.property != null) {
+        _selectedCity = _cities.firstWhere(
+              (city) => city.id.toString() == widget.property!.cityId,
+        );
+        // After setting the city, load regions for that city using the city ID
+        if (_selectedCity != null) {
+          _loadRegionsForSelectedCity(_selectedCity!.id);
+        }
+      }
+    });
+  }
+
+
+  // Adjusted to accept a city ID and pass it to fetchRegionsForCity
+
+  // Adjusted to accept a city ID and pass it to fetchRegionsForCity
+  // Adjusted to accept a city ID and pass it to fetchRegionsForCity
+  _loadRegionsForSelectedCity(int cityId) async {
+    // Ensure fetchRegionsForCity now expects a city ID
+    final regions = await apiService.fetchRegionsForCity(cityId);
+    setState(() {
+      _regions = regions;
+      // Initialize _selectedRegion with the region from the property, if editing
+      if (widget.property != null && widget.property!.regionId != null) {
+        _selectedRegion = _regions.firstWhere(
+              (region) => region.id == widget.property!.regionId,
+        );
+      }
+    });
+  }
+
+
+  Future<void> publish() async {
+    if (_formKey.currentState!.validate()) {
+      // setState(() {
+      //   isUploading = true; // Start showing the loading indicator
+      // });
+      // Start the publishing process
+      try {
+        var userData = PreferencesService()
+            .getUserData(); // This gets user data
+        print("User Data: $userData");
+        await propertyService.addProperty(
+          propertyName: propertyNameController.text,
+          propertyNameEn: propertyNameEnController.text,
+          propertyTypeId: _propertyType?.id ?? 0,
+          categoryId: _selectedCategory?.id ?? 0,
+          cityId: _selectedCity?.id ?? 0,
+          regionId: _selectedRegion?.id ?? 0,
+          floor: int.tryParse(floorController.text) ?? 0,
+          rooms: int.tryParse(roomsController.text) ?? 0,
+          bathrooms: int.tryParse(bathroomsController.text) ?? 0,
+          furnishingId: _furnishing?.id ?? 0,
+          adTypeId: _adType?.id ?? 0,
+          propertyArea: double.tryParse(propertyAreaController.text) ?? 0.0,
+          price: double.tryParse(priceController.text) ?? 0.0,
+          description: descriptionController.text,
+          descriptionEn: descriptionEnController.text,
+          images: _files,
+        );
+
+        // Assuming the property addition is successful, invoke the callback
+        if (true) { // Replace this condition with your actual success condition
+          widget.onPropertyAdded?.call(); // Invoke the callback
+          Navigator.pop(context, true); // Pop with a success indicator if needed
+        }
+
+        else {
+          // Handle the failure case, e.g., showing an error message
+        }
+      } on Exception catch (e) {
+        // TODO
+      }
+      finally {
+        setState(() {
+          isUploading = false; // Stop showing the loading indicator
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(loc.S
+            .of(context)
+            .addNewProperty_title),
+        leading: const BackButton(), // Assumes there is a Navigator in place
+      ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 32),
+                  Text(
+                    loc.S
+                        .of(context)
+                        .addNewProperty_Subtitle,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    loc.S
+                        .of(context)
+                        .addNewProperty_SubSubtitle,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+
+                  // const Padding(
+                  //     padding: EdgeInsets.only(left: 1),
+                  //     child: Text("نوع الحجز",
+                  //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                  //     ),
+                  // ),
+                  nbAppTextFieldWidget(
+                    propertyNameController,
+                    loc.S.of(context).property_name,
+                    TextFieldType.NAME, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return loc.S.of(context).new_property_name; // Adjust the validation message as needed
+                      }
+                      return null;
+                    },
+                  ),
+
+                  // CustomTextField(
+                  //   title: loc.S
+                  //       .of(context)
+                  //       .property_name,
+                  //   controller: propertyNameController,
+                  //   keyboardType: TextInputType.text,
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return loc.S
+                  //           .of(context)
+                  //           .new_property_name;
+                  //     }
+                  //     return null; // Return null if the input is valid
+                  //   },
+                  // ),
+                  const SizedBox(height: 10),
+                  nbAppTextFieldWidget(
+                    propertyNameEnController,
+                    loc.S.of(context).property_nameEn,
+                    TextFieldType.NAME, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                    validator: (value) {
+                      // if (value == null || value.isEmpty) {
+                      //   return loc.S
+                      //       .of(context)
+                      //       .new_property_name_en;
+                      // }
+                      // return null; // Return null if the input is valid
+                    },
+                  ),
+                  // CustomTextField(
+                  //   title: loc.S
+                  //       .of(context)
+                  //       .property_nameEn,
+                  //   controller: propertyNameEnController,
+                  //   keyboardType: TextInputType.text,
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return loc.S
+                  //           .of(context)
+                  //           .new_property_name_en;
+                  //     }
+                  //     return null; // Return null if the input is valid
+                  //   },
+                  // ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: DropdownButtonFormField<PropertyType>(
+                        value: _propertyType,
+                        items: _propertyTypes.map((PropertyType type) {
+                          // Determine the current language of the application
+                          var isArabic = Localizations
+                              .localeOf(context)
+                              .languageCode == 'ar';
+                          // Choose the appropriate property name based on the language
+                          var propertyName = isArabic ? type.name : type.nameEn;
+
+                          return DropdownMenuItem<PropertyType>(
+                            value: type,
+                            child: Text(propertyName),
+                          );
+                        }).toList(),
+                        onChanged: (PropertyType? newValue) {
+                          setState(() {
+                            _propertyType = newValue;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: loc.S
+                                .of(context)
+                                .property_type,
+                            // Assuming loc.S.of(context).property_type is already localized
+                            hintStyle: TextStyle(color: Colors.grey,
+                                fontSize: 15)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(10),
+                    ), // BoxDecoration
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: DropdownButtonFormField<Category>(
+                        value: _selectedCategory,
+                        items: _categories.map((Category category) {
+                          // Determine the current language of the application
+                          var isArabic = Localizations
+                              .localeOf(context)
+                              .languageCode == 'ar';
+                          // Choose the appropriate category name based on the language
+                          var categoryName = isArabic ? category.name : category
+                              .nameEn;
+
+                          return DropdownMenuItem<Category>(
+                            value: category,
+                            child: Text(categoryName),
+                          );
+                        }).toList(),
+                        onChanged: (Category? newValue) {
+                          setState(() {
+                            _selectedCategory = newValue;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: loc.S
+                                .of(context)
+                                .property_category,
+                            // Assuming loc.S.of(context).property_category is already localized
+                            hintStyle: TextStyle(color: Colors.grey,
+                                fontSize: 15)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(15),
+                    ), // BoxDecoration
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: DropdownButtonFormField<City>(
+                        value: _selectedCity,
+                        items: _cities.map((City city) {
+                          // Determine the current language of the application
+                          var isArabic = Localizations
+                              .localeOf(context)
+                              .languageCode == 'ar';
+                          // Choose the appropriate city name based on the language
+                          var cityName = isArabic ? city.name : city
+                              .nameEn; // Assuming you have city.nameEn
+
+                          return DropdownMenuItem<City>(
+                            value: city,
+                            child: Text(cityName),
+                          );
+                        }).toList(),
+                        onChanged: (City? newValue) {
+                          setState(() {
+                            _selectedCity = newValue;
+                            _selectedRegion = null; // Reset selected region
+                            _loadRegionsForSelectedCity(newValue!.id);
+                          });
+                        },
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: loc.S
+                                .of(context)
+                                .city,
+                            hintStyle: TextStyle(color: Colors.grey,
+                                fontSize: 15)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(15),
+                    ), // BoxDecoration
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: DropdownButtonFormField<Region>(
+                        key: Key(_selectedCity?.id.toString() ?? 'unique_key'),
+                        // Use city ID or any unique property
+                        value: _selectedRegion,
+                        items: _regions.map((Region region) {
+                          return DropdownMenuItem<Region>(
+                            value: region,
+                            child: Text(region.name),
+                          );
+                        }).toList(),
+                        onChanged: (Region? newValue) {
+                          setState(() {
+                            _selectedRegion = newValue;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: loc.S
+                                .of(context)
+                                .region,
+                            hintStyle: TextStyle(color: Colors.grey,
+                                fontSize: 15)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child:   nbAppTextFieldWidget(
+                          floorController,
+                          loc.S.of(context).floor,
+                          TextFieldType.NUMBER, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return loc.S
+                                  .of(context)
+                                  .new_property_floor;
+                            }
+                            return null; // Return null if the input is valid
+                          },
+                        ),
+                        // CustomTextField(
+                        //   title: loc.S
+                        //       .of(context)
+                        //       .floor,
+                        //   controller: floorController,
+                        //   keyboardType: TextInputType.number,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return loc.S
+                        //           .of(context)
+                        //           .new_property_floor;
+                        //     }
+                        //     return null; // Return null if the input is valid
+                        //   },
+                        // ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: nbAppTextFieldWidget(
+                          roomsController,
+                          loc.S.of(context).rooms,
+                          TextFieldType.NUMBER, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return loc.S
+                                  .of(context)
+                                  .new_property_rooms;
+                            }
+                            return null; // Return null if the input is valid
+                          },
+                        ),
+                        // CustomTextField(
+                        //   title: loc.S
+                        //       .of(context)
+                        //       .rooms,
+                        //   controller: roomsController,
+                        //   keyboardType: TextInputType.number,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return loc.S
+                        //           .of(context)
+                        //           .new_property_rooms;
+                        //     }
+                        //     return null; // Return null if the input is valid
+                        //   },
+                        // ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child:  nbAppTextFieldWidget(
+                          bathroomsController,
+                          loc.S.of(context).bathrooms,
+                          TextFieldType.NUMBER, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return loc.S
+                                  .of(context)
+                                  .new_property_bathrooms;
+                            }
+                            return null; // Return null if the input is valid
+                          },
+                        ),
+                        // CustomTextField(
+                        //   title: loc.S
+                        //       .of(context)
+                        //       .bathrooms,
+                        //   controller: bathroomsController,
+                        //   keyboardType: TextInputType.number,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return loc.S
+                        //           .of(context)
+                        //           .new_property_bathrooms;
+                        //     }
+                        //     return null; // Return null if the input is valid
+                        //   },
+                        // ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(15),
+                          ), // BoxDecoration
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0),
+                            child: DropdownButtonFormField<Furnishing>(
+                              value: _furnishing,
+                              items: _furnishings.map((Furnishing furnishing) {
+                                // Determine the current language of the application
+                                var isArabic = Localizations
+                                    .localeOf(context)
+                                    .languageCode == 'ar';
+                                // Choose the appropriate furnishing name based on the language
+                                var furnishingName = isArabic
+                                    ? furnishing.name
+                                    : furnishing
+                                    .nameEn; // Assuming you have furnishing.nameEn
+
+                                return DropdownMenuItem<Furnishing>(
+                                  value: furnishing,
+                                  child: Text(furnishingName),
+                                );
+                              }).toList(),
+                              onChanged: (Furnishing? newValue) {
+                                setState(() {
+                                  _furnishing = newValue;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: loc.S
+                                    .of(context)
+                                    .furnishing,
+                                // Assuming loc.S.of(context).furnishing is already localized
+                                hintStyle: TextStyle(
+                                    color: Colors.grey, fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: DropdownButtonFormField<AdType>(
+                        value: _adType, // Assuming _adType is of type AdType?
+                        items: _adTypes.map((AdType adType) {
+                          // Determine the current language of the application
+                          var isArabic = Localizations
+                              .localeOf(context)
+                              .languageCode == 'ar';
+                          // Choose the appropriate furnishing name based on the language
+                          var adTypeName = isArabic ? adType.name : adType
+                              .nameEn; // Assuming you have furnishing.nameEn
+
+                          return DropdownMenuItem<AdType>(
+                            value: adType,
+                            child: Text(
+                                adTypeName), // Assuming AdType model has a name attribute
+                          );
+                        }).toList(),
+                        onChanged: (AdType? newValue) {
+                          setState(() {
+                            _adType = newValue;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: loc.S
+                              .of(context)
+                              .adType,
+                          hintStyle: TextStyle(color: Colors.grey,
+                              fontSize: 15),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: nbAppTextFieldWidget(
+                          propertyAreaController,
+                          loc.S.of(context).property_area,
+                          TextFieldType.NUMBER, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return loc.S
+                                  .of(context)
+                                  .new_property_area;
+                            }
+                            return null; // Return null if the input is valid
+                          },
+                        ),
+                        // CustomTextField(
+                        //   title: loc.S
+                        //       .of(context)
+                        //       .property_area,
+                        //   controller: propertyAreaController,
+                        //   keyboardType: TextInputType.number,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return loc.S
+                        //           .of(context)
+                        //           .new_property_area;
+                        //     }
+                        //     return null; // Return null if the input is valid
+                        //   },
+                        // ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: nbAppTextFieldWidget(
+                          priceController,
+                          loc.S.of(context).price,
+                          TextFieldType.NUMBER, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return loc.S
+                                  .of(context)
+                                  .new_property_price;
+                            }
+                            return null; // Return null if the input is valid
+                          },
+                        ),
+                        // CustomTextField(
+                        //   title: loc.S
+                        //       .of(context)
+                        //       .price,
+                        //   controller: priceController,
+                        //   keyboardType: TextInputType.number,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return loc.S
+                        //           .of(context)
+                        //           .new_property_price;
+                        //     }
+                        //     return null; // Return null if the input is valid
+                        //   },
+                        // ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  nbAppTextFieldWidget(
+                    descriptionController,
+                    loc.S.of(context).property_about,
+                    TextFieldType.MULTILINE, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return loc.S
+                            .of(context)
+                            .new_property_about;
+                      }
+                      return null; // Return null if the input is valid
+                    },
+                  ),
+                  // CustomTextField(
+                  //     title: loc.S
+                  //         .of(context)
+                  //         .property_about,
+                  //     controller: descriptionController,
+                  //     validator: (value) {
+                  //       if (value == null || value.isEmpty) {
+                  //         return loc.S
+                  //             .of(context)
+                  //             .new_property_about;
+                  //       }
+                  //       return null; // Return null if the input is valid
+                  //     },
+                  //     maxLines: 5),
+                  const SizedBox(height: 10),
+                  nbAppTextFieldWidget(
+                    descriptionEnController,
+                    loc.S.of(context).property_aboutEn,
+                    TextFieldType.MULTILINE, // Assuming you have an enum or class `TextFieldType` defined somewhere
+                    validator: (value) {
+                      // if (value == null || value.isEmpty) {
+                      //   return loc.S
+                      //       .of(context)
+                      //       .new_property_abouten;
+                      // }
+                      // return null; // Return null if the input is valid
+                    },
+                  ),
+                  // CustomTextField(
+                  //     title: loc.S
+                  //         .of(context)
+                  //         .property_aboutEn,
+                  //     controller: descriptionEnController,
+                  //     validator: (value) {
+                  //       if (value == null || value.isEmpty) {
+                  //         return loc.S
+                  //             .of(context)
+                  //             .new_property_abouten;
+                  //       }
+                  //       return null; // Return null if the input is valid
+                  //     },
+                  //     maxLines: 5),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: selectFiles,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: DottedBorder(
+                          borderType: BorderType.RRect,
+                          radius: const Radius.circular(10),
+                          dashPattern: const [10, 4],
+                          strokeCap: StrokeCap.round,
+                          color: TColors.primary,
+                          child: Container(
+                            width: double.infinity,
+                            height: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.blue.shade50.withOpacity(.3),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.cloud_upload_outlined,
+                                  color: TColors.primary,
+                                  size: 40,
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  loc.S
+                                      .of(context)
+                                      .uploadImages,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.grey.shade400),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )),
+                  ),
+                  // Display the list of selected files with an option to delete each
+                  // Display the list of all selected files with an option to delete each
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   // Add this to disable scrolling within ListView
+                  //   itemCount: _platformFiles.length,
+                  //   itemBuilder: (context, index) {
+                  //     final file = _platformFiles[index];
+                  //     return ListTile(
+                  //       leading: ClipRRect(
+                  //         borderRadius: BorderRadius.circular(8),
+                  //         child: Image.file(_files[index],
+                  //             width: 70, height: 70, fit: BoxFit.cover),
+                  //       ),
+                  //       title: Text(file.name),
+                  //       subtitle: Text('${(file.size / 1024).ceil()} KB'),
+                  //       trailing: IconButton(
+                  //         icon: const Icon(Icons.delete, color: Colors.red),
+                  //         onPressed: () => deleteFile(index),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+
+                  // Display the list of selected files with an option to delete each
+                  // Display the list of all selected files with an option to delete each
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    // Disable scrolling within ListView
+                    itemCount: _remoteImages.length + _files.length,
+                    // Total count of both lists
+                    itemBuilder: (context, index) {
+                      if (index < _remoteImages.length) {
+                        String imageUrl = _remoteImages[index];
+                        String imageName = Uri
+                            .parse(imageUrl)
+                            .pathSegments
+                            .last; // Extracts image name from URL
+                        return ListTile(
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(imageUrl, width: 70,
+                                height: 70,
+                                fit: BoxFit.cover),
+                          ),
+                          title: Text(imageName),
+                          // Use the extracted image name
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () async {
+                              // Extract the imageName or a unique identifier from the imageUrl
+                              Uri uri = Uri.parse(imageUrl);
+                              String imageName = uri.pathSegments
+                                  .last; // This extracts the file name from the URL
+
+                              // Call the delete method with the imageName
+                              bool success = await propertyService
+                                  .deleteRemoteImage(imageName);
+                              if (success) {
+                                setState(() {
+                                  _remoteImages.removeAt(
+                                      index); // Update your list state to remove the deleted image
+                                });
+                              } else {
+                                // Optionally handle the failure case, e.g., show an error message
+                              }
+                            },
+                          ),
+                        );
+                      } else {
+                        // Adjust index for _files list
+                        int fileIndex = index - _remoteImages.length;
+                        PlatformFile file = _platformFiles[fileIndex];
+                        return ListTile(
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.file(File(file.path!), width: 70,
+                                height: 70,
+                                fit: BoxFit.cover),
+                          ),
+                          title: Text(file.name),
+                          // File name
+                          subtitle: Text('${(file.size / 1024).ceil()} KB'),
+                          // File size in KB
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                _files.removeAt(fileIndex);
+                                _platformFiles.removeAt(fileIndex);
+                              });
+                            },
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  nbAppButtonWidget(
+                      context, loc.S.of(context).publish, publish),
+                  // CustomElevatedButton(
+                  //   title: loc.S
+                  //       .of(context)
+                  //       .publish,
+                  //   onPressed: publish,
+                  // ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+          if (isUploading) ...[ // Add your loading overlay here
+            Opacity(
+              opacity: 0.6,
+              child: ModalBarrier(dismissible: false, color: Colors.grey),
+            ),
+            Center(child: CircularProgressIndicator()), // The loading indicator
+          ],
+        ],
+      ),
+    );
+  }
+}

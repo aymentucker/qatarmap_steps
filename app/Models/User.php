@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use App\Models\FileDoc;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -21,9 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
      * The attributes that are mass assignable.
      *
      * @var array
-     */  
+     */
     protected $fillable = [
-      
+
         'username',
         'name',
         'name_en',
@@ -63,11 +64,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $this->name . ' ' . $this->name_en;
     }
 
-    public function userProfile() {
+    public function userProfile()
+    {
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
     }
 
-    
+
     public function company()
     {
         return $this->belongsTo('App\Models\Company');
@@ -79,7 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     {
         return $this->hasMany(Property::class, 'employee_id');
     }
-   
+
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
@@ -96,15 +98,26 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     }
 
     public function subscriptions()
-        {
-            return $this->belongsToMany(Subscription::class, 'user_subscriptions')->withTimestamps();
-        }
+    {
+        return $this->belongsToMany(Subscription::class, 'user_subscriptions')->withTimestamps();
+    }
 
     public function packages()
-        {
-            return $this->belongsToMany(Package::class, 'user_packages')->withTimestamps();
-        }
+    {
+        return $this->belongsToMany(Package::class, 'user_packages')->withTimestamps();
+    }
 
+    // Existing User model properties and methods
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
 
 
 }
